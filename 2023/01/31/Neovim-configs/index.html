@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Neovim configs | 恋のあめ🍬</title>
+  
+    <link rel="icon" href="/assets/tools.ico">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/twilight.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/kanae.jpeg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>恋のあめ🍬</div>
+        
+            <div>次の年も、また見れるかな？</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a target="_blank" rel="noopener" href="https://github.com/arinsong2001">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a target="_blank" rel="noopener" href="https://twitter.com/arinsong2001">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>Neovim configs</h1>
+    </header>
+
+    <section>
+      <h3 id="一次简单的nvim配置"><a href="#一次简单的nvim配置" class="headerlink" title="一次简单的nvim配置"></a>一次简单的nvim配置</h3><p>下载<code>nvim</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install nvim</span><br></pre></td></tr></table></figure>
+
+<p>创建用户配置文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/.config/nvim</span><br><span class="line">cd ~/.config/nvim</span><br><span class="line">touch init.lua</span><br></pre></td></tr></table></figure>
+
+<p>相比于<code>vimscript</code>，<code>nvim</code>推荐使用<code>lua</code>编辑配置文件。</p>
+<p><code>nvim</code>内嵌<code>lua5.1</code>，这使得用户的配置可以更加模块化。</p>
+<p>以下是配置完成后的目录结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">nvim</span><br><span class="line">├── init.lua</span><br><span class="line">├── lua</span><br><span class="line">│   ├── core</span><br><span class="line">│   │   ├── keymaps.lua</span><br><span class="line">│   │   └── settings.lua</span><br><span class="line">│   └── plugins</span><br><span class="line">│       ├── coc.lua</span><br><span class="line">│       ├── lualine.lua</span><br><span class="line">│       ├── nvim-tree.lua</span><br><span class="line">│       ├── nvim-treesitter.lua</span><br><span class="line">│       └── plugins.lua</span><br><span class="line">└── plugin</span><br><span class="line">    └── packer_compiled.lua</span><br></pre></td></tr></table></figure>
+
+<p>首先迁移原来的<code>vim</code>配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p lua/core</span><br><span class="line">cd lua/core</span><br><span class="line">nvim settings.lua</span><br></pre></td></tr></table></figure>
+
+<p>这是我原来的<code>vim</code>配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&quot;text settings</span><br><span class="line">set expandtab</span><br><span class="line">set softtabstop=4</span><br><span class="line">set shiftwidth=4</span><br><span class="line">set autoindent</span><br><span class="line">set smartindent</span><br><span class="line"></span><br><span class="line">&quot;syntax settings</span><br><span class="line">set number</span><br><span class="line">syntax on</span><br><span class="line"></span><br><span class="line">&quot;interaction settings</span><br><span class="line">set mouse=a</span><br><span class="line">set clipboard=unnamed</span><br><span class="line"></span><br><span class="line">&quot;searching settings</span><br><span class="line">set ignorecase</span><br><span class="line">set smartcase</span><br><span class="line"></span><br><span class="line">&quot;keymaps</span><br><span class="line">nnoremap &lt;leader&gt;&lt;leader&gt; :terminal&lt;CR&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这是迁移之后的<code>nvim</code>配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">-- text settings</span><br><span class="line">vim.opt.expandtab = true</span><br><span class="line">vim.opt.softtabstop = 4</span><br><span class="line">vim.opt.shiftwidth = 4</span><br><span class="line">vim.opt.autoindent = true</span><br><span class="line">vim.opt.smartindent = true</span><br><span class="line"></span><br><span class="line">-- syntax settings</span><br><span class="line">vim.opt.number = true</span><br><span class="line">vim.cmd(&#x27;syntax on&#x27;)</span><br><span class="line"></span><br><span class="line">-- interaction settings</span><br><span class="line">vim.opt.mouse:append(&#x27;a&#x27;)</span><br><span class="line">vim.opt.clipboard:append(&#x27;unnamed&#x27;)</span><br><span class="line"></span><br><span class="line">-- searching settings</span><br><span class="line">vim.opt.ignorecase = true</span><br><span class="line">vim.opt.smartcase = true</span><br><span class="line"></span><br><span class="line">-- keymaps</span><br><span class="line">vim.keymap.set(&#x27;n&#x27;, &#x27;&lt;leader&gt;&lt;leader&gt;&#x27;, &#x27;:terminal&lt;CR&gt;a&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p>编写好的配置文件还需要在<code>~/.config/nvim/init.lua</code>文件中启用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvim ~/.config/nvim/init.lua</span><br></pre></td></tr></table></figure>
+
+<p><code>init.lua</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">require(&#x27;core.settings&#x27;)</span><br><span class="line">-- require(&#x27;core.keymaps&#x27;)</span><br><span class="line">-- require(&#x27;plugins.plugins&#x27;)</span><br><span class="line">-- require(&#x27;plugins.lualine&#x27;)</span><br><span class="line">-- require(&#x27;plugins.nvim-tree&#x27;)</span><br><span class="line">-- require(&#x27;plugins.nvim-treesitter&#x27;)</span><br><span class="line">-- require(&#x27;plugins.vim-autopairs&#x27;)</span><br><span class="line">-- require(&#x27;plugins.coc&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p>尝试<code>nvim</code>的理由很多，其中一项是方便的插件管理。</p>
+<p>我选择的的插件管理工具是<code>packer</code>.</p>
+<p>首先创建<code>packer</code>的配置文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd ~/.config/nvim/lua</span><br><span class="line">mkdir plugins &amp;&amp; cd plugins</span><br><span class="line">nvim plugins.lua</span><br></pre></td></tr></table></figure>
+
+<p>然后使用<code>packer</code>官方给出的bootstrap安装<code>packer</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">local ensure_packer = function()</span><br><span class="line">  local fn = vim.fn</span><br><span class="line">  local install_path = fn.stdpath(&#x27;data&#x27;)..&#x27;/site/pack/packer/start/packer.nvim&#x27;</span><br><span class="line">  if fn.empty(fn.glob(install_path)) &gt; 0 then</span><br><span class="line">    fn.system(&#123;&#x27;git&#x27;, &#x27;clone&#x27;, &#x27;--depth&#x27;, &#x27;1&#x27;, &#x27;https://github.com/wbthomason/packer.nvim&#x27;, install_path&#125;)</span><br><span class="line">    vim.cmd [[packadd packer.nvim]]</span><br><span class="line">    return true</span><br><span class="line">  end</span><br><span class="line">  return false</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local packer_bootstrap = ensure_packer()</span><br><span class="line"></span><br><span class="line">vim.cmd([[</span><br><span class="line">  augroup packer_user_config</span><br><span class="line">    autocmd!</span><br><span class="line">    autocmd BufWritePost plugins.lua source &lt;afile&gt; | PackerSync</span><br><span class="line">  augroup end</span><br><span class="line">]])</span><br><span class="line"></span><br><span class="line">return require(&#x27;packer&#x27;).startup(function(use)</span><br><span class="line">  use &#x27;wbthomason/packer.nvim&#x27;</span><br><span class="line"></span><br><span class="line">  use &#123;</span><br><span class="line">    &#x27;nvim-lualine/lualine.nvim&#x27;,</span><br><span class="line">    requires = &#123; &#x27;kyazdani42/nvim-web-devicons&#x27;, opt = true &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  use &#123;</span><br><span class="line">    &#x27;nvim-tree/nvim-tree.lua&#x27;,</span><br><span class="line">    requires = &#123;</span><br><span class="line">      &#x27;nvim-tree/nvim-web-devicons&#x27;, -- optional, for file icons</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  use &#123;</span><br><span class="line">    &#x27;nvim-treesitter/nvim-treesitter&#x27;,</span><br><span class="line">    run = &#x27;:TSUpdate&#x27;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  use &#x27;windwp/nvim-autopairs&#x27;</span><br><span class="line"></span><br><span class="line">  use &#123;&#x27;neoclide/coc.nvim&#x27;, branch = &#x27;release&#x27;&#125;</span><br><span class="line"></span><br><span class="line">  if packer_bootstrap then</span><br><span class="line">    require(&#x27;packer&#x27;).sync()</span><br><span class="line">  end</span><br><span class="line">end)</span><br></pre></td></tr></table></figure>
+
+<p>我在<code>return</code>函数之前添加了一段代码，其作用是使得用户每次更新并保存这个文件时自动运行<code>:PackerSync</code>命令。</p>
+<p>要执行上述动作，首先要在<code>~/.config/nvim/init.lua</code>文件中启用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvim ~/.config/nvim/init.lua</span><br></pre></td></tr></table></figure>
+
+<p><code>init.lua</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">require(&#x27;core.settings&#x27;)</span><br><span class="line">-- require(&#x27;core.keymaps&#x27;)</span><br><span class="line">require(&#x27;plugins.plugins&#x27;)</span><br><span class="line">-- require(&#x27;plugins.lualine&#x27;)</span><br><span class="line">-- require(&#x27;plugins.nvim-tree&#x27;)</span><br><span class="line">-- require(&#x27;plugins.nvim-treesitter&#x27;)</span><br><span class="line">-- require(&#x27;plugins.vim-autopairs&#x27;)</span><br><span class="line">-- require(&#x27;plugins.coc&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p>然后使用nvim打开该配置文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvim ~/.config/nvim/lua/plugins/plugins.lua</span><br></pre></td></tr></table></figure>
+
+<p>进入命令模式，执行写入命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:w</span><br></pre></td></tr></table></figure>
+
+<p>大部分插件的安装很简单，找到所需插件的github主页，复制相关代码即可。</p>
+<p><code>coc</code>插件还需要提前安装<a target="_blank" rel="noopener" href="https://github.com/neoclide/coc.nvim/wiki/Install-coc.nvim">相关依赖</a>。</p>
+<p>以上代码已经是配置完成后的代码了。</p>
+<p>除了<code>packer</code>本身，我还添加了以下几款插件：</p>
+<ul>
+<li><p><code>lualine</code>: 状态栏</p>
+</li>
+<li><p><code>nvim-tree</code>: 文档树</p>
+</li>
+<li><p><code>nvim-treesitter</code>: 代码高亮</p>
+</li>
+<li><p><code>nvim-autopairs</code>: 括号配对</p>
+</li>
+<li><p><code>coc</code>: LSP</p>
+</li>
+</ul>
+<p>插件添加后还需要配置。</p>
+<p>通常的配置方法是在<code>plugins</code>文件夹中创建相应的<code>.lua</code>文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ~/.config/nvim/lua/plugins</span><br></pre></td></tr></table></figure>
+
+<p><code>lualine.lua</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">require(&#x27;lualine&#x27;).setup &#123;</span><br><span class="line">  options = &#123;</span><br><span class="line">    theme = &#x27;auto&#x27;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>nvim-tree.lua</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim.g.loaded_netrw = 1</span><br><span class="line">vim.g.loaded_netrwPlugin = 1</span><br><span class="line"></span><br><span class="line">require(&quot;nvim-tree&quot;).setup()</span><br></pre></td></tr></table></figure>
+
+<p><code>nvim-treesitter.lua</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">require&#x27;nvim-treesitter.configs&#x27;.setup &#123;</span><br><span class="line">  auto_install = true,</span><br><span class="line">  highlight = &#123;</span><br><span class="line">    enable = true,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>vim-autopairs.lua</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">require(&#x27;nvim-autopairs&#x27;).setup()</span><br></pre></td></tr></table></figure>
+
+<p><code>coc.lua</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">vim.opt.updatetime = 300</span><br><span class="line">vim.opt.signcolumn = &quot;yes&quot;</span><br><span class="line">vim.cmd(&#x27;highlight SignColumn guibg=none ctermbg=none&#x27;)</span><br><span class="line"></span><br><span class="line">local keyset = vim.keymap.set</span><br><span class="line">local opts = &#123;silent = true, noremap = true, expr = true, replace_keycodes = false&#125;</span><br><span class="line"></span><br><span class="line">keyset(&quot;i&quot;, &quot;&lt;C-j&gt;&quot;, [[coc#pum#visible() ? coc#pum#next(1) : &quot;\&lt;C-j&gt;&quot;]], opts)</span><br><span class="line">keyset(&quot;i&quot;, &quot;&lt;C-k&gt;&quot;, [[coc#pum#visible() ? coc#pum#prev(1) : &quot;\&lt;C-k&gt;&quot;]], opts)</span><br><span class="line">keyset(&quot;i&quot;, &quot;&lt;TAB&gt;&quot;, [[coc#pum#visible() ? coc#pum#confirm() : &quot;&lt;TAB&gt;&quot;]], opts)</span><br></pre></td></tr></table></figure>
+
+<p>为了方便地使用文档树，还需要进行改键：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvim ~/.config/nvim/lua/core/keymaps.lua</span><br></pre></td></tr></table></figure>
+
+<p>我将<code>t</code>键映射为开关文档树并定位到当前文件。</p>
+<p>以下是<code>keymaps.lua</code>中的配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-- nvim-tree</span><br><span class="line">vim.keymap.set(&#x27;n&#x27;, &#x27;t&#x27;, &#x27;:NvimTreeFindFileToggle&lt;CR&gt;&#x27;)</span><br><span class="line">vim.keymap.set(&#x27;n&#x27;, &#x27;T&#x27;, &#x27;:NvimTreeFindFileToggle&lt;CR&gt;&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p>编写好所有的配置文件后，还需要编辑<code>~/.config/nvim/init.lua</code>文件来启用这些配置文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvim ~/.config/nvim/init.lua</span><br></pre></td></tr></table></figure>
+
+<p><code>init.lua</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">require(&#x27;core.settings&#x27;)</span><br><span class="line">require(&#x27;core.keymaps&#x27;)</span><br><span class="line">require(&#x27;plugins.plugins&#x27;)</span><br><span class="line">require(&#x27;plugins.lualine&#x27;)</span><br><span class="line">require(&#x27;plugins.nvim-tree&#x27;)</span><br><span class="line">require(&#x27;plugins.nvim-treesitter&#x27;)</span><br><span class="line">require(&#x27;plugins.vim-autopairs&#x27;)</span><br><span class="line">require(&#x27;plugins.coc&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p><code>nvim</code>的lsp配置步骤繁琐，因此我选择了经典的<code>coc</code>来进行代码检查与补全。</p>
+<p><code>coc</code>是可以安装扩展的插件，不同的语言支持需要安装不同的扩展。</p>
+<p>使用<code>:CocInstall</code>命令来安装需要的扩展。</p>
+<p>以下是我安装的扩展：</p>
+<ul>
+<li><p><code>coc-marketplace</code>：一站式管理 &amp; 查询<code>coc</code>扩展。</p>
+</li>
+<li><p><code>coc-clangd</code>：c&#x2F;c++语言扩展。</p>
+</li>
+<li><p><code>coc-pyright</code>：python语言扩展。</p>
+</li>
+<li><p><code>coc-sh</code>：bash语言扩展。</p>
+</li>
+<li><p><code>coc-lua</code>：lua语言扩展。</p>
+</li>
+</ul>
+<p>使用<code>:CocList marketplace</code>命令来检索可用扩展或查看已安装的扩展。</p>
+<p><code>nvim</code>可扩展的地方还有很多，技术所限，我选择到此为止。</p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-01-31T10:42:54.000Z" itemprop="datePublished">
+              2023-01-31
+            </time>
+          </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2023 - 恋のあめ🍬 </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

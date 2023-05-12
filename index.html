@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>恋のあめ🍬</title>
+  
+    <link rel="icon" href="/assets/tools.ico">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/twilight.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/kanae.jpeg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>恋のあめ🍬</div>
+        
+            <div>次の年も、また見れるかな？</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a target="_blank" rel="noopener" href="https://github.com/arinsong2001">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a target="_blank" rel="noopener" href="https://twitter.com/arinsong2001">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <ul class="Index">
+  
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/05/05/Neovim-migration/">Neovim migration</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-05-05T10:43:06.000Z" itemprop="datePublished">
+    2023-05-05
+  </time>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h3 id="将Neovim配置迁移至lazy-nvim"><a href="#将Neovim配置迁移至lazy-nvim" class="headerlink" title="将Neovim配置迁移至lazy.nvim"></a>将Neovim配置迁移至lazy.nvim</h3><p>创建配置文件夹：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/.config/nvim</span><br></pre></td></tr></table></figure>
+
+<p>进入文件夹并编写配置文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/.config/nvim</span><br><span class="line">nvim init.lua</span><br></pre></td></tr></table></figure>
+
+<p><code>init.lua</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line">-- text settings</span><br><span class="line">vim.opt.expandtab = true</span><br><span class="line">vim.opt.softtabstop = 4</span><br><span class="line">vim.opt.shiftwidth = 4</span><br><span class="line">vim.opt.autoindent = true</span><br><span class="line">vim.opt.smartindent = true</span><br><span class="line"></span><br><span class="line">-- syntax settings</span><br><span class="line">vim.opt.number = true</span><br><span class="line">vim.cmd(&#x27;syntax on&#x27;)</span><br><span class="line"></span><br><span class="line">-- interaction settings</span><br><span class="line">vim.opt.mouse:append(&#x27;a&#x27;)</span><br><span class="line">vim.opt.clipboard:append(&#x27;unnamed&#x27;)</span><br><span class="line"></span><br><span class="line">-- searching settings</span><br><span class="line">vim.opt.ignorecase = true</span><br><span class="line">vim.opt.smartcase = true</span><br><span class="line"></span><br><span class="line">-- keymaps</span><br><span class="line">vim.keymap.set(&#x27;n&#x27;, &#x27;&lt;leader&gt;&lt;leader&gt;&#x27;, &#x27;:terminal&lt;CR&gt;a&#x27;)</span><br><span class="line">vim.keymap.set(&#x27;n&#x27;, &#x27;t&#x27;, &#x27;:NvimTreeFindFileToggle&lt;CR&gt;&#x27;)</span><br><span class="line">vim.keymap.set(&#x27;n&#x27;, &#x27;T&#x27;, &#x27;:NvimTreeFindFileToggle&lt;CR&gt;&#x27;)</span><br><span class="line"></span><br><span class="line">-- lazy.nvim bootstrap</span><br><span class="line">local lazypath = vim.fn.stdpath(&quot;data&quot;) .. &quot;/lazy/lazy.nvim&quot;</span><br><span class="line">if not vim.loop.fs_stat(lazypath) then</span><br><span class="line">  vim.fn.system(&#123;</span><br><span class="line">    &quot;git&quot;,</span><br><span class="line">    &quot;clone&quot;,</span><br><span class="line">    &quot;--filter=blob:none&quot;,</span><br><span class="line">    &quot;https://github.com/folke/lazy.nvim.git&quot;,</span><br><span class="line">    &quot;--branch=stable&quot;, -- latest stable release</span><br><span class="line">    lazypath,</span><br><span class="line">  &#125;)</span><br><span class="line">end</span><br><span class="line">vim.opt.rtp:prepend(lazypath)</span><br><span class="line"></span><br><span class="line">-- plugins</span><br><span class="line">require(&quot;lazy&quot;).setup &#123;</span><br><span class="line">  &#123;</span><br><span class="line">    &#x27;folke/tokyonight.nvim&#x27;,</span><br><span class="line">    priority = 1000,</span><br><span class="line">    config = function()</span><br><span class="line">      vim.cmd(&#x27;colorscheme tokyonight&#x27;)</span><br><span class="line">    end,</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  &#123;</span><br><span class="line">    &#x27;nvim-lualine/lualine.nvim&#x27;,</span><br><span class="line">    dependencies = &#123; &#x27;nvim-tree/nvim-web-devicons&#x27; &#125;,</span><br><span class="line">    config = function()</span><br><span class="line">      require(&#x27;lualine&#x27;).setup &#123; options = &#123; theme = &#x27;auto&#x27; &#125; &#125;</span><br><span class="line">    end,</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  &#123;</span><br><span class="line">    &#x27;nvim-tree/nvim-tree.lua&#x27;,</span><br><span class="line">    dependencies = &#123; &#x27;nvim-tree/nvim-web-devicons&#x27; &#125;,</span><br><span class="line">    config = function()</span><br><span class="line">      vim.g.loaded_netrw = 1</span><br><span class="line">      vim.g.loaded_netrwPlugin = 1</span><br><span class="line">      require(&quot;nvim-tree&quot;).setup()</span><br><span class="line">    end,</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  &#123;</span><br><span class="line">    &#x27;nvim-treesitter/nvim-treesitter&#x27;,</span><br><span class="line">    build = &#x27;:TSUpdate&#x27;,</span><br><span class="line">    config = function()</span><br><span class="line">      require&#x27;nvim-treesitter.configs&#x27;.setup &#123;</span><br><span class="line">        auto_install = true,</span><br><span class="line">        highlight = &#123; enable = true &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    end,</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  &#123;</span><br><span class="line">    &#x27;windwp/nvim-autopairs&#x27;,</span><br><span class="line">    config = function()</span><br><span class="line">      require(&#x27;nvim-autopairs&#x27;).setup()</span><br><span class="line">    end,</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  &#123;</span><br><span class="line">    &#x27;neoclide/coc.nvim&#x27;,</span><br><span class="line">    branch = &#x27;release&#x27;,</span><br><span class="line">    config = function()</span><br><span class="line">      vim.opt.updatetime = 300</span><br><span class="line">      vim.opt.signcolumn = &quot;yes&quot;</span><br><span class="line">      vim.cmd(&#x27;highlight SignColumn guibg=none ctermbg=none&#x27;)</span><br><span class="line">      local keyset = vim.keymap.set</span><br><span class="line">      local opts = &#123;silent = true, noremap = true, expr = true, replace_keycodes = false&#125;</span><br><span class="line">      keyset(&quot;i&quot;, &quot;&lt;C-j&gt;&quot;, [[coc#pum#visible() ? coc#pum#next(1) : &quot;\&lt;C-j&gt;&quot;]], opts)</span><br><span class="line">      keyset(&quot;i&quot;, &quot;&lt;C-k&gt;&quot;, [[coc#pum#visible() ? coc#pum#prev(1) : &quot;\&lt;C-k&gt;&quot;]], opts)</span><br><span class="line">      keyset(&quot;i&quot;, &quot;&lt;TAB&gt;&quot;, [[coc#pum#visible() ? coc#pum#confirm() : &quot;&lt;TAB&gt;&quot;]], opts)</span><br><span class="line">    end,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>还得是<code>folke/tokyonight.nvim</code>.</p>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/04/30/Clash-with-systemd-and-launchd/">Clash with systemd and launchd</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-04-30T03:35:09.000Z" itemprop="datePublished">
+    2023-04-30
+  </time>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h3 id="Clash的配置以及系统服务的编写"><a href="#Clash的配置以及系统服务的编写" class="headerlink" title="Clash的配置以及系统服务的编写"></a>Clash的配置以及系统服务的编写</h3><p>腾讯云的服务器不能稳定连接GitHub, 玩耍不愉快。</p>
+<p>尝试更改<code>/etc/hosts</code>, 无果。</p>
+<p>思来想去决定一步到位，开始探索服务器代理。</p>
+<p>经多次试错、反思，最后我选择了<code>clash-core + systemd</code>的方案。</p>
+<h4 id="在Linux上的部署"><a href="#在Linux上的部署" class="headerlink" title="在Linux上的部署"></a>在Linux上的部署</h4><p>首先在<code>clash</code>的<a target="_blank" rel="noopener" href="https://github.com/Dreamacro/clash/releases">releases页面</a>中下载最新且适配服务器平台的版本。</p>
+<p>注意以下几点（以腾讯云为例）：</p>
+<ul>
+<li><p>由于不能稳定连接GitHub, 可选择先下载到本机，然后上传到服务器。</p>
+</li>
+<li><p>注意文件的格式，<code>.gz</code>文件和<code>.tar.gz</code>文件解压方式不同。</p>
+</li>
+<li><p>为了方便，将解压后的文件重命名成<code>clash</code>.</p>
+</li>
+</ul>
+<p>下载完成后需要给予文件执行权限：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x clash</span><br></pre></td></tr></table></figure>
+
+<p>运行一次<code>clash</code>, 获取域名数据库<code>~/.comfig/clash/Country.mmdb</code>和默认的配置文件<code>~/.config/clash/config.yaml</code>.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./clash</span><br></pre></td></tr></table></figure>
+
+<p>如果获取域名数据库失败，就手动下载。</p>
+<p>记得用自己的<code>config.yaml</code>替换默认的文件。</p>
+<p>创建系统服务<code>clash.service</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/systemd/system/clash.service</span><br></pre></td></tr></table></figure>
+
+<p>以下是<code>clash.service</code>的内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=clash</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=simple</span><br><span class="line">ExecStart=/root/clash -f /root/.config/clash/config.yaml</span><br></pre></td></tr></table></figure>
+
+<p>上述系统服务的<code>ExecStart</code>必须写绝对路径，因为加载时不知道<code>~</code>指的是哪个用户，同时必须指定要应用的<code>.yaml</code>文件。</p>
+<p>刷新载入的服务：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br></pre></td></tr></table></figure>
+
+<p>启动服务：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start clash</span><br></pre></td></tr></table></figure>
+
+<p>打印服务状态：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status clash</span><br></pre></td></tr></table></figure>
+
+<p>如果服务状态超出终端大小，可以：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;$(systemctl status clash)&quot;</span><br></pre></td></tr></table></figure>
+
+<p>在<code>.zshrc</code>中添加如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># proxy aliases</span><br><span class="line">alias on=&#x27;export http_proxy=http://127.0.0.1:7890 &amp;&amp; export https_proxy=http://127.0.0.1:7890&#x27;</span><br><span class="line">alias off=&#x27;unset http_proxy &amp;&amp; unset https_proxy&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>刷新<code>.zshrc</code>文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source .zshrc</span><br></pre></td></tr></table></figure>
+
+<p>启动终端代理：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">on</span><br></pre></td></tr></table></figure>
+
+<p>利用<code>curl</code>命令确认<code>clash</code>是否工作正常：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -i google.com</span><br></pre></td></tr></table></figure>
+
+<p>结束终端代理：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">off</span><br></pre></td></tr></table></figure>
+
+<p>结束服务：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop clash</span><br></pre></td></tr></table></figure>
+
+<h4 id="在macOS上的部署"><a href="#在macOS上的部署" class="headerlink" title="在macOS上的部署"></a>在macOS上的部署</h4><p>作为带有图形界面的操作系统，macOS上成熟的代理工具有很多。</p>
+<p>个人使用时选择了<code>Shadowrocket</code>.</p>
+<p>但是我很好奇macOS上是否有类似于<code>systemd</code>的机制。</p>
+<p>私、気になります！</p>
+<p>macOS使用<code>launchd</code>管理用户和系统的服务，使用方法与<code>systemd</code>似而不同。</p>
+<p>有人总结了<code>launchd</code>的用法，并制作了<a target="_blank" rel="noopener" href="https://www.launchd.info/">简明教程</a>。</p>
+<p>接下来在macOS上简单实现一下上述<code>clash</code>服务。</p>
+<p>首先，获取、重命名并执行<code>clash</code>.</p>
+<p>然后，在指定文件夹下创建服务：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvim ~/Library/LaunchAgents/com.arinsong.clash.plist</span><br></pre></td></tr></table></figure>
+
+<p>以下是用户服务文件的内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;</span><br><span class="line">&lt;plist version=&quot;1.0&quot;&gt;</span><br><span class="line">    &lt;dict&gt;</span><br><span class="line">        &lt;key&gt;Label&lt;/key&gt;</span><br><span class="line">        &lt;string&gt;com.arinsong.clash&lt;/string&gt;</span><br><span class="line">        &lt;key&gt;ProgramArguments&lt;/key&gt;</span><br><span class="line">        &lt;array&gt;</span><br><span class="line">            &lt;string&gt;/Users/arinsong/clash&lt;/string&gt;</span><br><span class="line">            &lt;string&gt;-f&lt;/string&gt;</span><br><span class="line">            &lt;string&gt;/Users/arinsong/.config/clash/config.yaml&lt;/string&gt;</span><br><span class="line">        &lt;/array&gt;</span><br><span class="line">        &lt;key&gt;KeepAlive&lt;/key&gt;</span><br><span class="line">        &lt;true/&gt;</span><br><span class="line">        &lt;key&gt;StandardOutPath&lt;/key&gt;</span><br><span class="line">        &lt;string&gt;/Users/arinsong/log&lt;/string&gt;</span><br><span class="line">        &lt;key&gt;StandardErrorPath&lt;/key&gt;</span><br><span class="line">        &lt;string&gt;/Users/arinsong/error&lt;/string&gt;</span><br><span class="line">    &lt;/dict&gt;</span><br><span class="line">&lt;/plist&gt;</span><br></pre></td></tr></table></figure>
+
+<p>载入服务：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">launchctl load ~/Library/LaunchAgents/com.arinsong.clash.plist</span><br></pre></td></tr></table></figure>
+
+<p>因为服务的<code>KeepAlive</code>属性为<code>true</code>, 所以载入服务后会自动启动。</p>
+<p>查看服务状态：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail ~/log</span><br></pre></td></tr></table></figure>
+
+<p>在<code>.zshrc</code>中添加如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># proxy aliases</span><br><span class="line">alias on=&#x27;export http_proxy=http://127.0.0.1:7890 &amp;&amp; export https_proxy=http://127.0.0.1:7890&#x27;</span><br><span class="line">alias off=&#x27;unset http_proxy &amp;&amp; unset https_proxy&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>刷新<code>.zshrc</code>文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source .zshrc</span><br></pre></td></tr></table></figure>
+
+<p>启动终端代理：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">on</span><br></pre></td></tr></table></figure>
+
+<p>利用<code>curl</code>命令确认<code>clash</code>是否工作正常：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -i twitter.com</span><br></pre></td></tr></table></figure>
+
+<p>结束终端代理：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">off</span><br></pre></td></tr></table></figure>
+
+<p>卸载服务：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">launchctl unload ~/Library/LaunchAgents/com.arinsong.clash.plist</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/04/24/Disable-session-restoration-in-Terminal-app/">Disable session restoration in Terminal.app</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-04-24T14:06:49.000Z" itemprop="datePublished">
+    2023-04-24
+  </time>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h3 id="如何关闭Terminal-app会话自动恢复功能"><a href="#如何关闭Terminal-app会话自动恢复功能" class="headerlink" title="如何关闭Terminal.app会话自动恢复功能"></a>如何关闭Terminal.app会话自动恢复功能</h3><p>原回答：<a target="_blank" rel="noopener" href="https://superuser.com/questions/1610587/disable-zsh-session-folder-completely">StackExchange</a></p>
+<p>The code that sets up macOS’s “Save&#x2F;Restore Shell State” feature for Zsh can be found in <code>/etc/zshrc_Apple_Terminal</code>. As explained in that file, to disable this feature, you need to do the following:</p>
+<ol>
+<li><p>In your home dir, create a plain text file named <code>.zprofile</code>.</p>
+</li>
+<li><p>In this file, add the following:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export SHELL_SESSIONS_DISABLE=1</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="Why-we-need-to-put-the-variable-in-zprofile"><a href="#Why-we-need-to-put-the-variable-in-zprofile" class="headerlink" title="Why we need to put the variable in ~/.zprofile"></a>Why we need to put the variable in <code>~/.zprofile</code></h4><p>When Zsh is started as an <em>interactive</em> shell (login or not), it will source <code>/etc/zshrc</code> and <code>~/.zshrc</code>, in that order. If (and only if) macOS’s <code>/etc/zshrc</code> runs inside Terminal.app, it calls <code>/etc/zshrc_Apple_Terminal</code>, which starts the “Save&#x2F;Restore” feature. This means that we cannot set the variable to disable this feature in <code>~/.zshrc</code>, because that file is read only <em>after</em>the feature has already been started and “restored” your previous session.</p>
+<p>However, whenever you open a new tab or window in Apple’s Terminal.app, it starts a new interactive <em>login</em> shell. When a Zsh login shell starts up, it sources <code>~/.zprofile</code> and does so <em>before</em> sourcing <code>/etc/zshrc</code>.</p>
+<h4 id="Why-we-need-to-export-the-variable"><a href="#Why-we-need-to-export-the-variable" class="headerlink" title="Why we need to export the variable"></a>Why we need to <code>export</code> the variable</h4><p>Interactive shells that are descendants of a login shell are not automatically themselves login shells. Thus, if we would disable the feature in each login shell by only <em>setting</em> the variable, then any subshell started with, say, <code>exec zsh</code>, would still start up with the “Save&#x2F;Restore” feature enabled.</p>
+<p>To fix this, we <code>export</code> the variable. This puts into the <em>environment.</em> Each child process inherits its parent’s environment, with all the variables in it. This way we make sure that the “Save&#x2F;Restore” feature is also disabled in interactive shells that are descendants of the login shell, but not necessarily login shells themselves.</p>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/04/23/Layout-of-icalm/">Layout of icalm</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-04-23T07:20:18.000Z" itemprop="datePublished">
+    2023-04-23
+  </time>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h3 id="简单修改icalm主题的布局"><a href="#简单修改icalm主题的布局" class="headerlink" title="简单修改icalm主题的布局"></a>简单修改icalm主题的布局</h3><p><code>icalm</code>主题代码块的行号列宽度不固定，没有右对齐。</p>
+<p>代码块中最长行越长，代码列和行号列的距离越大。</p>
+<p>有损美观，作简单修改：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># in themes/hexo-theme-icalm/source/css/_partial/layout.styl</span><br><span class="line">...</span><br><span class="line">figure.highlight</span><br><span class="line">    display: block</span><br><span class="line">    // edited by ArinSong</span><br><span class="line">    // width: 92%</span><br><span class="line">    margin: auto</span><br><span class="line">    overflow-x: auto</span><br><span class="line"></span><br><span class="line">// edited by ArinSong</span><br><span class="line">td.gutter</span><br><span class="line">    width: 16px</span><br><span class="line">    padding-right: 16px</span><br><span class="line">    text-align: right</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/04/22/Zsh-configs/">Zsh configs</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-04-22T07:16:22.000Z" itemprop="datePublished">
+    2023-04-22
+  </time>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h3 id="自用zsh配置"><a href="#自用zsh配置" class="headerlink" title="自用zsh配置"></a>自用zsh配置</h3><p><code>oh-my-zsh</code>日渐臃肿，且会生成意义不明的隐藏文件，遂弃用。</p>
+<p>部分我已经离不开的功能特性被写入了自用的<code>.zshrc</code>文件中。</p>
+<p>如下所示：</p>
+<p><code>.zshrc</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"># completion</span><br><span class="line">autoload -U compinit &amp;&amp; compinit</span><br><span class="line">zstyle &#x27;:completion:*&#x27; matcher-list &#x27;m:&#123;a-z&#125;=&#123;A-Z&#125;&#x27;</span><br><span class="line"></span><br><span class="line"># directories</span><br><span class="line">setopt auto_cd</span><br><span class="line"></span><br><span class="line">alias md=&#x27;mkdir -p&#x27;</span><br><span class="line">alias rd=&#x27;rmdir&#x27;</span><br><span class="line"></span><br><span class="line">alias ls=&#x27;ls -G&#x27;</span><br><span class="line"></span><br><span class="line">alias l=&#x27;ls&#x27;</span><br><span class="line">alias la=&#x27;ls -a&#x27;</span><br><span class="line">alias ll=&#x27;ls -lh&#x27;</span><br><span class="line">alias lla=&#x27;ls -lah&#x27;</span><br><span class="line"></span><br><span class="line">d() &#123; cd $1 &amp;&amp; ls &#125;</span><br><span class="line"></span><br><span class="line"># editors</span><br><span class="line">alias v=&#x27;vim&#x27;</span><br><span class="line"></span><br><span class="line"># theme and appearance</span><br><span class="line">autoload -U colors &amp;&amp; colors</span><br><span class="line">setopt prompt_subst</span><br><span class="line">export LSCOLORS=&#x27;Gx&#x27;</span><br><span class="line"></span><br><span class="line"># ys-theme</span><br><span class="line">local exit_code=&quot;%(?,,C:%&#123;$fg[red]%&#125;%?%&#123;$reset_color%&#125;)&quot;</span><br><span class="line"></span><br><span class="line">PROMPT=&quot;</span><br><span class="line">%&#123;$terminfo[bold]$fg[blue]%&#125;#%&#123;$reset_color%&#125; \</span><br><span class="line">%(#,%&#123;$bg[yellow]%&#125;%&#123;$fg[black]%&#125;%n%&#123;$reset_color%&#125;,%&#123;$fg[cyan]%&#125;%n) \</span><br><span class="line">%&#123;$reset_color%&#125;@ \</span><br><span class="line">%&#123;$fg[green]%&#125;%m \</span><br><span class="line">%&#123;$reset_color%&#125;in \</span><br><span class="line">%&#123;$terminfo[bold]$fg[yellow]%&#125;%~%&#123;$reset_color%&#125; \</span><br><span class="line">[%*] $exit_code</span><br><span class="line">%&#123;$terminfo[bold]$fg[red]%&#125;$ %&#123;$reset_color%&#125;&quot;</span><br><span class="line"></span><br><span class="line"># plugins</span><br></pre></td></tr></table></figure>
+
+<p><code>.zshrc</code>可按需扩展，例如添加<code>git prompt</code>.</p>
+<p><code>.zshrc</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"># completion</span><br><span class="line">autoload -U compinit &amp;&amp; compinit</span><br><span class="line">zstyle &#x27;:completion:*&#x27; matcher-list &#x27;m:&#123;a-z&#125;=&#123;A-Z&#125;&#x27;</span><br><span class="line"></span><br><span class="line"># directories</span><br><span class="line">setopt auto_cd</span><br><span class="line"></span><br><span class="line">alias md=&#x27;mkdir -p&#x27;</span><br><span class="line">alias rd=&#x27;rmdir&#x27;</span><br><span class="line"></span><br><span class="line">alias ls=&#x27;ls -G&#x27;</span><br><span class="line"></span><br><span class="line">alias l=&#x27;ls&#x27;</span><br><span class="line">alias la=&#x27;ls -a&#x27;</span><br><span class="line">alias ll=&#x27;ls -lh&#x27;</span><br><span class="line">alias lla=&#x27;ls -lah&#x27;</span><br><span class="line"></span><br><span class="line">d() &#123; cd $1 &amp;&amp; ls &#125;</span><br><span class="line"></span><br><span class="line"># editors</span><br><span class="line">export NEOVIDE_MULTIGRID=TRUE</span><br><span class="line"></span><br><span class="line">alias v=&#x27;vim&#x27;</span><br><span class="line">alias n=&#x27;nvim&#x27;</span><br><span class="line">alias nv=&#x27;neovide&#x27;</span><br><span class="line"></span><br><span class="line"># theme and appearance</span><br><span class="line">autoload -U colors &amp;&amp; colors</span><br><span class="line">setopt prompt_subst</span><br><span class="line">export LSCOLORS=&#x27;Gx&#x27;</span><br><span class="line"></span><br><span class="line"># source git.zsh</span><br><span class="line">source ~/.zsh/git.zsh</span><br><span class="line"></span><br><span class="line"># ys-theme</span><br><span class="line"></span><br><span class="line"># VCS</span><br><span class="line">YS_VCS_PROMPT_PREFIX1=&quot;%&#123;$reset_color%&#125;on%&#123;$fg[blue]%&#125; &quot;</span><br><span class="line">YS_VCS_PROMPT_PREFIX2=&quot;:%&#123;$fg[cyan]%&#125;&quot;</span><br><span class="line">YS_VCS_PROMPT_SUFFIX=&quot;%&#123;$reset_color%&#125;&quot;</span><br><span class="line">YS_VCS_PROMPT_DIRTY=&quot; %&#123;$fg[red]%&#125;x&quot;</span><br><span class="line">YS_VCS_PROMPT_CLEAN=&quot; %&#123;$fg[green]%&#125;o&quot;</span><br><span class="line"></span><br><span class="line"># Git info</span><br><span class="line">local git_info=&#x27;$(git_prompt_info)&#x27;</span><br><span class="line">ZSH_THEME_GIT_PROMPT_PREFIX=&quot;$&#123;YS_VCS_PROMPT_PREFIX1&#125;git$&#123;YS_VCS_PROMPT_PREFIX2&#125;&quot;</span><br><span class="line">ZSH_THEME_GIT_PROMPT_SUFFIX=&quot;$YS_VCS_PROMPT_SUFFIX&quot;</span><br><span class="line">ZSH_THEME_GIT_PROMPT_DIRTY=&quot;$YS_VCS_PROMPT_DIRTY&quot;</span><br><span class="line">ZSH_THEME_GIT_PROMPT_CLEAN=&quot;$YS_VCS_PROMPT_CLEAN&quot;</span><br><span class="line"></span><br><span class="line">local exit_code=&quot;%(?,,C:%&#123;$fg[red]%&#125;%?%&#123;$reset_color%&#125;)&quot;</span><br><span class="line"></span><br><span class="line">PROMPT=&quot;</span><br><span class="line">%&#123;$terminfo[bold]$fg[blue]%&#125;#%&#123;$reset_color%&#125; \</span><br><span class="line">%(#,%&#123;$bg[yellow]%&#125;%&#123;$fg[black]%&#125;%n%&#123;$reset_color%&#125;,%&#123;$fg[cyan]%&#125;%n) \</span><br><span class="line">%&#123;$reset_color%&#125;@ \</span><br><span class="line">%&#123;$fg[green]%&#125;%m \</span><br><span class="line">%&#123;$reset_color%&#125;in \</span><br><span class="line">%&#123;$terminfo[bold]$fg[yellow]%&#125;%~%&#123;$reset_color%&#125; \</span><br><span class="line">$&#123;git_info&#125; \</span><br><span class="line">[%*] $exit_code</span><br><span class="line">%&#123;$terminfo[bold]$fg[red]%&#125;$ %&#123;$reset_color%&#125;&quot;</span><br><span class="line"></span><br><span class="line"># plugins</span><br></pre></td></tr></table></figure>
+
+<p><code>~/.zsh/git.zsh</code>: <a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/lib/git.zsh">raw.githubusercontent.com</a></p>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/01/31/Neovim-configs/">Neovim configs</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-01-31T10:42:54.000Z" itemprop="datePublished">
+    2023-01-31
+  </time>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h3 id="一次简单的nvim配置"><a href="#一次简单的nvim配置" class="headerlink" title="一次简单的nvim配置"></a>一次简单的nvim配置</h3><p>下载<code>nvim</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install nvim</span><br></pre></td></tr></table></figure>
+
+<p>创建用户配置文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/.config/nvim</span><br><span class="line">cd ~/.config/nvim</span><br><span class="line">touch init.lua</span><br></pre></td></tr></table></figure>
+
+<p>相比于<code>vimscript</code>，<code>nvim</code>推荐使用<code>lua</code>编辑配置文件。</p>
+<p><code>nvim</code>内嵌<code>lua5.1</code>，这使得用户的配置可以更加模块化。</p>
+<p>以下是配置完成后的目录结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">nvim</span><br><span class="line">├── init.lua</span><br><span class="line">├── lua</span><br><span class="line">│   ├── core</span><br><span class="line">│   │   ├── keymaps.lua</span><br><span class="line">│   │   └── settings.lua</span><br><span class="line">│   └── plugins</span><br><span class="line">│       ├── coc.lua</span><br><span class="line">│       ├── lualine.lua</span><br><span class="line">│       ├── nvim-tree.lua</span><br><span class="line">│       ├── nvim-treesitter.lua</span><br><span class="line">│       └── plugins.lua</span><br><span class="line">└── plugin</span><br><span class="line">    └── packer_compiled.lua</span><br></pre></td></tr></table></figure>
+
+<p>首先迁移原来的<code>vim</code>配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p lua/core</span><br><span class="line">cd lua/core</span><br><span class="line">nvim settings.lua</span><br></pre></td></tr></table></figure>
+
+<p>这是我原来的<code>vim</code>配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&quot;text settings</span><br><span class="line">set expandtab</span><br><span class="line">set softtabstop=4</span><br><span class="line">set shiftwidth=4</span><br><span class="line">set autoindent</span><br><span class="line">set smartindent</span><br><span class="line"></span><br><span class="line">&quot;syntax settings</span><br><span class="line">set number</span><br><span class="line">syntax on</span><br><span class="line"></span><br><span class="line">&quot;interaction settings</span><br><span class="line">set mouse=a</span><br><span class="line">set clipboard=unnamed</span><br><span class="line"></span><br><span class="line">&quot;searching settings</span><br><span class="line">set ignorecase</span><br><span class="line">set smartcase</span><br><span class="line"></span><br><span class="line">&quot;keymaps</span><br><span class="line">nnoremap &lt;leader&gt;&lt;leader&gt; :terminal&lt;CR&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这是迁移之后的<code>nvim</code>配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">-- text settings</span><br><span class="line">vim.opt.expandtab = true</span><br><span class="line">vim.opt.softtabstop = 4</span><br><span class="line">vim.opt.shiftwidth = 4</span><br><span class="line">vim.opt.autoindent = true</span><br><span class="line">vim.opt.smartindent = true</span><br><span class="line"></span><br><span class="line">-- syntax settings</span><br><span class="line">vim.opt.number = true</span><br><span class="line">vim.cmd(&#x27;syntax on&#x27;)</span><br><span class="line"></span><br><span class="line">-- interaction settings</span><br><span class="line">vim.opt.mouse:append(&#x27;a&#x27;)</span><br><span class="line">vim.opt.clipboard:append(&#x27;unnamed&#x27;)</span><br><span class="line"></span><br><span class="line">-- searching settings</span><br><span class="line">vim.opt.ignorecase = true</span><br><span class="line">vim.opt.smartcase = true</span><br><span class="line"></span><br><span class="line">-- keymaps</span><br><span class="line">vim.keymap.set(&#x27;n&#x27;, &#x27;&lt;leader&gt;&lt;leader&gt;&#x27;, &#x27;:terminal&lt;CR&gt;a&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p>编写好的配置文件还需要在<code>~/.config/nvim/init.lua</code>文件中启用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvim ~/.config/nvim/init.lua</span><br></pre></td></tr></table></figure>
+
+<p><code>init.lua</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">require(&#x27;core.settings&#x27;)</span><br><span class="line">-- require(&#x27;core.keymaps&#x27;)</span><br><span class="line">-- require(&#x27;plugins.plugins&#x27;)</span><br><span class="line">-- require(&#x27;plugins.lualine&#x27;)</span><br><span class="line">-- require(&#x27;plugins.nvim-tree&#x27;)</span><br><span class="line">-- require(&#x27;plugins.nvim-treesitter&#x27;)</span><br><span class="line">-- require(&#x27;plugins.vim-autopairs&#x27;)</span><br><span class="line">-- require(&#x27;plugins.coc&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p>尝试<code>nvim</code>的理由很多，其中一项是方便的插件管理。</p>
+<p>我选择的的插件管理工具是<code>packer</code>.</p>
+<p>首先创建<code>packer</code>的配置文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd ~/.config/nvim/lua</span><br><span class="line">mkdir plugins &amp;&amp; cd plugins</span><br><span class="line">nvim plugins.lua</span><br></pre></td></tr></table></figure>
+
+<p>然后使用<code>packer</code>官方给出的bootstrap安装<code>packer</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">local ensure_packer = function()</span><br><span class="line">  local fn = vim.fn</span><br><span class="line">  local install_path = fn.stdpath(&#x27;data&#x27;)..&#x27;/site/pack/packer/start/packer.nvim&#x27;</span><br><span class="line">  if fn.empty(fn.glob(install_path)) &gt; 0 then</span><br><span class="line">    fn.system(&#123;&#x27;git&#x27;, &#x27;clone&#x27;, &#x27;--depth&#x27;, &#x27;1&#x27;, &#x27;https://github.com/wbthomason/packer.nvim&#x27;, install_path&#125;)</span><br><span class="line">    vim.cmd [[packadd packer.nvim]]</span><br><span class="line">    return true</span><br><span class="line">  end</span><br><span class="line">  return false</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">local packer_bootstrap = ensure_packer()</span><br><span class="line"></span><br><span class="line">vim.cmd([[</span><br><span class="line">  augroup packer_user_config</span><br><span class="line">    autocmd!</span><br><span class="line">    autocmd BufWritePost plugins.lua source &lt;afile&gt; | PackerSync</span><br><span class="line">  augroup end</span><br><span class="line">]])</span><br><span class="line"></span><br><span class="line">return require(&#x27;packer&#x27;).startup(function(use)</span><br><span class="line">  use &#x27;wbthomason/packer.nvim&#x27;</span><br><span class="line"></span><br><span class="line">  use &#123;</span><br><span class="line">    &#x27;nvim-lualine/lualine.nvim&#x27;,</span><br><span class="line">    requires = &#123; &#x27;kyazdani42/nvim-web-devicons&#x27;, opt = true &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  use &#123;</span><br><span class="line">    &#x27;nvim-tree/nvim-tree.lua&#x27;,</span><br><span class="line">    requires = &#123;</span><br><span class="line">      &#x27;nvim-tree/nvim-web-devicons&#x27;, -- optional, for file icons</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  use &#123;</span><br><span class="line">    &#x27;nvim-treesitter/nvim-treesitter&#x27;,</span><br><span class="line">    run = &#x27;:TSUpdate&#x27;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  use &#x27;windwp/nvim-autopairs&#x27;</span><br><span class="line"></span><br><span class="line">  use &#123;&#x27;neoclide/coc.nvim&#x27;, branch = &#x27;release&#x27;&#125;</span><br><span class="line"></span><br><span class="line">  if packer_bootstrap then</span><br><span class="line">    require(&#x27;packer&#x27;).sync()</span><br><span class="line">  end</span><br><span class="line">end)</span><br></pre></td></tr></table></figure>
+
+<p>我在<code>return</code>函数之前添加了一段代码，其作用是使得用户每次更新并保存这个文件时自动运行<code>:PackerSync</code>命令。</p>
+<p>要执行上述动作，首先要在<code>~/.config/nvim/init.lua</code>文件中启用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvim ~/.config/nvim/init.lua</span><br></pre></td></tr></table></figure>
+
+<p><code>init.lua</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">require(&#x27;core.settings&#x27;)</span><br><span class="line">-- require(&#x27;core.keymaps&#x27;)</span><br><span class="line">require(&#x27;plugins.plugins&#x27;)</span><br><span class="line">-- require(&#x27;plugins.lualine&#x27;)</span><br><span class="line">-- require(&#x27;plugins.nvim-tree&#x27;)</span><br><span class="line">-- require(&#x27;plugins.nvim-treesitter&#x27;)</span><br><span class="line">-- require(&#x27;plugins.vim-autopairs&#x27;)</span><br><span class="line">-- require(&#x27;plugins.coc&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p>然后使用nvim打开该配置文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvim ~/.config/nvim/lua/plugins/plugins.lua</span><br></pre></td></tr></table></figure>
+
+<p>进入命令模式，执行写入命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:w</span><br></pre></td></tr></table></figure>
+
+<p>大部分插件的安装很简单，找到所需插件的github主页，复制相关代码即可。</p>
+<p><code>coc</code>插件还需要提前安装<a target="_blank" rel="noopener" href="https://github.com/neoclide/coc.nvim/wiki/Install-coc.nvim">相关依赖</a>。</p>
+<p>以上代码已经是配置完成后的代码了。</p>
+<p>除了<code>packer</code>本身，我还添加了以下几款插件：</p>
+<ul>
+<li><p><code>lualine</code>: 状态栏</p>
+</li>
+<li><p><code>nvim-tree</code>: 文档树</p>
+</li>
+<li><p><code>nvim-treesitter</code>: 代码高亮</p>
+</li>
+<li><p><code>nvim-autopairs</code>: 括号配对</p>
+</li>
+<li><p><code>coc</code>: LSP</p>
+</li>
+</ul>
+<p>插件添加后还需要配置。</p>
+<p>通常的配置方法是在<code>plugins</code>文件夹中创建相应的<code>.lua</code>文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ~/.config/nvim/lua/plugins</span><br></pre></td></tr></table></figure>
+
+<p><code>lualine.lua</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">require(&#x27;lualine&#x27;).setup &#123;</span><br><span class="line">  options = &#123;</span><br><span class="line">    theme = &#x27;auto&#x27;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>nvim-tree.lua</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim.g.loaded_netrw = 1</span><br><span class="line">vim.g.loaded_netrwPlugin = 1</span><br><span class="line"></span><br><span class="line">require(&quot;nvim-tree&quot;).setup()</span><br></pre></td></tr></table></figure>
+
+<p><code>nvim-treesitter.lua</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">require&#x27;nvim-treesitter.configs&#x27;.setup &#123;</span><br><span class="line">  auto_install = true,</span><br><span class="line">  highlight = &#123;</span><br><span class="line">    enable = true,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>vim-autopairs.lua</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">require(&#x27;nvim-autopairs&#x27;).setup()</span><br></pre></td></tr></table></figure>
+
+<p><code>coc.lua</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">vim.opt.updatetime = 300</span><br><span class="line">vim.opt.signcolumn = &quot;yes&quot;</span><br><span class="line">vim.cmd(&#x27;highlight SignColumn guibg=none ctermbg=none&#x27;)</span><br><span class="line"></span><br><span class="line">local keyset = vim.keymap.set</span><br><span class="line">local opts = &#123;silent = true, noremap = true, expr = true, replace_keycodes = false&#125;</span><br><span class="line"></span><br><span class="line">keyset(&quot;i&quot;, &quot;&lt;C-j&gt;&quot;, [[coc#pum#visible() ? coc#pum#next(1) : &quot;\&lt;C-j&gt;&quot;]], opts)</span><br><span class="line">keyset(&quot;i&quot;, &quot;&lt;C-k&gt;&quot;, [[coc#pum#visible() ? coc#pum#prev(1) : &quot;\&lt;C-k&gt;&quot;]], opts)</span><br><span class="line">keyset(&quot;i&quot;, &quot;&lt;TAB&gt;&quot;, [[coc#pum#visible() ? coc#pum#confirm() : &quot;&lt;TAB&gt;&quot;]], opts)</span><br></pre></td></tr></table></figure>
+
+<p>为了方便地使用文档树，还需要进行改键：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvim ~/.config/nvim/lua/core/keymaps.lua</span><br></pre></td></tr></table></figure>
+
+<p>我将<code>t</code>键映射为开关文档树并定位到当前文件。</p>
+<p>以下是<code>keymaps.lua</code>中的配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-- nvim-tree</span><br><span class="line">vim.keymap.set(&#x27;n&#x27;, &#x27;t&#x27;, &#x27;:NvimTreeFindFileToggle&lt;CR&gt;&#x27;)</span><br><span class="line">vim.keymap.set(&#x27;n&#x27;, &#x27;T&#x27;, &#x27;:NvimTreeFindFileToggle&lt;CR&gt;&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p>编写好所有的配置文件后，还需要编辑<code>~/.config/nvim/init.lua</code>文件来启用这些配置文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvim ~/.config/nvim/init.lua</span><br></pre></td></tr></table></figure>
+
+<p><code>init.lua</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">require(&#x27;core.settings&#x27;)</span><br><span class="line">require(&#x27;core.keymaps&#x27;)</span><br><span class="line">require(&#x27;plugins.plugins&#x27;)</span><br><span class="line">require(&#x27;plugins.lualine&#x27;)</span><br><span class="line">require(&#x27;plugins.nvim-tree&#x27;)</span><br><span class="line">require(&#x27;plugins.nvim-treesitter&#x27;)</span><br><span class="line">require(&#x27;plugins.vim-autopairs&#x27;)</span><br><span class="line">require(&#x27;plugins.coc&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p><code>nvim</code>的lsp配置步骤繁琐，因此我选择了经典的<code>coc</code>来进行代码检查与补全。</p>
+<p><code>coc</code>是可以安装扩展的插件，不同的语言支持需要安装不同的扩展。</p>
+<p>使用<code>:CocInstall</code>命令来安装需要的扩展。</p>
+<p>以下是我安装的扩展：</p>
+<ul>
+<li><p><code>coc-marketplace</code>：一站式管理 &amp; 查询<code>coc</code>扩展。</p>
+</li>
+<li><p><code>coc-clangd</code>：c&#x2F;c++语言扩展。</p>
+</li>
+<li><p><code>coc-pyright</code>：python语言扩展。</p>
+</li>
+<li><p><code>coc-sh</code>：bash语言扩展。</p>
+</li>
+<li><p><code>coc-lua</code>：lua语言扩展。</p>
+</li>
+</ul>
+<p>使用<code>:CocList marketplace</code>命令来检索可用扩展或查看已安装的扩展。</p>
+<p><code>nvim</code>可扩展的地方还有很多，技术所限，我选择到此为止。</p>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/01/29/Mac-configs/">Mac configs</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-01-29T03:22:24.000Z" itemprop="datePublished">
+    2023-01-29
+  </time>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h3 id="Basic-Mac-configurations"><a href="#Basic-Mac-configurations" class="headerlink" title="Basic Mac configurations"></a>Basic Mac configurations</h3><p>首先，在美区App store下载<code>Shadowrocket</code>并完成配置。</p>
+<p>然后，打开终端，输入以下命令下载<code>command line tools</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcode-select --install</span><br></pre></td></tr></table></figure>
+
+<p>在等待下载完成时可以调整Mac的系统设置，以下是最基础的项目：</p>
+<p>通用：</p>
+<ul>
+<li><p>本机名称：<code>Camellia</code></p>
+</li>
+<li><p>iMessage转发：<code>iPhone Settings → Messages → Text Message Forwarding </code></p>
+</li>
+</ul>
+<p>键盘：</p>
+<ul>
+<li><p>键盘重复率：<code>快</code></p>
+</li>
+<li><p>重复前延迟：<code>短</code></p>
+</li>
+<li><p>按下地球仪键时：<code>不执行任何操作</code></p>
+</li>
+<li><p>自定修饰键：<code>Capslock to Esc</code></p>
+</li>
+<li><p>功能键：<code>将F1、F2等键用作标准功能键：启用</code></p>
+</li>
+</ul>
+<p>触控板：</p>
+<ul>
+<li><p>触控板点按：<code>弱</code></p>
+</li>
+<li><p>轻点来点按：<code>启用</code></p>
+</li>
+<li><p>使用触控板进行拖移：<code>启用</code></p>
+</li>
+<li><p>拖移样式：<code>三指拖移</code></p>
+</li>
+</ul>
+<p>访达：</p>
+<ul>
+<li><p>显示选项：<code>访达的最顶层 → 分组方式：无，排序方式：名称</code></p>
+</li>
+<li><p>显示视图：<code>为分栏</code></p>
+</li>
+</ul>
+<p>方便起见，先配置好<code>.vimrc</code>文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd &amp;&amp; vim .vimrc</span><br></pre></td></tr></table></figure>
+
+<p><code>.vimrc</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&quot;text settings</span><br><span class="line">set expandtab</span><br><span class="line">set softtabstop=4</span><br><span class="line">set shiftwidth=4</span><br><span class="line">set autoindent</span><br><span class="line">set smartindent</span><br><span class="line"></span><br><span class="line">&quot;syntax settings</span><br><span class="line">set number</span><br><span class="line">syntax on</span><br><span class="line"></span><br><span class="line">&quot;interaction settings</span><br><span class="line">set mouse=a</span><br><span class="line">set clipboard=unnamed</span><br><span class="line"></span><br><span class="line">&quot;searching settings</span><br><span class="line">set ignorecase</span><br><span class="line">set smartcase</span><br><span class="line"></span><br><span class="line">&quot;keymaps</span><br><span class="line">nnoremap &lt;leader&gt;&lt;leader&gt; :terminal&lt;CR&gt;</span><br></pre></td></tr></table></figure>
+
+<p>以上步骤完成之后，还需要下载<a target="_blank" rel="noopener" href="https://brew.sh/"><code>Homebrew</code></a>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;</span><br></pre></td></tr></table></figure>
+
+<p>安装必要的软件包：</p>
+<p><code>iterm2</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install --cask iterm2</span><br></pre></td></tr></table></figure>
+
+<p><code>tree</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install tree</span><br></pre></td></tr></table></figure>
+
+<p><code>hexo</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install hexo</span><br></pre></td></tr></table></figure>
+
+<p>紧接着对终端进行配置与美化：<del><code>iTerm2 + oh-my-zsh + ys</code></del></p>
+<p><code>oh-my-zsh</code>已弃用，改为自用的<a target="_blank" rel="noopener" href="https://arinsong2001.github.io/2023/04/22/Zsh-configs/"><code>.zshrc</code></a>文件。</p>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/01/28/First-post-test/">First post &amp; test</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-01-28T07:10:13.000Z" itemprop="datePublished">
+    2023-01-28
+  </time>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h3 id="First-post-amp-test"><a href="#First-post-amp-test" class="headerlink" title="First post &amp; test"></a>First post &amp; test</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;stack&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">#include &lt;algorithm&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">struct TreeNode &#123;</span><br><span class="line">    int val;</span><br><span class="line">    TreeNode *left;</span><br><span class="line">    TreeNode *right;</span><br><span class="line">    TreeNode(int val = 0, TreeNode *left = nullptr, TreeNode *right = nullptr) : val(val), left(left), right(right) &#123;&#125;</span><br><span class="line">    ~TreeNode() &#123;</span><br><span class="line">        val = 0;</span><br><span class="line">        if (left) &#123;</span><br><span class="line">            delete left;</span><br><span class="line">            left = nullptr;</span><br><span class="line">        &#125;</span><br><span class="line">        if (right) &#123;</span><br><span class="line">            delete right;</span><br><span class="line">            right = nullptr;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">void preorderTraverse(TreeNode *root);</span><br><span class="line">void inorderTraverse(TreeNode *root);</span><br><span class="line">void postorderTraverse(TreeNode *root);</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">    TreeNode *root = new TreeNode(1, new TreeNode(2), new TreeNode(3, new TreeNode(4), new TreeNode(5)));</span><br><span class="line">    preorderTraverse(root);</span><br><span class="line">    inorderTraverse(root);</span><br><span class="line">    postorderTraverse(root);</span><br><span class="line">    delete root;</span><br><span class="line">    root = nullptr;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void preorderTraverse(TreeNode *root) &#123;</span><br><span class="line">    stack&lt;TreeNode *&gt; stk;</span><br><span class="line">    vector&lt;int&gt; ans;</span><br><span class="line">    TreeNode *tmp;</span><br><span class="line">    stk.push(root);</span><br><span class="line">    while (!stk.empty()) &#123;</span><br><span class="line">        tmp = stk.top();</span><br><span class="line">        stk.pop();</span><br><span class="line">        ans.push_back(tmp-&gt;val);</span><br><span class="line">        if (tmp-&gt;right) &#123;</span><br><span class="line">            stk.push(tmp-&gt;right);</span><br><span class="line">        &#125;</span><br><span class="line">        if (tmp-&gt;left) &#123;</span><br><span class="line">            stk.push(tmp-&gt;left);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    for (int i = 0; i &lt; ans.size(); i++) &#123;</span><br><span class="line">        cout &lt;&lt; ans[i] &lt;&lt; &quot; &quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void inorderTraverse(TreeNode *root) &#123;</span><br><span class="line">    stack&lt;TreeNode *&gt; stk;</span><br><span class="line">    vector&lt;int&gt; ans;</span><br><span class="line">    TreeNode *tmp = root;</span><br><span class="line">    while (tmp || !stk.empty()) &#123;</span><br><span class="line">        if (tmp) &#123;</span><br><span class="line">            stk.push(tmp);</span><br><span class="line">            tmp = tmp-&gt;left;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            tmp = stk.top();</span><br><span class="line">            stk.pop();</span><br><span class="line">            ans.push_back(tmp-&gt;val);</span><br><span class="line">            tmp = tmp-&gt;right;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    for (int i = 0; i &lt; ans.size(); i++) &#123;</span><br><span class="line">        cout &lt;&lt; ans[i] &lt;&lt; &quot; &quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void postorderTraverse(TreeNode *root) &#123;</span><br><span class="line">    stack&lt;TreeNode *&gt; stk;</span><br><span class="line">    vector&lt;int&gt; ans;</span><br><span class="line">    TreeNode *tmp;</span><br><span class="line">    stk.push(root);</span><br><span class="line">    while (!stk.empty()) &#123;</span><br><span class="line">        tmp = stk.top();</span><br><span class="line">        stk.pop();</span><br><span class="line">        ans.push_back(tmp-&gt;val);</span><br><span class="line">        if (tmp-&gt;left) &#123;</span><br><span class="line">            stk.push(tmp-&gt;left);</span><br><span class="line">        &#125;</span><br><span class="line">        if (tmp-&gt;right) &#123;</span><br><span class="line">            stk.push(tmp-&gt;right);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    reverse(ans.begin(), ans.end());</span><br><span class="line">    for (int i = 0; i &lt; ans.size(); i++) &#123;</span><br><span class="line">        cout &lt;&lt; ans[i] &lt;&lt; &quot; &quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+</article>
+
+    </li>
+  
+</ul>
+
+
+            <footer>
+    <div>© 2023 - 恋のあめ🍬 </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>
