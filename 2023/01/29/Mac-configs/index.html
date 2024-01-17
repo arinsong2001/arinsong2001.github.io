@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Mac configs | 恋のあめ🍬</title>
+  
+    <link rel="icon" href="/assets/tools.ico">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/twilight.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/kanae.jpeg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>恋のあめ🍬</div>
+        
+            <div>次の年も、また見れるかな？</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a target="_blank" rel="noopener" href="https://github.com/arinsong2001">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a target="_blank" rel="noopener" href="https://twitter.com/arinsong2001">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>Mac configs</h1>
+    </header>
+
+    <section>
+      <h3 id="Basic-Mac-configurations"><a href="#Basic-Mac-configurations" class="headerlink" title="Basic Mac configurations"></a>Basic Mac configurations</h3><p>首先，在美区App store下载<code>Shadowrocket</code>并完成配置。</p>
+<p>然后，打开终端，输入以下命令下载<code>command line tools</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcode-select --install</span><br></pre></td></tr></table></figure>
+
+<p>在等待下载完成时可以调整Mac的系统设置，以下是最基础的项目：</p>
+<p>通用：</p>
+<ul>
+<li><p>本机名称：<code>Camellia</code></p>
+</li>
+<li><p>iMessage转发：<code>iPhone Settings → Messages → Text Message Forwarding </code></p>
+</li>
+</ul>
+<p>键盘：</p>
+<ul>
+<li><p>键盘重复率：<code>快</code></p>
+</li>
+<li><p>重复前延迟：<code>短</code></p>
+</li>
+<li><p>按下地球仪键时：<code>不执行任何操作</code></p>
+</li>
+<li><p>功能键：<code>将F1、F2等键用作标准功能键：启用</code></p>
+</li>
+<li><p>修饰键：<code>Capslock to Control</code></p>
+</li>
+</ul>
+<p>触控板：</p>
+<ul>
+<li><p>触控板点按：<code>弱</code></p>
+</li>
+<li><p>轻点来点按：<code>启用</code></p>
+</li>
+<li><p>使用触控板进行拖移：<code>启用</code></p>
+</li>
+<li><p>拖移样式：<code>三指拖移</code></p>
+</li>
+</ul>
+<p>访达：</p>
+<ul>
+<li><p>显示选项：<code>访达的最顶层 → 分组方式：无，排序方式：名称，用作默认</code></p>
+</li>
+<li><p>显示视图：<code>为分栏</code></p>
+</li>
+</ul>
+<p>配置<code>.vimrc</code>文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd &amp;&amp; vim .vimrc</span><br></pre></td></tr></table></figure>
+
+<p><code>.vimrc</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&quot;text settings</span><br><span class="line">set expandtab</span><br><span class="line">set softtabstop=4</span><br><span class="line">set shiftwidth=4</span><br><span class="line">set autoindent</span><br><span class="line">set smartindent</span><br><span class="line"></span><br><span class="line">&quot;syntax settings</span><br><span class="line">set number</span><br><span class="line">syntax on</span><br><span class="line"></span><br><span class="line">&quot;interaction settings</span><br><span class="line">set mouse=a</span><br><span class="line">set clipboard=unnamed</span><br><span class="line"></span><br><span class="line">&quot;searching settings</span><br><span class="line">set ignorecase</span><br><span class="line">set smartcase</span><br><span class="line"></span><br><span class="line">&quot;keymaps</span><br><span class="line">nnoremap &lt;leader&gt;&lt;leader&gt; :terminal&lt;CR&gt;</span><br></pre></td></tr></table></figure>
+
+<p>以上步骤完成之后，还需要下载<a target="_blank" rel="noopener" href="https://brew.sh/"><code>Homebrew</code></a>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;</span><br></pre></td></tr></table></figure>
+
+<p>安装必要的软件包：</p>
+<p><code>iterm2</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install --cask iterm2</span><br></pre></td></tr></table></figure>
+
+<p><code>tree</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install tree</span><br></pre></td></tr></table></figure>
+
+<p><code>hexo</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install hexo</span><br></pre></td></tr></table></figure>
+
+<p>紧接着对终端进行配置与美化：<del><code>iTerm2 + oh-my-zsh + ys</code></del></p>
+<p><code>oh-my-zsh</code>已弃用，改为自用的<a target="_blank" rel="noopener" href="https://arinsong2001.github.io/2023/04/22/Zsh-configs/"><code>.zshrc</code></a>文件。</p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-01-29T03:22:24.000Z" itemprop="datePublished">
+              2023-01-29
+            </time>
+          </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2024 - 恋のあめ🍬 </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>
