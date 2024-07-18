@@ -77,7 +77,7 @@
 
 <p>使用<code>command &gt; /dev/null 2&gt;&amp;1</code>可以忽略所有输出。</p>
 <p>或者使用以下写法：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">brew install neovim</span><br><span class="line">while (($?)); do</span><br><span class="line">  echo &quot;error, retrying&quot;</span><br><span class="line">  r</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">brew install neovim</span><br><span class="line">while (($?)); do</span><br><span class="line">  echo &quot;error, retrying&quot;</span><br><span class="line">  brew install neovim</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
 
 <p><code>while</code>， <code>if</code>这类语句只接收命令的返回值，收到0则执行，收到非0则跳出。</p>
 <p><code>(())</code>中的表达式为0则返回1，为非0则返回0🍬(●°u°●)​ 」</p>
