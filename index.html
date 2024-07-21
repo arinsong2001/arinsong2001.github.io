@@ -96,6 +96,12 @@
 
 <p><code>while</code>， <code>if</code>这类语句只接收命令的返回值，收到0则执行，收到非0则跳出。</p>
 <p><code>(())</code>中的表达式为0则返回1，为非0则返回0🍬(●°u°●)​ 」</p>
+<p>更新，新学的“持续运行命令直至执行成功”：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function repeat() &#123;</span><br><span class="line">  while true; do</span><br><span class="line">    $@ &amp;&amp; return</span><br><span class="line">  done</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后直接<code>repeat brew install neovim</code>就行。</p>
+<p>另，<code>true</code>不是shell内置命令，开销较大，改用空语句<code>:</code>更优：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">funcion repeat() &#123; wihle :; do $@ &amp;&amp; return; done &#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
