@@ -103,9 +103,11 @@
 <p>另，<code>true</code>不是shell内置命令，开销较大，改用空语句<code>:</code>更优：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">repeat() &#123; wihle :; do $@ &amp;&amp; return; done &#125;</span><br></pre></td></tr></table></figure>
 
-<p>在<code>zsh</code>中上述定义会报错，因为<code>zsh</code>内置了<code>repeat</code>命令，用法：<code>repeat n command</code>, <code>n</code>为要执行的次数。</p>
-<p>函数定义前加上关键字<code>function</code>可以成功定义，但是不会覆盖内置的<code>repeat</code>命令。</p>
-<p>不使用<code>function</code>可以减少自己定义的函数被shell内置命令失效的可能。</p>
+<p>在<code>zsh</code>中上述定义会报错，因为<code>repeat</code>是<code>zsh</code>的保留字。</p>
+<p><code>repeat</code>也是一个内置命令，用法：<code>repeat n command</code>, <code>n</code>为要执行的次数。</p>
+<p>自定义函数可以覆盖shell的同名内置命令，但不会覆盖保留字。</p>
+<p>本例，函数定义前加上关键字<code>function</code>就不会报错，但仍不会生效。</p>
+<p>不使用<code>function</code>可以减少自己定义的函数与shell保留字重名的可能。</p>
 
       
     </div>
