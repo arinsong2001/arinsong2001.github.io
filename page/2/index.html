@@ -298,10 +298,16 @@
         <h3 id="如何关闭Terminal-app会话自动恢复功能"><a href="#如何关闭Terminal-app会话自动恢复功能" class="headerlink" title="如何关闭Terminal.app会话自动恢复功能"></a>如何关闭Terminal.app会话自动恢复功能</h3><p>原回答：<a target="_blank" rel="noopener" href="https://superuser.com/questions/1610587/disable-zsh-session-folder-completely">StackExchange</a></p>
 <p>The code that sets up macOS’s “Save&#x2F;Restore Shell State” feature for Zsh can be found in <code>/etc/zshrc_Apple_Terminal</code>. As explained in that file, to disable this feature, you need to do the following:</p>
 <ol>
-<li><p>In your home dir, create a plain text file named <code>.zprofile</code>.（按<code>/etc/zshrc_Apple_Terminal</code>提示，改为使用<code>~/.zshenv</code>）</p>
+<li><p>In your home dir, create a plain text file named <code>.zprofile</code>.</p>
+<ul>
+<li>按<code>/etc/zshrc_Apple_Terminal</code>提示，改为使用<code>~/.zshenv</code>.</li>
+</ul>
 </li>
-<li><p>In this file, add the following:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export SHELL_SESSIONS_DISABLE=1</span><br></pre></td></tr></table></figure></li>
+<li><p>In this file, add the following: <code>export SHELL_SESSIONS_DISABLE=1</code></p>
+<ul>
+<li>子<code>shell</code>也会读取<code>~/.zshenv</code>, 不需要再<code>export</code>, 故改为：<code>SHELL_SESSIONS_DISABLE=1</code>.</li>
+</ul>
+</li>
 </ol>
 <h4 id="Why-we-need-to-put-the-variable-in-zprofile"><a href="#Why-we-need-to-put-the-variable-in-zprofile" class="headerlink" title="Why we need to put the variable in ~/.zprofile"></a>Why we need to put the variable in <code>~/.zprofile</code></h4><p>When Zsh is started as an <em>interactive</em> shell (login or not), it will source <code>/etc/zshrc</code> and <code>~/.zshrc</code>, in that order. If (and only if) macOS’s <code>/etc/zshrc</code> runs inside Terminal.app, it calls <code>/etc/zshrc_Apple_Terminal</code>, which starts the “Save&#x2F;Restore” feature. This means that we cannot set the variable to disable this feature in <code>~/.zshrc</code>, because that file is read only <em>after</em> the feature has already been started and “restored” your previous session.</p>
 <p>However, whenever you open a new tab or window in Apple’s Terminal.app, it starts a new interactive <em>login</em> shell. When a Zsh login shell starts up, it sources <code>~/.zprofile</code> and does so <em>before</em> sourcing <code>/etc/zshrc</code>.</p>
