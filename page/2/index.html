@@ -70,6 +70,56 @@
     <header class="title">
       
         <h1>
+          <a href="/2024/07/10/Bash-status-code/">Bash status code</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2024-07-10T10:00:08.000Z" itemprop="datePublished">
+    2024-07-10
+  </time>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h3 id="How-to-get-a-bash-function’s-status-code"><a href="#How-to-get-a-bash-function’s-status-code" class="headerlink" title="How to get a bash function’s status code?"></a>How to get a bash function’s status code?</h3><p>可以用以下方式获取一个bash函数的状态码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(my_function; echo $?)</span><br></pre></td></tr></table></figure>
+
+<p>示例：重复使用brew下载neovim，直至成功下载。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">while (($(brew install neovim &gt; /dev/null 2&gt;&amp;1; echo $?))); do</span><br><span class="line">  echo &quot;error, retrying&quot;</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>command &gt; /dev/null 2&gt;&amp;1</code>可以忽略所有输出。</p>
+<p>或者使用以下写法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">brew install neovim</span><br><span class="line">while (($?)); do</span><br><span class="line">  echo &quot;error, retrying&quot;</span><br><span class="line">  brew install neovim</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<p><code>while</code>， <code>if</code>这类语句只接收命令的返回值，收到0则执行，收到非0则跳出。</p>
+<p><code>(())</code>中的表达式为0则返回1，为非0则返回0🍬(●°u°●)​ 」</p>
+<p>更新，新学的“持续运行命令直至执行成功”：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">repeat() &#123;</span><br><span class="line">  while true; do</span><br><span class="line">    $@ &amp;&amp; return</span><br><span class="line">  done</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后直接<code>repeat brew install neovim</code>就行。</p>
+<p>另，<code>true</code>不是shell内置命令，开销较大，改用空语句<code>:</code>更优：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">repeat() &#123; wihle :; do $@ &amp;&amp; return; done &#125;</span><br></pre></td></tr></table></figure>
+
+<p>在<code>zsh</code>中上述定义会报错，因为<code>repeat</code>是<code>zsh</code>的保留字。</p>
+<p><code>repeat</code>也是一个内置命令，用法：<code>repeat n command</code>, <code>n</code>为要执行的次数。</p>
+<p>自定义函数可以覆盖shell的同名内置命令，但不会覆盖保留字。</p>
+<p>本例，函数定义前加上关键字<code>function</code>就不会报错，但仍不会生效。</p>
+<p>不使用<code>function</code>可以减少自己定义的函数与shell保留字重名的可能。</p>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
           <a href="/2024/02/18/Monaco-nerd-font/">Monaco nerd font</a>
         </h1>
       
@@ -313,36 +363,6 @@
 <p>However, whenever you open a new tab or window in Apple’s Terminal.app, it starts a new interactive <em>login</em> shell. When a Zsh login shell starts up, it sources <code>~/.zprofile</code> and does so <em>before</em> sourcing <code>/etc/zshrc</code>.</p>
 <h4 id="Why-we-need-to-export-the-variable"><a href="#Why-we-need-to-export-the-variable" class="headerlink" title="Why we need to export the variable"></a>Why we need to <code>export</code> the variable</h4><p>Interactive shells that are descendants of a login shell are not automatically themselves login shells. Thus, if we would disable the feature in each login shell by only <em>setting</em> the variable, then any subshell started with, say, <code>exec zsh</code>, would still start up with the “Save&#x2F;Restore” feature enabled.</p>
 <p>To fix this, we <code>export</code> the variable. This puts into the <em>environment.</em> Each child process inherits its parent’s environment, with all the variables in it. This way we make sure that the “Save&#x2F;Restore” feature is also disabled in interactive shells that are descendants of the login shell, but not necessarily login shells themselves.</p>
-
-      
-    </div>
-</article>
-
-    </li>
-  
-    <li>
-      <article class='ListView'>
-    <header class="title">
-      
-        <h1>
-          <a href="/2023/04/23/Layout-of-icalm/">Layout of icalm</a>
-        </h1>
-      
-      <div class='ListMeta'>
-  <time datetime="2023-04-23T07:20:18.000Z" itemprop="datePublished">
-    2023-04-23
-  </time>
-  
-  
-</div>
-
-    </header>
-    <div>
-      
-        <h3 id="简单修改icalm主题的布局"><a href="#简单修改icalm主题的布局" class="headerlink" title="简单修改icalm主题的布局"></a>简单修改icalm主题的布局</h3><p><code>icalm</code>主题代码块的行号列宽度不固定，没有右对齐。</p>
-<p>代码块中最长行越长，代码列和行号列的距离越大。</p>
-<p>有损美观，作简单修改：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># in themes/hexo-theme-icalm/source/css/_partial/layout.styl</span><br><span class="line">...</span><br><span class="line">figure.highlight</span><br><span class="line">    display: block</span><br><span class="line">    // edited by ArinSong</span><br><span class="line">    // width: 92%</span><br><span class="line">    margin: auto</span><br><span class="line">    overflow-x: auto</span><br><span class="line"></span><br><span class="line">// edited by ArinSong</span><br><span class="line">td.gutter</span><br><span class="line">    width: 16px</span><br><span class="line">    padding-right: 16px</span><br><span class="line">    text-align: right</span><br><span class="line"></span><br><span class="line">// edited by ArinSong</span><br><span class="line">td.code</span><br><span class="line">    width: calc(100% - 40px)</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 
       
     </div>

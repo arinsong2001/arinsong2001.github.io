@@ -70,6 +70,36 @@
     <header class="title">
       
         <h1>
+          <a href="/2023/04/23/Layout-of-icalm/">Layout of icalm</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-04-23T07:20:18.000Z" itemprop="datePublished">
+    2023-04-23
+  </time>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h3 id="简单修改icalm主题的布局"><a href="#简单修改icalm主题的布局" class="headerlink" title="简单修改icalm主题的布局"></a>简单修改icalm主题的布局</h3><p><code>icalm</code>主题代码块的行号列宽度不固定，没有右对齐。</p>
+<p>代码块中最长行越长，代码列和行号列的距离越大。</p>
+<p>有损美观，作简单修改：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># in themes/hexo-theme-icalm/source/css/_partial/layout.styl</span><br><span class="line">...</span><br><span class="line">figure.highlight</span><br><span class="line">    display: block</span><br><span class="line">    // edited by ArinSong</span><br><span class="line">    // width: 92%</span><br><span class="line">    margin: auto</span><br><span class="line">    overflow-x: auto</span><br><span class="line"></span><br><span class="line">// edited by ArinSong</span><br><span class="line">td.gutter</span><br><span class="line">    width: 16px</span><br><span class="line">    padding-right: 16px</span><br><span class="line">    text-align: right</span><br><span class="line"></span><br><span class="line">// edited by ArinSong</span><br><span class="line">td.code</span><br><span class="line">    width: calc(100% - 40px)</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
           <a href="/2023/04/22/Zsh-configs/">Zsh configs</a>
         </h1>
       
