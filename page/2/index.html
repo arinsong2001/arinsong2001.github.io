@@ -70,6 +70,65 @@
     <header class="title">
       
         <h1>
+          <a href="/2024/07/29/Shell-parameter-expansion/">Shell parameter expansion</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2024-07-29T07:42:06.000Z" itemprop="datePublished">
+    2024-07-29
+  </time>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h3 id="Shell参数扩展的用法"><a href="#Shell参数扩展的用法" class="headerlink" title="Shell参数扩展的用法"></a>Shell参数扩展的用法</h3><h4 id="初见"><a href="#初见" class="headerlink" title="初见"></a>初见</h4><p>最开始遇到的是一个将新的路径添加到环境变量的起始部分的函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">prepend() &#123; [[ -d &quot;$2&quot; ]] &amp;&amp; eval $1=\&quot;$2\$\&#123;$1:+&#x27;:&#x27;\$$1\&#125;\&quot; &amp;&amp; export $1 &#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>$1</code>一般为环境变量，即<code>PATH</code>, <code>$2</code>是要添加的路径，例如<code>/usr/bin</code>. 如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">prepend PATH /usr/bin</span><br></pre></td></tr></table></figure>
+
+<p>注意<code>eval $1=\&quot;$2\$\&#123;$1:+&#39;:&#39;\$$1\&#125;\&quot;</code>这部分，通常使用<code>eval parameter=&quot;expression&quot;</code>这种写法。</p>
+<p>但是<code>expression</code>内部已经有了双引号（且必须用双引号），所以只能使用这种写法。</p>
+<p>年轻人遇到的第一个参数扩展：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;parameter:+expression&#125; # parameter存在且非空时取expression的值</span><br></pre></td></tr></table></figure>
+
+<h4 id="返回脚本的绝对路径"><a href="#返回脚本的绝对路径" class="headerlink" title="返回脚本的绝对路径"></a>返回脚本的绝对路径</h4><p>在<code>bash</code>中，返回脚本文件的绝对路径的代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DIR=&quot;$(cd &quot;$(dirname &quot;BASH_SOURCE[0]&quot;)&quot; &amp;&amp; pwd)&quot;</span><br></pre></td></tr></table></figure>
+
+<p>突发奇想，想知道在<code>zsh</code>中怎么写，伟大的<code>gpt</code>老师告诉了我：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DIR=&quot;$(cd &quot;$(dirname &quot;$&#123;(%):-%N&#125;&quot;)&quot; &amp;&amp; pwd)&quot;</span><br></pre></td></tr></table></figure>
+
+<p>年轻人遇到的第二个参数扩展：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;parameter:-expression&#125; # parameter不存在或为空时取expression的值</span><br></pre></td></tr></table></figure>
+
+<p>同时解锁的<code>zsh</code>独有的<code>parameter qualifier</code>机制：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;(qualifier)parameter&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述的<code>$&#123;(%):-%N&#125;</code>, 先启用参数修饰符，提供一个空参数，所以转到后面的<code>expression</code>, 表示当前脚本文件的相对路径。</p>
+<p>后来发现直接使用<code>$0</code>就行，完全不必如此大费周章：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DIR=&quot;$(cd &quot;$(dirname &quot;$0&quot;)&quot; &amp;&amp; pwd)&quot;</span><br></pre></td></tr></table></figure>
+
+<h4 id="将字符串转换为数组"><a href="#将字符串转换为数组" class="headerlink" title="将字符串转换为数组"></a>将字符串转换为数组</h4><p>某日突然发现<code>zsh</code>的<code>for ... in ...</code>循环无法使用<code>IFS</code>分词机制，必须先将字符串转换为数组。</p>
+<p>多番尝试未果，还是<code>gpt</code>老师给出了解答：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array=($&#123;(s: :):-&quot;string&quot;&#125;) # 假设string是用空格分开的数字或者字母序列</span><br></pre></td></tr></table></figure>
+
+<p>类似的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array=($&#123;(s:,:):-&quot;string&quot;&#125;) # 假设string是用逗号分开的数字或者字母序列</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
           <a href="/2024/07/10/Bash-status-code/">Bash status code</a>
         </h1>
       
@@ -319,50 +378,6 @@
 
 <p>卸载服务：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">launchctl unload ~/Library/LaunchAgents/com.arinsong.clash.plist</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-</article>
-
-    </li>
-  
-    <li>
-      <article class='ListView'>
-    <header class="title">
-      
-        <h1>
-          <a href="/2023/04/24/Disable-session-restoration-in-Terminal-app/">Disable session restoration in Terminal.app</a>
-        </h1>
-      
-      <div class='ListMeta'>
-  <time datetime="2023-04-24T14:06:49.000Z" itemprop="datePublished">
-    2023-04-24
-  </time>
-  
-  
-</div>
-
-    </header>
-    <div>
-      
-        <h3 id="如何关闭Terminal-app会话自动恢复功能"><a href="#如何关闭Terminal-app会话自动恢复功能" class="headerlink" title="如何关闭Terminal.app会话自动恢复功能"></a>如何关闭Terminal.app会话自动恢复功能</h3><p>原回答：<a target="_blank" rel="noopener" href="https://superuser.com/questions/1610587/disable-zsh-session-folder-completely">StackExchange</a></p>
-<p>The code that sets up macOS’s “Save&#x2F;Restore Shell State” feature for Zsh can be found in <code>/etc/zshrc_Apple_Terminal</code>. As explained in that file, to disable this feature, you need to do the following:</p>
-<ol>
-<li><p>In your home dir, create a plain text file named <code>.zprofile</code>.</p>
-<ul>
-<li>按<code>/etc/zshrc_Apple_Terminal</code>提示，改为使用<code>~/.zshenv</code>.</li>
-</ul>
-</li>
-<li><p>In this file, add the following: <code>export SHELL_SESSIONS_DISABLE=1</code></p>
-<ul>
-<li>子<code>shell</code>也会加载<code>~/.zshenv</code>, 不再需要<code>export</code>, 故改为：<code>SHELL_SESSIONS_DISABLE=1</code>.</li>
-</ul>
-</li>
-</ol>
-<h4 id="Why-we-need-to-put-the-variable-in-zprofile"><a href="#Why-we-need-to-put-the-variable-in-zprofile" class="headerlink" title="Why we need to put the variable in ~/.zprofile"></a>Why we need to put the variable in <code>~/.zprofile</code></h4><p>When Zsh is started as an <em>interactive</em> shell (login or not), it will source <code>/etc/zshrc</code> and <code>~/.zshrc</code>, in that order. If (and only if) macOS’s <code>/etc/zshrc</code> runs inside Terminal.app, it calls <code>/etc/zshrc_Apple_Terminal</code>, which starts the “Save&#x2F;Restore” feature. This means that we cannot set the variable to disable this feature in <code>~/.zshrc</code>, because that file is read only <em>after</em> the feature has already been started and “restored” your previous session.</p>
-<p>However, whenever you open a new tab or window in Apple’s Terminal.app, it starts a new interactive <em>login</em> shell. When a Zsh login shell starts up, it sources <code>~/.zprofile</code> and does so <em>before</em> sourcing <code>/etc/zshrc</code>.</p>
-<h4 id="Why-we-need-to-export-the-variable"><a href="#Why-we-need-to-export-the-variable" class="headerlink" title="Why we need to export the variable"></a>Why we need to <code>export</code> the variable</h4><p>Interactive shells that are descendants of a login shell are not automatically themselves login shells. Thus, if we would disable the feature in each login shell by only <em>setting</em> the variable, then any subshell started with, say, <code>exec zsh</code>, would still start up with the “Save&#x2F;Restore” feature enabled.</p>
-<p>To fix this, we <code>export</code> the variable. This puts into the <em>environment.</em> Each child process inherits its parent’s environment, with all the variables in it. This way we make sure that the “Save&#x2F;Restore” feature is also disabled in interactive shells that are descendants of the login shell, but not necessarily login shells themselves.</p>
 
       
     </div>
