@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>恋のあめ🍬</title>
+  
+    <link rel="icon" href="/assets/tools.ico">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 8.0.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/twilight.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/kanae.jpeg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>恋のあめ🍬</div>
+        
+            <div>次の年も、また見れるかな？</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a target="_blank" rel="noopener" href="https://github.com/arinsong2001">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a target="_blank" rel="noopener" href="https://twitter.com/arinsong2001">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <ul class="Index">
+  
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2024/07/29/Shell-parameter-expansion/">Shell parameter expansion</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2024-07-29T07:42:06.000Z" itemprop="datePublished">
+    2024-07-29
+  </time>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h3 id="Shell参数扩展的用法"><a href="#Shell参数扩展的用法" class="headerlink" title="Shell参数扩展的用法"></a>Shell参数扩展的用法</h3><h4 id="初见"><a href="#初见" class="headerlink" title="初见"></a>初见</h4><p>最开始遇到的是一个将新的路径添加到环境变量的起始部分的函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">prepend() &#123; [[ -d &quot;$2&quot; ]] &amp;&amp; eval $1=\&quot;$2\$\&#123;$1:+&#x27;:&#x27;\$$1\&#125;\&quot; &amp;&amp; export $1 &#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>$1</code>一般为环境变量，即<code>PATH</code>, <code>$2</code>是要添加的路径，例如<code>/usr/bin</code>. 如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">prepend PATH /usr/bin</span><br></pre></td></tr></table></figure>
+
+<p>注意<code>eval $1=\&quot;$2\$\{$1:+&#39;:&#39;\$$1\}\&quot;</code>这部分，通常使用<code>eval parameter=&quot;expression&quot;</code>这种写法。</p>
+<p>但是<code>expression</code>内部已经有了双引号（且必须用双引号），所以只能使用这种写法。</p>
+<p>年轻人遇到的第一个参数扩展：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;parameter:+expression&#125; # parameter存在且非空时取expression的值</span><br></pre></td></tr></table></figure>
+
+<h4 id="返回脚本的绝对路径"><a href="#返回脚本的绝对路径" class="headerlink" title="返回脚本的绝对路径"></a>返回脚本的绝对路径</h4><p>在<code>bash</code>中，返回脚本文件的绝对路径的代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DIR=&quot;$(cd &quot;$(dirname &quot;BASH_SOURCE[0]&quot;)&quot; &amp;&amp; pwd)&quot;</span><br></pre></td></tr></table></figure>
+
+<p>突发奇想，想知道在<code>zsh</code>中怎么写，伟大的<code>gpt</code>老师告诉了我：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DIR=&quot;$(cd &quot;$(dirname &quot;$&#123;(%):-%N&#125;&quot;)&quot; &amp;&amp; pwd)&quot;</span><br></pre></td></tr></table></figure>
+
+<p>年轻人遇到的第二个参数扩展：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;parameter:-expression&#125; # parameter不存在或为空时取expression的值</span><br></pre></td></tr></table></figure>
+
+<p>同时解锁的<code>zsh</code>独有的<code>parameter qualifier</code>机制：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;(qualifier)parameter&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述的<code>${(%):-%N}</code>, 先启用参数修饰符，提供一个空参数，所以转到后面的<code>expression</code>, 表示当前脚本文件的相对路径。</p>
+<p>后来发现直接使用<code>$0</code>就行，完全不必如此大费周章：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DIR=&quot;$(cd &quot;$(dirname &quot;$0&quot;)&quot; &amp;&amp; pwd)&quot;</span><br></pre></td></tr></table></figure>
+
+<h4 id="将字符串转换为数组"><a href="#将字符串转换为数组" class="headerlink" title="将字符串转换为数组"></a>将字符串转换为数组</h4><p>某日突然发现<code>zsh</code>的<code>for ... in ...</code>循环无法使用<code>IFS</code>分词机制，必须先将字符串转换为数组。</p>
+<p>多番尝试未果，还是<code>gpt</code>老师给出了解答：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array=($&#123;(s: :):-&quot;string&quot;&#125;) # 假设string是用空格分开的数字或者字母序列</span><br></pre></td></tr></table></figure>
+
+<p>类似的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array=($&#123;(s:,:):-&quot;string&quot;&#125;) # 假设string是用逗号分开的数字或者字母序列</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2024/07/10/Bash-status-code/">Bash status code</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2024-07-10T10:00:08.000Z" itemprop="datePublished">
+    2024-07-10
+  </time>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h3 id="How-to-get-a-bash-function’s-status-code"><a href="#How-to-get-a-bash-function’s-status-code" class="headerlink" title="How to get a bash function’s status code?"></a>How to get a bash function’s status code?</h3><p>可以用以下方式获取一个bash函数的状态码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(my_function; echo $?)</span><br></pre></td></tr></table></figure>
+
+<p>示例：重复使用brew下载neovim，直至成功下载。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">while (($(brew install neovim &gt; /dev/null 2&gt;&amp;1; echo $?))); do</span><br><span class="line">  echo &quot;error, retrying&quot;</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>command &gt; /dev/null 2&gt;&amp;1</code>可以忽略所有输出。</p>
+<p>或者使用以下写法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">brew install neovim</span><br><span class="line">while (($?)); do</span><br><span class="line">  echo &quot;error, retrying&quot;</span><br><span class="line">  brew install neovim</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<p><code>while</code>， <code>if</code>这类语句只接收命令的返回值，收到0则执行，收到非0则跳出。</p>
+<p><code>(())</code>中的表达式为0则返回1，为非0则返回0🍬(●°u°●)​ 」</p>
+<p>更新，新学的“持续运行命令直至执行成功”：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">repeat() &#123;</span><br><span class="line">  while true; do</span><br><span class="line">    $@ &amp;&amp; return</span><br><span class="line">  done</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后直接<code>repeat brew install neovim</code>就行。</p>
+<p>另，<code>true</code>不是shell内置命令，开销较大，改用空语句<code>:</code>更优：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">repeat() &#123; wihle :; do $@ &amp;&amp; return; done &#125;</span><br></pre></td></tr></table></figure>
+
+<p>在<code>zsh</code>中上述定义会报错，因为<code>repeat</code>是<code>zsh</code>的保留字。</p>
+<p><code>repeat</code>也是一个内置命令，用法：<code>repeat n command</code>, <code>n</code>为要执行的次数。</p>
+<p>自定义函数可以覆盖shell的同名内置命令，但不会覆盖保留字。</p>
+<p>本例，函数定义前加上关键字<code>function</code>就不会报错，但仍不会生效。</p>
+<p>不使用<code>function</code>可以减少自己定义的函数与shell保留字重名的可能。</p>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2024/02/18/Monaco-nerd-font/">Monaco nerd font</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2024-02-18T13:29:20.000Z" itemprop="datePublished">
+    2024-02-18
+  </time>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h3 id="Patch-a-nerd-font-of-my-own"><a href="#Patch-a-nerd-font-of-my-own" class="headerlink" title="Patch a nerd font of my own"></a>Patch a nerd font of my own</h3><p>下载<a target="_blank" rel="noopener" href="https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FontPatcher.zip"><code>font-patcher</code></a>和<code>fongforge</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install fontforge</span><br></pre></td></tr></table></figure>
+
+<p>打开<code>字体册</code>，搜索<code>Monaco</code>并导出到<code>FontPatcher</code>文件夹下。</p>
+<p>在<code>FontPatcher</code>文件夹中执行脚本：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fontforge --script ./font-patcher --complete Monaco.ttf</span><br></pre></td></tr></table></figure>
+
+<p>得到新字体<code>MonacoNerdFont-Regular.ttf</code>, 打开安装：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">open MonacoNerdFont-Regular.ttf</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/05/05/Neovim-migration/">Neovim migration</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-05-05T10:43:06.000Z" itemprop="datePublished">
+    2023-05-05
+  </time>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h3 id="将Neovim配置迁移至lazy-nvim"><a href="#将Neovim配置迁移至lazy-nvim" class="headerlink" title="将Neovim配置迁移至lazy.nvim"></a>将Neovim配置迁移至lazy.nvim</h3><p>创建配置文件夹：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/.config/nvim</span><br></pre></td></tr></table></figure>
+
+<p>进入文件夹并编写配置文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/.config/nvim</span><br><span class="line">nvim init.lua</span><br></pre></td></tr></table></figure>
+
+<p>2024.7.22更新：</p>
+<p>新增了按文件决定缩进风格。</p>
+<p>按官方文档改善了格式，尽量使用<code>opts</code>代替<code>config</code>.</p>
+<p>注意<code>build</code>, <code>init</code>, <code>main</code>的使用。</p>
+<p>为方便扩展，令所有的表项都以<code>,</code>结尾（压行除外）。</p>
+<p><code>init.lua</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><span class="line">-- text settings</span><br><span class="line">vim.opt.expandtab = true</span><br><span class="line">vim.opt.tabstop = 2</span><br><span class="line">vim.opt.shiftwidth = 2</span><br><span class="line">vim.opt.autoindent = true</span><br><span class="line">vim.opt.number = true</span><br><span class="line">vim.opt.relativenumber = true</span><br><span class="line"></span><br><span class="line">-- indent settings</span><br><span class="line">vim.cmd(&#x27;filetype indent on&#x27;)</span><br><span class="line"></span><br><span class="line">-- syntax settings</span><br><span class="line">vim.cmd(&#x27;syntax on&#x27;)</span><br><span class="line"></span><br><span class="line">-- interaction settings</span><br><span class="line">vim.opt.mouse:append(&#x27;a&#x27;)</span><br><span class="line">vim.opt.clipboard:append(&#x27;unnamed&#x27;)</span><br><span class="line"></span><br><span class="line">-- searching settings</span><br><span class="line">vim.opt.ignorecase = true</span><br><span class="line">vim.opt.smartcase = true</span><br><span class="line"></span><br><span class="line">-- Bootstrap lazy.nvim</span><br><span class="line">local lazypath = vim.fn.stdpath(&quot;data&quot;) .. &quot;/lazy/lazy.nvim&quot;</span><br><span class="line">if not (vim.uv or vim.loop).fs_stat(lazypath) then</span><br><span class="line">  local lazyrepo = &quot;https://github.com/folke/lazy.nvim.git&quot;</span><br><span class="line">  local out = vim.fn.system(&#123; &quot;git&quot;, &quot;clone&quot;, &quot;--filter=blob:none&quot;, &quot;--branch=stable&quot;, lazyrepo, lazypath &#125;)</span><br><span class="line">  if vim.v.shell_error ~= 0 then</span><br><span class="line">    vim.api.nvim_echo(&#123;</span><br><span class="line">      &#123; &quot;Failed to clone lazy.nvim:\n&quot;, &quot;ErrorMsg&quot; &#125;,</span><br><span class="line">      &#123; out, &quot;WarningMsg&quot; &#125;,</span><br><span class="line">      &#123; &quot;\nPress any key to exit...&quot; &#125;,</span><br><span class="line">    &#125;, true, &#123;&#125;)</span><br><span class="line">    vim.fn.getchar()</span><br><span class="line">    os.exit(1)</span><br><span class="line">  end</span><br><span class="line">end</span><br><span class="line">vim.opt.rtp:prepend(lazypath)</span><br><span class="line"></span><br><span class="line">-- Make sure to setup `mapleader` and `maplocalleader` before</span><br><span class="line">-- loading lazy.nvim so that mappings are correct.</span><br><span class="line">-- This is also a good place to setup other settings (vim.opt)</span><br><span class="line">vim.g.mapleader = &quot; &quot;</span><br><span class="line">vim.g.maplocalleader = &quot;\\&quot;</span><br><span class="line"></span><br><span class="line">-- Setup lazy.nvim</span><br><span class="line">require(&quot;lazy&quot;).setup(&#123;</span><br><span class="line">  spec = &#123;</span><br><span class="line">    -- add your plugins here</span><br><span class="line">    &#123;</span><br><span class="line">      &#x27;ellisonleao/gruvbox.nvim&#x27;,</span><br><span class="line">      priority = 1000,</span><br><span class="line">      config = function()</span><br><span class="line">        if os.getenv(&#x27;__CFBundleIdentifier&#x27;) ~= &#x27;com.apple.Terminal&#x27; then</span><br><span class="line">          require(&#x27;gruvbox&#x27;).setup(&#123; contrast = &#x27;soft&#x27; &#125;)</span><br><span class="line">          vim.cmd(&#x27;colorscheme gruvbox&#x27;)</span><br><span class="line">        end</span><br><span class="line">      end,</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    &#123;</span><br><span class="line">      &#x27;nvim-lualine/lualine.nvim&#x27;,</span><br><span class="line">      dependencies = &#123; &#x27;nvim-tree/nvim-web-devicons&#x27; &#125;,</span><br><span class="line">      opts = &#123; options = &#123; theme = &#x27;gruvbox-material&#x27; &#125; &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    &#123;</span><br><span class="line">      &#x27;nvim-tree/nvim-tree.lua&#x27;,</span><br><span class="line">      dependencies = &#123; &#x27;nvim-tree/nvim-web-devicons&#x27; &#125;,</span><br><span class="line">      init = function()</span><br><span class="line">        vim.g.loaded_netrw = 1</span><br><span class="line">        vim.g.loaded_netrwPlugin = 1</span><br><span class="line">        vim.keymap.set(&#x27;n&#x27;, &#x27;t&#x27;, &#x27;:NvimTreeFindFileToggle&lt;CR&gt;&#x27;)</span><br><span class="line">        vim.keymap.set(&#x27;n&#x27;, &#x27;T&#x27;, &#x27;:NvimTreeFindFileToggle&lt;CR&gt;&#x27;)</span><br><span class="line">      end,</span><br><span class="line">      opts = &#123;&#125;,</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    &#123;</span><br><span class="line">      &#x27;nvim-treesitter/nvim-treesitter&#x27;,</span><br><span class="line">      build = &#x27;:TSUpdate&#x27;,</span><br><span class="line">      main = &#x27;nvim-treesitter.configs&#x27;,</span><br><span class="line">      opts = &#123;</span><br><span class="line">        auto_install = true,</span><br><span class="line">        highlight = &#123; enable = true &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    &#123;</span><br><span class="line">      &#x27;windwp/nvim-autopairs&#x27;,</span><br><span class="line">      opts = &#123;&#125;,</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    &#123;</span><br><span class="line">      &#x27;neoclide/coc.nvim&#x27;,</span><br><span class="line">      branch = &#x27;release&#x27;,</span><br><span class="line">      config = function()</span><br><span class="line">        vim.opt.updatetime = 300</span><br><span class="line">        vim.opt.signcolumn = &#x27;yes&#x27;</span><br><span class="line">        vim.cmd(&#x27;highlight SignColumn guibg=none ctermbg=none&#x27;)</span><br><span class="line">        local keyset = vim.keymap.set</span><br><span class="line">        local opts = &#123; silent = true, noremap = true, expr = true, replace_keycodes = false &#125;</span><br><span class="line">        keyset(&#x27;i&#x27;, &#x27;&lt;C-j&gt;&#x27;, [[coc#pum#visible() ? coc#pum#next(1) : &#x27;\&lt;C-j&gt;&#x27;]], opts)</span><br><span class="line">        keyset(&#x27;i&#x27;, &#x27;&lt;C-k&gt;&#x27;, [[coc#pum#visible() ? coc#pum#prev(1) : &#x27;\&lt;C-k&gt;&#x27;]], opts)</span><br><span class="line">        keyset(&#x27;i&#x27;, &#x27;&lt;TAB&gt;&#x27;, [[coc#pum#visible() ? coc#pum#confirm() : &#x27;&lt;TAB&gt;&#x27;]], opts)</span><br><span class="line">      end,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  -- Configure any other settings here. See the documentation for more details.</span><br><span class="line">  -- colorscheme that will be used when installing plugins.</span><br><span class="line">  install = &#123; colorscheme = &#123; &quot;habamax&quot; &#125; &#125;,</span><br><span class="line">  -- automatically check for plugin updates</span><br><span class="line">  checker = &#123; enabled = true &#125;,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><code>lsp</code>需要额外手动安装。</p>
+<p>使用<code>:CocInstall</code>命令来安装需要的<code>lsp</code>扩展。</p>
+<p>常用：</p>
+<ul>
+<li><code>coc-marketplace</code></li>
+<li><code>coc-lua</code></li>
+<li><code>coc-sh</code></li>
+<li><code>coc-clangd</code></li>
+<li><code>coc-pyright</code></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:CocInstall coc-marketplace coc-lua coc-sh coc-clangd coc-pyright</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>:CocList marketplace</code>命令来检索可用扩展或查看已安装的扩展。</p>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/04/30/Clash-with-systemd-and-launchd/">Clash with systemd and launchd</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-04-30T03:35:09.000Z" itemprop="datePublished">
+    2023-04-30
+  </time>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h3 id="Clash的配置以及系统服务的编写"><a href="#Clash的配置以及系统服务的编写" class="headerlink" title="Clash的配置以及系统服务的编写"></a>Clash的配置以及系统服务的编写</h3><p>腾讯云的服务器不能稳定连接GitHub, 玩耍不愉快。</p>
+<p>尝试更改<code>/etc/hosts</code>, 无果。</p>
+<p>思来想去决定一步到位，开始探索服务器代理。</p>
+<p>经多次试错、反思，最后我选择了<code>clash-core + systemd</code>的方案。</p>
+<h4 id="在Linux上的部署"><a href="#在Linux上的部署" class="headerlink" title="在Linux上的部署"></a>在Linux上的部署</h4><p>首先在<code>clash</code>的<a target="_blank" rel="noopener" href="https://github.com/Dreamacro/clash/releases">releases页面</a>中下载最新且适配服务器平台的版本。</p>
+<p>注意以下几点（以腾讯云为例）：</p>
+<ul>
+<li><p>由于不能稳定连接GitHub, 可选择先下载到本机，然后上传到服务器。</p>
+</li>
+<li><p>注意文件的格式，<code>.gz</code>文件和<code>.tar.gz</code>文件解压方式不同。</p>
+</li>
+<li><p>为了方便，将解压后的文件重命名成<code>clash</code>.</p>
+</li>
+</ul>
+<p>下载完成后需要给予文件执行权限：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x clash</span><br></pre></td></tr></table></figure>
+
+<p>运行一次<code>clash</code>, 获取域名数据库<code>~/.comfig/clash/Country.mmdb</code>和默认的配置文件<code>~/.config/clash/config.yaml</code>.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./clash</span><br></pre></td></tr></table></figure>
+
+<p>如果获取域名数据库失败，就手动下载。</p>
+<p>记得用自己的<code>config.yaml</code>替换默认的文件。</p>
+<p>创建系统服务<code>clash.service</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/systemd/system/clash.service</span><br></pre></td></tr></table></figure>
+
+<p>以下是<code>clash.service</code>的内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=clash</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=simple</span><br><span class="line">ExecStart=/root/clash -f /root/.config/clash/config.yaml</span><br></pre></td></tr></table></figure>
+
+<p>上述系统服务的<code>ExecStart</code>必须写绝对路径，因为加载时不知道<code>~</code>指的是哪个用户，同时必须指定要应用的<code>.yaml</code>文件。</p>
+<p>刷新载入的服务：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br></pre></td></tr></table></figure>
+
+<p>启动服务：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start clash</span><br></pre></td></tr></table></figure>
+
+<p>打印服务状态：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status clash</span><br></pre></td></tr></table></figure>
+
+<p>如果服务状态超出终端大小，可以：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;$(systemctl status clash)&quot;</span><br></pre></td></tr></table></figure>
+
+<p>在<code>.zshrc</code>中添加如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># proxy aliases</span><br><span class="line">alias on=&#x27;export http_proxy=http://127.0.0.1:7890 &amp;&amp; export https_proxy=http://127.0.0.1:7890&#x27;</span><br><span class="line">alias off=&#x27;unset http_proxy &amp;&amp; unset https_proxy&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>刷新<code>.zshrc</code>文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source .zshrc</span><br></pre></td></tr></table></figure>
+
+<p>启动终端代理：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">on</span><br></pre></td></tr></table></figure>
+
+<p>利用<code>curl</code>命令确认<code>clash</code>是否工作正常：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -i google.com</span><br></pre></td></tr></table></figure>
+
+<p>结束终端代理：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">off</span><br></pre></td></tr></table></figure>
+
+<p>结束服务：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop clash</span><br></pre></td></tr></table></figure>
+
+<h4 id="在macOS上的部署"><a href="#在macOS上的部署" class="headerlink" title="在macOS上的部署"></a>在macOS上的部署</h4><p>作为带有图形界面的操作系统，macOS上成熟的代理工具有很多。</p>
+<p>个人使用时选择了<code>Shadowrocket</code>.</p>
+<p>但是我很好奇macOS上是否有类似于<code>systemd</code>的机制。</p>
+<p>私、気になります！</p>
+<p>macOS使用<code>launchd</code>管理用户和系统的服务，使用方法与<code>systemd</code>似而不同。</p>
+<p>有人总结了<code>launchd</code>的用法，并制作了<a target="_blank" rel="noopener" href="https://www.launchd.info/">简明教程</a>。</p>
+<p>接下来在macOS上简单实现一下上述<code>clash</code>服务。</p>
+<p>首先，获取、重命名并执行<code>clash</code>.</p>
+<p>然后，在指定文件夹下创建服务：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvim ~/Library/LaunchAgents/com.arinsong.clash.plist</span><br></pre></td></tr></table></figure>
+
+<p>以下是用户服务文件的内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;</span><br><span class="line">&lt;plist version=&quot;1.0&quot;&gt;</span><br><span class="line">    &lt;dict&gt;</span><br><span class="line">        &lt;key&gt;Label&lt;/key&gt;</span><br><span class="line">        &lt;string&gt;com.arinsong.clash&lt;/string&gt;</span><br><span class="line">        &lt;key&gt;ProgramArguments&lt;/key&gt;</span><br><span class="line">        &lt;array&gt;</span><br><span class="line">            &lt;string&gt;/Users/arinsong/clash&lt;/string&gt;</span><br><span class="line">            &lt;string&gt;-f&lt;/string&gt;</span><br><span class="line">            &lt;string&gt;/Users/arinsong/.config/clash/config.yaml&lt;/string&gt;</span><br><span class="line">        &lt;/array&gt;</span><br><span class="line">        &lt;key&gt;KeepAlive&lt;/key&gt;</span><br><span class="line">        &lt;true/&gt;</span><br><span class="line">        &lt;key&gt;StandardOutPath&lt;/key&gt;</span><br><span class="line">        &lt;string&gt;/Users/arinsong/log&lt;/string&gt;</span><br><span class="line">        &lt;key&gt;StandardErrorPath&lt;/key&gt;</span><br><span class="line">        &lt;string&gt;/Users/arinsong/error&lt;/string&gt;</span><br><span class="line">    &lt;/dict&gt;</span><br><span class="line">&lt;/plist&gt;</span><br></pre></td></tr></table></figure>
+
+<p>载入服务：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">launchctl load ~/Library/LaunchAgents/com.arinsong.clash.plist</span><br></pre></td></tr></table></figure>
+
+<p>因为服务的<code>KeepAlive</code>属性为<code>true</code>, 所以载入服务后会自动启动。</p>
+<p>查看服务状态：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail ~/log</span><br></pre></td></tr></table></figure>
+
+<p>在<code>.zshrc</code>中添加如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># proxy aliases</span><br><span class="line">alias on=&#x27;export http_proxy=http://127.0.0.1:7890 &amp;&amp; export https_proxy=http://127.0.0.1:7890&#x27;</span><br><span class="line">alias off=&#x27;unset http_proxy &amp;&amp; unset https_proxy&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>刷新<code>.zshrc</code>文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source .zshrc</span><br></pre></td></tr></table></figure>
+
+<p>启动终端代理：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">on</span><br></pre></td></tr></table></figure>
+
+<p>利用<code>curl</code>命令确认<code>clash</code>是否工作正常：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -i twitter.com</span><br></pre></td></tr></table></figure>
+
+<p>结束终端代理：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">off</span><br></pre></td></tr></table></figure>
+
+<p>卸载服务：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">launchctl unload ~/Library/LaunchAgents/com.arinsong.clash.plist</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+</ul>
+
+  <section id="nav-wrapper">
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/">« prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">next »</a>
+    </nav>
+  </section>
+
+
+            <footer>
+    <div>© 2025 - 恋のあめ🍬 </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

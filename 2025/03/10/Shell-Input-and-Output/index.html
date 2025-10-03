@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Shell: input and output | 恋のあめ🍬</title>
+  
+    <link rel="icon" href="/assets/tools.ico">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 8.0.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/twilight.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/kanae.jpeg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>恋のあめ🍬</div>
+        
+            <div>次の年も、また見れるかな？</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a target="_blank" rel="noopener" href="https://github.com/arinsong2001">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a target="_blank" rel="noopener" href="https://twitter.com/arinsong2001">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>Shell: input and output</h1>
+    </header>
+
+    <section>
+      <h3 id="echo相关"><a href="#echo相关" class="headerlink" title="echo相关"></a>echo相关</h3><p>学习编程语言往往从<code>hello world</code>开始，<code>shell</code>也不例外。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo hello world # --&gt; hello world</span><br></pre></td></tr></table></figure>
+
+<p><code>echo</code>: 接受一个或多个参数，并回显到屏幕上。</p>
+<p>对于<code>bash</code>, 默认启用<code>-E</code>选项，即不会翻译<code>\a</code>, <code>\b</code>等转义序列；</p>
+<p>对于<code>zsh</code>, 默认启用<code>-e</code>选项，会自动翻译转义序列。</p>
+<p>除此之外，<code>-n</code>选项能够让<code>echo</code>不自动换行。</p>
+<p>有一个有趣的例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo \\\\</span><br></pre></td></tr></table></figure>
+
+<p>在<code>bash</code>中的结果：<code>\\</code>; 在<code>zsh</code>中的结果：<code>\</code>.</p>
+<p>分析一下。</p>
+<ol>
+<li><p><code>echo \\\\</code>等价于<code>echo &quot;\\\\&quot;</code>, 双引号里的字符串在传递给命令的时候会进行第一次转义，<code>&quot;\\\\&quot;</code>变为<code>&#39;\\&#39;</code>;</p>
+</li>
+<li><p><code>echo</code>接受了<code>&#39;\\&#39;</code>这个参数；</p>
+</li>
+<li><p>如果是<code>bash</code>, 默认启用<code>-E</code>选项，<code>&#39;\\&#39;</code>不会被转义，原样输出；</p>
+</li>
+<li><p>如果是<code>zsh</code>, 默认启用<code>-e</code>选项，<code>&#39;\\&#39;</code>被第二次转义，输出为<code>\</code>.</p>
+</li>
+</ol>
+<p>需要注意的是，上述过程中，前后两次转义所支持的转义序列不完全相同。</p>
+<p><code>shell</code>自身的转义序列大多是符号类，例如<code>\\</code>, <code>\?</code>, <code>\&quot;</code>等。</p>
+<p><code>echo</code>命令支持的转义序列基本为字母类，除此之外还有<code>\0123</code>, <code>\x3f</code>这种非十进制数字、unicode相关，<code>\\</code>是唯一的符号类。</p>
+<h3 id="变量分词"><a href="#变量分词" class="headerlink" title="变量分词"></a>变量分词</h3><p><code>bash</code>和<code>zsh</code>对字符串变量进行分词的策略有所不同。</p>
+<p><code>bash</code>会对变量进行自动分词：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a=&quot;1 2 3&quot;; for i in $a; do echo $i; done # --&gt; 1\n2\n3\n</span><br></pre></td></tr></table></figure>
+
+<p><code>zsh</code>则不会：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a=&quot;1 2 3&quot;; for i in $a; do echo $i; done # --&gt; 1 2 3</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>zsh</code>中可以利用<code>echo</code>, 手动对变量进行分词：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a=&quot;1 2 3&quot;; for i in $(echo $a); do echo $i; done # --&gt; 1\n2\n3\n</span><br></pre></td></tr></table></figure>
+
+<p>另：对于<code>zsh</code>里任意写入标准输出流的命令，<code>$(command)</code>的结果都是已经被分词的变量，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo 1 2 3 &gt; test.txt; for i in $(cat test.txt); do echo $i; done # --&gt; 1\n2\n3\n</span><br></pre></td></tr></table></figure>
+
+<h3 id="命令的输入与输出"><a href="#命令的输入与输出" class="headerlink" title="命令的输入与输出"></a>命令的输入与输出</h3><p>命令有两种接收输入的方式：</p>
+<ol>
+<li><p>命令接受参数。</p>
+</li>
+<li><p>命令读取标准输入流。</p>
+</li>
+</ol>
+<p>注意：对于读取标准输入流这种接收输入的方式，可以自由地选择读取<strong>字符串</strong>或者<strong>文件</strong>（参考后面的例子）。</p>
+<p>命令只有一种输出方式：</p>
+<ol>
+<li>命令写入标准输出流。</li>
+</ol>
+<p>注意：写入文件这类不算做输出，只能算作命令执行的副作用；标准错误流暂时不必讨论。</p>
+<p>经典例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sync-dotfiles() &#123;</span><br><span class="line">  # local files &amp;&amp; xargs &lt;~/.config/zsh/files_to_be_synced.txt | read -Ar files</span><br><span class="line">  # local files &amp;&amp; read -Ar files &lt;&lt;&lt;&quot;$(xargs &lt;~/.config/zsh/files_to_be_synced.txt)&quot;</span><br><span class="line">  local files &amp;&amp; read -Ar files &lt; &lt;(xargs &lt;~/.config/zsh/files_to_be_synced.txt)</span><br><span class="line">  for file in &quot;$&#123;files[@]&#125;&quot;; do</span><br><span class="line">    test -e ~/&quot;$file&quot; &amp;&amp;</span><br><span class="line">      rsync -a --delete ~/&quot;$file&quot; ~/&#x27;Library/Mobile Documents/com~apple~CloudDocs/Utilities/Dotfiles&#x27; &amp;&amp;</span><br><span class="line">      e &quot;$file synced.&quot;</span><br><span class="line">  done</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>~/.config/zsh/files_to_be_synced.txt</code>包含数个文件名字符串，每个字符串独占一行。</p>
+<p><code>sync-dotfiles</code>函数需要对每一个字符串单独进行一些操作。</p>
+<p>一开始，我使用<code>cat</code>命令将整个文件转换为已被分词的字符串变量：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sync-dotfiles() &#123;</span><br><span class="line">  for file in $(cat ~/.config/zsh/files_to_be_synced.txt); do</span><br><span class="line">    test -e ~/&quot;$file&quot; &amp;&amp;</span><br><span class="line">      rsync -a --delete ~/&quot;$file&quot; ~/&#x27;Library/Mobile Documents/com~apple~CloudDocs/Utilities/Dotfiles&#x27; &amp;&amp;</span><br><span class="line">      e &quot;$file synced.&quot;</span><br><span class="line">  done</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个做法相当简洁，但是<code>lsp</code>老师不喜欢。</p>
+<p>根据它的提示，我需要声明一个<code>local</code>的数组变量<code>files</code>, 然后把目标文件的每一行转换为<code>files</code>的元素，再进行后续操作。</p>
+<p>最初的尝试是<code>local files=($(cat ~/.config/zsh/files_to_be_synced.txt))</code>, 再次遭到<code>lsp</code>老师的否定。</p>
+<p>它让我务必使用<code>read -Ar files</code>.</p>
+<p>经过不断的学习与尝试，我找到了三种方法，可惜只有后面两种的行为符合预期：</p>
+<ol>
+<li><p><code>local files &amp;&amp; xargs &lt;~/.config/zsh/files_to_be_synced.txt | read -Ar files</code></p>
+</li>
+<li><p><code>local files &amp;&amp; read -Ar files &lt;&lt;&lt;&quot;$(xargs &lt;~/.config/zsh/files_to_be_synced.txt)&quot;</code></p>
+</li>
+<li><p><code>local files &amp;&amp; read -Ar files &lt; &lt;(xargs &lt;~/.config/zsh/files_to_be_synced.txt)</code></p>
+</li>
+</ol>
+<p><code>xargs</code>可以方便地参数化字符串，该命令不接受参数，只能通过读取标准输入流的方式接收输入。</p>
+<p>最符合直觉的方式是<code>cat ~/.config/zsh/files_to_be_synced.txt | xargs</code>, 但显然不如输入重定向简洁。</p>
+<p>Q: 为什么方法一的行为不符合预期？</p>
+<p>A: 因为方法一使用了管道：被管道连接的所有命令都运行在子进程中，子进程对父进程变量的改变会丢失。</p>
+<p>回看问题，<code>read</code>也只能读取标准输入流，那要如何接收<code>xargs</code>的结果呢？</p>
+<p><code>here string</code>是个好办法。</p>
+<p>这样就导出了方法二：先用<code>&quot;$()&quot;</code>捕获<code>xargs</code>的输出（以字符串形式存储），再通过<code>here string</code>把字符串写入标准输入流。</p>
+<p>某日，我学到了<strong>进程替换</strong>这一新方法，其本质是将命令的执行结果（标准输出流）写入一个临时的文件（通常称为文件句柄）。</p>
+<p>自然有，先通过<code>&lt;()</code>捕获<code>xargs</code>的输出（以文件形式存储），再通过输入重定向把文件写入标准输入流。</p>
+<p>简单总结一下。</p>
+<p>输入（读取标准输入流）：</p>
+<ul>
+<li><p><code>here string</code>或者<code>here document</code>能够把字符串写入标准输入流。</p>
+</li>
+<li><p>输入重定向能够把文件写入标准输入流。</p>
+</li>
+</ul>
+<p>输出（命令输出，标准输出流）：</p>
+<ul>
+<li><p><code>&quot;$()&quot;</code>可以把命令输出转换为字符串。</p>
+<ul>
+<li>特别地，<code>$()</code>可以把命令的输出转换为已被分词的字符串。</li>
+</ul>
+</li>
+<li><p><code>&lt;()</code>可以把命令输出转换为临时文件。</p>
+</li>
+</ul>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2025-03-10T14:28:02.000Z" itemprop="datePublished">
+              2025-03-10
+            </time>
+          </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2025 - 恋のあめ🍬 </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

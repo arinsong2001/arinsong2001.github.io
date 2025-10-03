@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Shell parameter expansion | 恋のあめ🍬</title>
+  
+    <link rel="icon" href="/assets/tools.ico">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 8.0.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/twilight.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/kanae.jpeg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>恋のあめ🍬</div>
+        
+            <div>次の年も、また見れるかな？</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a target="_blank" rel="noopener" href="https://github.com/arinsong2001">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a target="_blank" rel="noopener" href="https://twitter.com/arinsong2001">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>Shell parameter expansion</h1>
+    </header>
+
+    <section>
+      <h3 id="Shell参数扩展的用法"><a href="#Shell参数扩展的用法" class="headerlink" title="Shell参数扩展的用法"></a>Shell参数扩展的用法</h3><h4 id="初见"><a href="#初见" class="headerlink" title="初见"></a>初见</h4><p>最开始遇到的是一个将新的路径添加到环境变量的起始部分的函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">prepend() &#123; [[ -d &quot;$2&quot; ]] &amp;&amp; eval $1=\&quot;$2\$\&#123;$1:+&#x27;:&#x27;\$$1\&#125;\&quot; &amp;&amp; export $1 &#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>$1</code>一般为环境变量，即<code>PATH</code>, <code>$2</code>是要添加的路径，例如<code>/usr/bin</code>. 如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">prepend PATH /usr/bin</span><br></pre></td></tr></table></figure>
+
+<p>注意<code>eval $1=\&quot;$2\$\{$1:+&#39;:&#39;\$$1\}\&quot;</code>这部分，通常使用<code>eval parameter=&quot;expression&quot;</code>这种写法。</p>
+<p>但是<code>expression</code>内部已经有了双引号（且必须用双引号），所以只能使用这种写法。</p>
+<p>年轻人遇到的第一个参数扩展：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;parameter:+expression&#125; # parameter存在且非空时取expression的值</span><br></pre></td></tr></table></figure>
+
+<h4 id="返回脚本的绝对路径"><a href="#返回脚本的绝对路径" class="headerlink" title="返回脚本的绝对路径"></a>返回脚本的绝对路径</h4><p>在<code>bash</code>中，返回脚本文件的绝对路径的代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DIR=&quot;$(cd &quot;$(dirname &quot;BASH_SOURCE[0]&quot;)&quot; &amp;&amp; pwd)&quot;</span><br></pre></td></tr></table></figure>
+
+<p>突发奇想，想知道在<code>zsh</code>中怎么写，伟大的<code>gpt</code>老师告诉了我：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DIR=&quot;$(cd &quot;$(dirname &quot;$&#123;(%):-%N&#125;&quot;)&quot; &amp;&amp; pwd)&quot;</span><br></pre></td></tr></table></figure>
+
+<p>年轻人遇到的第二个参数扩展：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;parameter:-expression&#125; # parameter不存在或为空时取expression的值</span><br></pre></td></tr></table></figure>
+
+<p>同时解锁的<code>zsh</code>独有的<code>parameter qualifier</code>机制：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;(qualifier)parameter&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述的<code>${(%):-%N}</code>, 先启用参数修饰符，提供一个空参数，所以转到后面的<code>expression</code>, 表示当前脚本文件的相对路径。</p>
+<p>后来发现直接使用<code>$0</code>就行，完全不必如此大费周章：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DIR=&quot;$(cd &quot;$(dirname &quot;$0&quot;)&quot; &amp;&amp; pwd)&quot;</span><br></pre></td></tr></table></figure>
+
+<h4 id="将字符串转换为数组"><a href="#将字符串转换为数组" class="headerlink" title="将字符串转换为数组"></a>将字符串转换为数组</h4><p>某日突然发现<code>zsh</code>的<code>for ... in ...</code>循环无法使用<code>IFS</code>分词机制，必须先将字符串转换为数组。</p>
+<p>多番尝试未果，还是<code>gpt</code>老师给出了解答：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array=($&#123;(s: :):-&quot;string&quot;&#125;) # 假设string是用空格分开的数字或者字母序列</span><br></pre></td></tr></table></figure>
+
+<p>类似的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array=($&#123;(s:,:):-&quot;string&quot;&#125;) # 假设string是用逗号分开的数字或者字母序列</span><br></pre></td></tr></table></figure>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2024-07-29T07:42:06.000Z" itemprop="datePublished">
+              2024-07-29
+            </time>
+          </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2025 - 恋のあめ🍬 </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Disable session restoration in Terminal.app | 恋のあめ🍬</title>
+  
+    <link rel="icon" href="/assets/tools.ico">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 8.0.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/twilight.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/kanae.jpeg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>恋のあめ🍬</div>
+        
+            <div>次の年も、また見れるかな？</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a target="_blank" rel="noopener" href="https://github.com/arinsong2001">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a target="_blank" rel="noopener" href="https://twitter.com/arinsong2001">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>Disable session restoration in Terminal.app</h1>
+    </header>
+
+    <section>
+      <h3 id="如何关闭Terminal-app会话自动恢复功能"><a href="#如何关闭Terminal-app会话自动恢复功能" class="headerlink" title="如何关闭Terminal.app会话自动恢复功能"></a>如何关闭Terminal.app会话自动恢复功能</h3><p>原回答：<a target="_blank" rel="noopener" href="https://superuser.com/questions/1610587/disable-zsh-session-folder-completely">StackExchange</a></p>
+<p>The code that sets up macOS’s “Save&#x2F;Restore Shell State” feature for Zsh can be found in <code>/etc/zshrc_Apple_Terminal</code>. As explained in that file, to disable this feature, you need to do the following:</p>
+<ol>
+<li><p>In your home dir, create a plain text file named <code>.zprofile</code>.</p>
+<ul>
+<li>按<code>/etc/zshrc_Apple_Terminal</code>提示，改为使用<code>~/.zshenv</code>.</li>
+</ul>
+</li>
+<li><p>In this file, add the following: <code>export SHELL_SESSIONS_DISABLE=1</code></p>
+<ul>
+<li>子<code>shell</code>也会加载<code>~/.zshenv</code>, 不再需要<code>export</code>, 故改为：<code>SHELL_SESSIONS_DISABLE=1</code>.</li>
+</ul>
+</li>
+</ol>
+<h4 id="Why-we-need-to-put-the-variable-in-zprofile"><a href="#Why-we-need-to-put-the-variable-in-zprofile" class="headerlink" title="Why we need to put the variable in ~/.zprofile"></a>Why we need to put the variable in <code>~/.zprofile</code></h4><p>When Zsh is started as an <em>interactive</em> shell (login or not), it will source <code>/etc/zshrc</code> and <code>~/.zshrc</code>, in that order. If (and only if) macOS’s <code>/etc/zshrc</code> runs inside Terminal.app, it calls <code>/etc/zshrc_Apple_Terminal</code>, which starts the “Save&#x2F;Restore” feature. This means that we cannot set the variable to disable this feature in <code>~/.zshrc</code>, because that file is read only <em>after</em> the feature has already been started and “restored” your previous session.</p>
+<p>However, whenever you open a new tab or window in Apple’s Terminal.app, it starts a new interactive <em>login</em> shell. When a Zsh login shell starts up, it sources <code>~/.zprofile</code> and does so <em>before</em> sourcing <code>/etc/zshrc</code>.</p>
+<h4 id="Why-we-need-to-export-the-variable"><a href="#Why-we-need-to-export-the-variable" class="headerlink" title="Why we need to export the variable"></a>Why we need to <code>export</code> the variable</h4><p>Interactive shells that are descendants of a login shell are not automatically themselves login shells. Thus, if we would disable the feature in each login shell by only <em>setting</em> the variable, then any subshell started with, say, <code>exec zsh</code>, would still start up with the “Save&#x2F;Restore” feature enabled.</p>
+<p>To fix this, we <code>export</code> the variable. This puts into the <em>environment.</em> Each child process inherits its parent’s environment, with all the variables in it. This way we make sure that the “Save&#x2F;Restore” feature is also disabled in interactive shells that are descendants of the login shell, but not necessarily login shells themselves.</p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-04-24T14:06:49.000Z" itemprop="datePublished">
+              2023-04-24
+            </time>
+          </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2025 - 恋のあめ🍬 </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

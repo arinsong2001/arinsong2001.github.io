@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Zsh configs | 恋のあめ🍬</title>
+  
+    <link rel="icon" href="/assets/tools.ico">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 8.0.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/twilight.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/kanae.jpeg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>恋のあめ🍬</div>
+        
+            <div>次の年も、また見れるかな？</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a target="_blank" rel="noopener" href="https://github.com/arinsong2001">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a target="_blank" rel="noopener" href="https://twitter.com/arinsong2001">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>Zsh configs</h1>
+    </header>
+
+    <section>
+      <h3 id="自用zsh配置"><a href="#自用zsh配置" class="headerlink" title="自用zsh配置"></a>自用zsh配置</h3><p><code>oh-my-zsh</code>日渐臃肿，且会生成意义不明的隐藏文件，遂弃用。</p>
+<p>部分我已经离不开的功能特性被写入了自用的<code>.zshrc</code>文件中。</p>
+<p>如下所示：</p>
+<p><code>.zshrc</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"># completion</span><br><span class="line">autoload -U compinit &amp;&amp; compinit</span><br><span class="line">zstyle &#x27;:completion:*&#x27; matcher-list &#x27;m:&#123;a-z&#125;=&#123;A-Z&#125;&#x27;</span><br><span class="line"></span><br><span class="line"># directories</span><br><span class="line">alias l=&#x27;ls --color&#x27;</span><br><span class="line">alias la=&#x27;l -a&#x27;</span><br><span class="line">alias ll=&#x27;l -lh&#x27;</span><br><span class="line">alias lla=&#x27;l -lah&#x27;</span><br><span class="line"></span><br><span class="line">alias md=&#x27;mkdir -p&#x27;</span><br><span class="line"></span><br><span class="line">setopt auto_cd</span><br><span class="line"></span><br><span class="line">d() &#123; cd $1 &amp;&amp; l; &#125;</span><br><span class="line"></span><br><span class="line"># editors</span><br><span class="line">alias v=&#x27;vim&#x27;</span><br><span class="line">alias n=&#x27;nvim&#x27;</span><br><span class="line"></span><br><span class="line"># others</span><br><span class="line">alias e=&#x27;echo&#x27;</span><br><span class="line">alias g=&#x27;git&#x27;</span><br><span class="line">alias o=&#x27;open&#x27;</span><br><span class="line">alias s=&#x27;o -a Safari&#x27;</span><br><span class="line"></span><br><span class="line"># theme and appearance</span><br><span class="line">autoload -U colors &amp;&amp; colors</span><br><span class="line">setopt prompt_subst</span><br><span class="line"></span><br><span class="line"># ys-theme</span><br><span class="line">local exit_code=&quot;%(?,,C:%&#123;$fg[red]%&#125;%?%&#123;$reset_color%&#125;)&quot;</span><br><span class="line"></span><br><span class="line">PROMPT=&quot;</span><br><span class="line">%&#123;$terminfo[bold]$fg[blue]%&#125;#%&#123;$reset_color%&#125; \</span><br><span class="line">%(#,%&#123;$bg[yellow]%&#125;%&#123;$fg[black]%&#125;%n%&#123;$reset_color%&#125;,%&#123;$fg[cyan]%&#125;%n) \</span><br><span class="line">%&#123;$reset_color%&#125;@ \</span><br><span class="line">%&#123;$fg[green]%&#125;%m \</span><br><span class="line">%&#123;$reset_color%&#125;in \</span><br><span class="line">%&#123;$terminfo[bold]$fg[yellow]%&#125;%~%&#123;$reset_color%&#125; \</span><br><span class="line">[%*] $exit_code</span><br><span class="line">%&#123;$terminfo[bold]$fg[red]%&#125;$%&#123;$reset_color%&#125; &quot;</span><br></pre></td></tr></table></figure>
+
+<p><code>.zshrc</code>可按需扩展，例如添加<code>git prompt</code>.</p>
+<p><code>.zshrc</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"># ys-theme</span><br><span class="line"></span><br><span class="line"># VCS</span><br><span class="line">YS_VCS_PROMPT_PREFIX1=&quot;%&#123;$reset_color%&#125;on%&#123;$fg[blue]%&#125; &quot;</span><br><span class="line">YS_VCS_PROMPT_PREFIX2=&quot;:%&#123;$fg[cyan]%&#125;&quot;</span><br><span class="line">YS_VCS_PROMPT_SUFFIX=&quot;%&#123;$reset_color%&#125;&quot;</span><br><span class="line">YS_VCS_PROMPT_DIRTY=&quot; %&#123;$fg[red]%&#125;x&quot;</span><br><span class="line">YS_VCS_PROMPT_CLEAN=&quot; %&#123;$fg[green]%&#125;o&quot;</span><br><span class="line"></span><br><span class="line"># Git info</span><br><span class="line">local git_info=&#x27;$(git_prompt_info)&#x27;</span><br><span class="line">ZSH_THEME_GIT_PROMPT_PREFIX=&quot;$&#123;YS_VCS_PROMPT_PREFIX1&#125;git$&#123;YS_VCS_PROMPT_PREFIX2&#125;&quot;</span><br><span class="line">ZSH_THEME_GIT_PROMPT_SUFFIX=&quot;$YS_VCS_PROMPT_SUFFIX&quot;</span><br><span class="line">ZSH_THEME_GIT_PROMPT_DIRTY=&quot;$YS_VCS_PROMPT_DIRTY&quot;</span><br><span class="line">ZSH_THEME_GIT_PROMPT_CLEAN=&quot;$YS_VCS_PROMPT_CLEAN&quot;</span><br><span class="line"></span><br><span class="line">local exit_code=&quot;%(?,,C:%&#123;$fg[red]%&#125;%?%&#123;$reset_color%&#125;)&quot;</span><br><span class="line"></span><br><span class="line">PROMPT=&quot;</span><br><span class="line">%&#123;$terminfo[bold]$fg[blue]%&#125;#%&#123;$reset_color%&#125; \</span><br><span class="line">%(#,%&#123;$bg[yellow]%&#125;%&#123;$fg[black]%&#125;%n%&#123;$reset_color%&#125;,%&#123;$fg[cyan]%&#125;%n) \</span><br><span class="line">%&#123;$reset_color%&#125;@ \</span><br><span class="line">%&#123;$fg[green]%&#125;%m \</span><br><span class="line">%&#123;$reset_color%&#125;in \</span><br><span class="line">%&#123;$terminfo[bold]$fg[yellow]%&#125;%~%&#123;$reset_color%&#125; \</span><br><span class="line">$&#123;git_info&#125; \</span><br><span class="line">[%*] $exit_code</span><br><span class="line">%&#123;$terminfo[bold]$fg[red]%&#125;$%&#123;$reset_color%&#125; &quot;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p><code>~/.zsh/git.zsh</code>: <a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/lib/git.zsh">raw.githubusercontent.com</a></p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2023-04-22T07:16:22.000Z" itemprop="datePublished">
+              2023-04-22
+            </time>
+          </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2025 - 恋のあめ🍬 </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

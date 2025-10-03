@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>恋のあめ🍬</title>
+  
+    <link rel="icon" href="/assets/tools.ico">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 8.0.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/twilight.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/kanae.jpeg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>恋のあめ🍬</div>
+        
+            <div>次の年も、また見れるかな？</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a target="_blank" rel="noopener" href="https://github.com/arinsong2001">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a target="_blank" rel="noopener" href="https://twitter.com/arinsong2001">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <ul class="Index">
+  
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/04/24/Disable-session-restoration-in-Terminal-app/">Disable session restoration in Terminal.app</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-04-24T14:06:49.000Z" itemprop="datePublished">
+    2023-04-24
+  </time>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h3 id="如何关闭Terminal-app会话自动恢复功能"><a href="#如何关闭Terminal-app会话自动恢复功能" class="headerlink" title="如何关闭Terminal.app会话自动恢复功能"></a>如何关闭Terminal.app会话自动恢复功能</h3><p>原回答：<a target="_blank" rel="noopener" href="https://superuser.com/questions/1610587/disable-zsh-session-folder-completely">StackExchange</a></p>
+<p>The code that sets up macOS’s “Save&#x2F;Restore Shell State” feature for Zsh can be found in <code>/etc/zshrc_Apple_Terminal</code>. As explained in that file, to disable this feature, you need to do the following:</p>
+<ol>
+<li><p>In your home dir, create a plain text file named <code>.zprofile</code>.</p>
+<ul>
+<li>按<code>/etc/zshrc_Apple_Terminal</code>提示，改为使用<code>~/.zshenv</code>.</li>
+</ul>
+</li>
+<li><p>In this file, add the following: <code>export SHELL_SESSIONS_DISABLE=1</code></p>
+<ul>
+<li>子<code>shell</code>也会加载<code>~/.zshenv</code>, 不再需要<code>export</code>, 故改为：<code>SHELL_SESSIONS_DISABLE=1</code>.</li>
+</ul>
+</li>
+</ol>
+<h4 id="Why-we-need-to-put-the-variable-in-zprofile"><a href="#Why-we-need-to-put-the-variable-in-zprofile" class="headerlink" title="Why we need to put the variable in ~/.zprofile"></a>Why we need to put the variable in <code>~/.zprofile</code></h4><p>When Zsh is started as an <em>interactive</em> shell (login or not), it will source <code>/etc/zshrc</code> and <code>~/.zshrc</code>, in that order. If (and only if) macOS’s <code>/etc/zshrc</code> runs inside Terminal.app, it calls <code>/etc/zshrc_Apple_Terminal</code>, which starts the “Save&#x2F;Restore” feature. This means that we cannot set the variable to disable this feature in <code>~/.zshrc</code>, because that file is read only <em>after</em> the feature has already been started and “restored” your previous session.</p>
+<p>However, whenever you open a new tab or window in Apple’s Terminal.app, it starts a new interactive <em>login</em> shell. When a Zsh login shell starts up, it sources <code>~/.zprofile</code> and does so <em>before</em> sourcing <code>/etc/zshrc</code>.</p>
+<h4 id="Why-we-need-to-export-the-variable"><a href="#Why-we-need-to-export-the-variable" class="headerlink" title="Why we need to export the variable"></a>Why we need to <code>export</code> the variable</h4><p>Interactive shells that are descendants of a login shell are not automatically themselves login shells. Thus, if we would disable the feature in each login shell by only <em>setting</em> the variable, then any subshell started with, say, <code>exec zsh</code>, would still start up with the “Save&#x2F;Restore” feature enabled.</p>
+<p>To fix this, we <code>export</code> the variable. This puts into the <em>environment.</em> Each child process inherits its parent’s environment, with all the variables in it. This way we make sure that the “Save&#x2F;Restore” feature is also disabled in interactive shells that are descendants of the login shell, but not necessarily login shells themselves.</p>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/04/23/Layout-of-icalm/">Layout of icalm</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-04-23T07:20:18.000Z" itemprop="datePublished">
+    2023-04-23
+  </time>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h3 id="简单修改icalm主题的布局"><a href="#简单修改icalm主题的布局" class="headerlink" title="简单修改icalm主题的布局"></a>简单修改icalm主题的布局</h3><p><code>icalm</code>主题代码块的行号列宽度不固定，没有右对齐。</p>
+<p>代码块中最长行越长，代码列和行号列的距离越大。</p>
+<p>有损美观，作简单修改：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># in themes/hexo-theme-icalm/source/css/_partial/layout.styl</span><br><span class="line">...</span><br><span class="line">figure.highlight</span><br><span class="line">    display: block</span><br><span class="line">    // edited by ArinSong</span><br><span class="line">    // width: 92%</span><br><span class="line">    margin: auto</span><br><span class="line">    overflow-x: auto</span><br><span class="line"></span><br><span class="line">// edited by ArinSong</span><br><span class="line">td.gutter</span><br><span class="line">    width: 16px</span><br><span class="line">    padding-right: 16px</span><br><span class="line">    text-align: right</span><br><span class="line"></span><br><span class="line">// edited by ArinSong</span><br><span class="line">td.code</span><br><span class="line">    width: calc(100% - 40px)</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/04/22/Zsh-configs/">Zsh configs</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-04-22T07:16:22.000Z" itemprop="datePublished">
+    2023-04-22
+  </time>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h3 id="自用zsh配置"><a href="#自用zsh配置" class="headerlink" title="自用zsh配置"></a>自用zsh配置</h3><p><code>oh-my-zsh</code>日渐臃肿，且会生成意义不明的隐藏文件，遂弃用。</p>
+<p>部分我已经离不开的功能特性被写入了自用的<code>.zshrc</code>文件中。</p>
+<p>如下所示：</p>
+<p><code>.zshrc</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"># completion</span><br><span class="line">autoload -U compinit &amp;&amp; compinit</span><br><span class="line">zstyle &#x27;:completion:*&#x27; matcher-list &#x27;m:&#123;a-z&#125;=&#123;A-Z&#125;&#x27;</span><br><span class="line"></span><br><span class="line"># directories</span><br><span class="line">alias l=&#x27;ls --color&#x27;</span><br><span class="line">alias la=&#x27;l -a&#x27;</span><br><span class="line">alias ll=&#x27;l -lh&#x27;</span><br><span class="line">alias lla=&#x27;l -lah&#x27;</span><br><span class="line"></span><br><span class="line">alias md=&#x27;mkdir -p&#x27;</span><br><span class="line"></span><br><span class="line">setopt auto_cd</span><br><span class="line"></span><br><span class="line">d() &#123; cd $1 &amp;&amp; l; &#125;</span><br><span class="line"></span><br><span class="line"># editors</span><br><span class="line">alias v=&#x27;vim&#x27;</span><br><span class="line">alias n=&#x27;nvim&#x27;</span><br><span class="line"></span><br><span class="line"># others</span><br><span class="line">alias e=&#x27;echo&#x27;</span><br><span class="line">alias g=&#x27;git&#x27;</span><br><span class="line">alias o=&#x27;open&#x27;</span><br><span class="line">alias s=&#x27;o -a Safari&#x27;</span><br><span class="line"></span><br><span class="line"># theme and appearance</span><br><span class="line">autoload -U colors &amp;&amp; colors</span><br><span class="line">setopt prompt_subst</span><br><span class="line"></span><br><span class="line"># ys-theme</span><br><span class="line">local exit_code=&quot;%(?,,C:%&#123;$fg[red]%&#125;%?%&#123;$reset_color%&#125;)&quot;</span><br><span class="line"></span><br><span class="line">PROMPT=&quot;</span><br><span class="line">%&#123;$terminfo[bold]$fg[blue]%&#125;#%&#123;$reset_color%&#125; \</span><br><span class="line">%(#,%&#123;$bg[yellow]%&#125;%&#123;$fg[black]%&#125;%n%&#123;$reset_color%&#125;,%&#123;$fg[cyan]%&#125;%n) \</span><br><span class="line">%&#123;$reset_color%&#125;@ \</span><br><span class="line">%&#123;$fg[green]%&#125;%m \</span><br><span class="line">%&#123;$reset_color%&#125;in \</span><br><span class="line">%&#123;$terminfo[bold]$fg[yellow]%&#125;%~%&#123;$reset_color%&#125; \</span><br><span class="line">[%*] $exit_code</span><br><span class="line">%&#123;$terminfo[bold]$fg[red]%&#125;$%&#123;$reset_color%&#125; &quot;</span><br></pre></td></tr></table></figure>
+
+<p><code>.zshrc</code>可按需扩展，例如添加<code>git prompt</code>.</p>
+<p><code>.zshrc</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"># ys-theme</span><br><span class="line"></span><br><span class="line"># VCS</span><br><span class="line">YS_VCS_PROMPT_PREFIX1=&quot;%&#123;$reset_color%&#125;on%&#123;$fg[blue]%&#125; &quot;</span><br><span class="line">YS_VCS_PROMPT_PREFIX2=&quot;:%&#123;$fg[cyan]%&#125;&quot;</span><br><span class="line">YS_VCS_PROMPT_SUFFIX=&quot;%&#123;$reset_color%&#125;&quot;</span><br><span class="line">YS_VCS_PROMPT_DIRTY=&quot; %&#123;$fg[red]%&#125;x&quot;</span><br><span class="line">YS_VCS_PROMPT_CLEAN=&quot; %&#123;$fg[green]%&#125;o&quot;</span><br><span class="line"></span><br><span class="line"># Git info</span><br><span class="line">local git_info=&#x27;$(git_prompt_info)&#x27;</span><br><span class="line">ZSH_THEME_GIT_PROMPT_PREFIX=&quot;$&#123;YS_VCS_PROMPT_PREFIX1&#125;git$&#123;YS_VCS_PROMPT_PREFIX2&#125;&quot;</span><br><span class="line">ZSH_THEME_GIT_PROMPT_SUFFIX=&quot;$YS_VCS_PROMPT_SUFFIX&quot;</span><br><span class="line">ZSH_THEME_GIT_PROMPT_DIRTY=&quot;$YS_VCS_PROMPT_DIRTY&quot;</span><br><span class="line">ZSH_THEME_GIT_PROMPT_CLEAN=&quot;$YS_VCS_PROMPT_CLEAN&quot;</span><br><span class="line"></span><br><span class="line">local exit_code=&quot;%(?,,C:%&#123;$fg[red]%&#125;%?%&#123;$reset_color%&#125;)&quot;</span><br><span class="line"></span><br><span class="line">PROMPT=&quot;</span><br><span class="line">%&#123;$terminfo[bold]$fg[blue]%&#125;#%&#123;$reset_color%&#125; \</span><br><span class="line">%(#,%&#123;$bg[yellow]%&#125;%&#123;$fg[black]%&#125;%n%&#123;$reset_color%&#125;,%&#123;$fg[cyan]%&#125;%n) \</span><br><span class="line">%&#123;$reset_color%&#125;@ \</span><br><span class="line">%&#123;$fg[green]%&#125;%m \</span><br><span class="line">%&#123;$reset_color%&#125;in \</span><br><span class="line">%&#123;$terminfo[bold]$fg[yellow]%&#125;%~%&#123;$reset_color%&#125; \</span><br><span class="line">$&#123;git_info&#125; \</span><br><span class="line">[%*] $exit_code</span><br><span class="line">%&#123;$terminfo[bold]$fg[red]%&#125;$%&#123;$reset_color%&#125; &quot;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p><code>~/.zsh/git.zsh</code>: <a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/lib/git.zsh">raw.githubusercontent.com</a></p>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/01/29/Mac-configs/">Mac configs</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-01-29T03:22:24.000Z" itemprop="datePublished">
+    2023-01-29
+  </time>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h3 id="Basic-Mac-configurations"><a href="#Basic-Mac-configurations" class="headerlink" title="Basic Mac configurations"></a>Basic Mac configurations</h3><h4 id="输入设备"><a href="#输入设备" class="headerlink" title="输入设备"></a>输入设备</h4><p>工欲善其事，必先利其器。</p>
+<p>键盘：</p>
+<ul>
+<li><p>键重复速率：<code>快</code></p>
+</li>
+<li><p>重复前延迟：<code>短</code></p>
+</li>
+<li><p>按下地球仪键时：<code>不执行任何操作</code></p>
+</li>
+<li><p><code>键盘快捷键...</code></p>
+<ul>
+<li><p>启动台与程序坞：</p>
+<ul>
+<li>启用<code>显示启动台 on Control + Command + E</code></li>
+</ul>
+</li>
+<li><p>调度中心：</p>
+<ul>
+<li><p>修改<code>调度中心 on Control + Command + Tab</code></p>
+</li>
+<li><p>修改<code>显示桌面 on Control + Command + W</code></p>
+</li>
+</ul>
+</li>
+<li><p>聚焦：</p>
+<ul>
+<li>修改<code>显示App on Control + Command + E</code></li>
+</ul>
+</li>
+<li><p>App快捷键：</p>
+<ul>
+<li><p>为<code>所有应用程序</code>添加<code>启动终端 on Control + Command + T</code></p>
+</li>
+<li><p>为<code>所有应用程序</code>添加<code>启动浏览器 on Control + Command + S</code></p>
+</li>
+<li><p>为<code>所有应用程序</code>添加<code>小憩 on Control + Command + A</code></p>
+</li>
+</ul>
+</li>
+<li><p>功能键：<code>将F1、F2等键用作标准功能键：启用</code></p>
+</li>
+<li><p>修饰键：<code>Capslock to Control &amp;&amp; Control to Capslock</code></p>
+</li>
+</ul>
+</li>
+<li><p><code>文字输入 → 输入法 → 编辑... → 所有输入法</code></p>
+<ul>
+<li><p>自动纠正拼写：<code>禁用</code></p>
+</li>
+<li><p>自动大写字词的首字母：<code>禁用</code></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>自动操作：</p>
+<p>按<code>Command + Space</code>, 输入<code>auto</code>, 回车确认，打开<code>自动操作.app</code>.</p>
+<p><code>新建文稿 → 快速操作 → 开启应用程序 → 其他... → 实用工具 → 终端 → 存储为... → 启动终端</code>。</p>
+<p><code>新建文稿 → 快速操作 → 开启应用程序 → Safari浏览器 → 存储为... → 启动浏览器</code>。</p>
+<p>按<code>Command + Space</code>, 输入<code>short</code>, 回车确认，打开<code>快捷指令.app</code>.</p>
+<p><code>新建快捷指令 → 运行AppleScript → 修改代码</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">on run &#123;input, parameters&#125;</span><br><span class="line">	(* 在此输入你的脚本 *)</span><br><span class="line">	tell application &quot;Amphetamine&quot; to start new session with options &#123;duration:1, interval:minutes, displaySleepAllowed:true&#125;</span><br><span class="line">	return input</span><br><span class="line">end run</span><br></pre></td></tr></table></figure>
+
+<p><code>修改快捷指令的图标和名称 → 文件 → 添加到程序坞</code>。</p>
+<p>打开<code>自动操作.app</code>.</p>
+<p><code>新建文稿 → 快速操作 → 开启应用程序 → 其他... → ~/Applications → 小憩.app → 存储为... → 小憩</code>。</p>
+<p>鼠标：</p>
+<ul>
+<li><p>跟踪速度：<code>5格</code></p>
+</li>
+<li><p><code>高级...</code></p>
+<ul>
+<li>指针加速：<code>禁用</code></li>
+</ul>
+</li>
+</ul>
+<p>触控板：</p>
+<ul>
+<li><p>跟踪速度：<code>5格</code></p>
+</li>
+<li><p>触控板点按：<code>弱</code></p>
+</li>
+<li><p>轻点来点按：<code>启用</code></p>
+</li>
+<li><p>系统设置 → 辅助功能：<code>动作 → 指针控制 → 触控板选项...</code></p>
+<ul>
+<li><p>使用触控板进行拖移：<code>启用</code></p>
+</li>
+<li><p>拖移样式：<code>三指拖移</code></p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="通用"><a href="#通用" class="headerlink" title="通用"></a>通用</h4><p>无丝竹之乱耳，无案牍之劳形。</p>
+<p>系统设置 → 通用：</p>
+<ul>
+<li><p>本机名称：<code>Cynthia</code></p>
+</li>
+<li><p>iMessage转发：<code>iPhone Settings → Messages → Text Message Forwarding </code></p>
+<ul>
+<li>可能需要手动登陆：<code>设置 → 信息 → 发送与接收 → 使用AppleID登陆iMessage信息</code></li>
+</ul>
+</li>
+</ul>
+<p>系统设置 → 辅助功能：</p>
+<ul>
+<li><p>显示：<code>摇动鼠标指针以定位 → 禁用</code></p>
+</li>
+<li><p>阅读与朗读：<code>系统声音 → 月（高音质）</code></p>
+</li>
+</ul>
+<p>系统设置 → 外观：</p>
+<ul>
+<li><p>图标与小组件样式：<code>深色</code></p>
+</li>
+<li><p>显示滚动条：<code>滚动时</code></p>
+</li>
+</ul>
+<p>系统设置 → 桌面与程序坞：</p>
+<ul>
+<li>自动隐藏和显示程序坞：<code>启用</code></li>
+</ul>
+<p>系统设置 → 菜单栏：</p>
+<ul>
+<li>电池：<code>电池选项... → 显示百分比 → 启用</code></li>
+</ul>
+<p>系统设置 → 声音：</p>
+<ul>
+<li><p>提醒声音：<code>Crystal</code></p>
+</li>
+<li><p>启动时播放声音：<code>禁用</code></p>
+</li>
+</ul>
+<p>访达：</p>
+<ul>
+<li><p>设置：<code>开启新“访达”窗口时打开：~ → 关闭窗口 → 新建“访达”窗口</code></p>
+</li>
+<li><p>显示视图：<code>为列表 → 用作默认</code></p>
+</li>
+</ul>
+<p>照片：</p>
+<ul>
+<li>选择的照片：<code>右键 → 共享... → 设定墙纸</code></li>
+</ul>
+<p>词典：</p>
+<ul>
+<li>设置：<code>调整常用的参考源（重启生效）</code></li>
+</ul>
+<h4 id="终端"><a href="#终端" class="headerlink" title="终端"></a>终端</h4><p>老骥伏枥，志在千里。</p>
+<p>打开<code>App Store</code>, 下载<code>Amphetamine</code>, 更换美区账号，下载<code>Shadowrocket</code>并配置。</p>
+<p>按<code>Control + Command + T</code>, 启动<code>终端</code>。</p>
+<p>下载<code>command line tools</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcode-select --install</span><br></pre></td></tr></table></figure>
+
+<p>配置<code>dotfiles</code>:</p>
+<p>另：<code>iCloud</code>存有备份，可仅在<code>Finder</code>中配置。</p>
+<p><a target="_blank" rel="noopener" href="https://arinsong2001.github.io/2024/08/14/Gruvbox-for-Terminal-app/"><code>Gruvbox.terminal</code></a></p>
+<p><code>.zshenv</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHELL_SESSIONS_DISABLE=1</span><br></pre></td></tr></table></figure>
+
+<p><code>.zprofile</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eval &quot;$(/opt/homebrew/bin/brew shellenv)&quot;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://arinsong2001.github.io/2023/04/22/Zsh-configs/"><code>.zshrc</code></a></p>
+<p><code>.vimrc</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&quot;text settings</span><br><span class="line">se et ts=2 sw=2 ai si nu rnu</span><br><span class="line"></span><br><span class="line">&quot;indent settings</span><br><span class="line">filetype indent on</span><br><span class="line"></span><br><span class="line">&quot;syntax settings</span><br><span class="line">syntax on</span><br><span class="line"></span><br><span class="line">&quot;interaction settings</span><br><span class="line">se mouse=a</span><br><span class="line">se clipboard=unnamed</span><br><span class="line"></span><br><span class="line">&quot;searching settings</span><br><span class="line">se ignorecase</span><br><span class="line">se smartcase</span><br></pre></td></tr></table></figure>
+
+<p>等候<code>command line tools</code>安装完成。</p>
+<p>安装<a target="_blank" rel="noopener" href="https://brew.sh/"><code>Homebrew</code></a>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;</span><br></pre></td></tr></table></figure>
+
+<p>安装软件包：</p>
+<p><code>neovim</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install neovim</span><br></pre></td></tr></table></figure>
+
+<p><code>hexo</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install hexo</span><br></pre></td></tr></table></figure>
+
+<p>抹掉所有内容和设置后重新部署<code>hexo</code>时，遇到<code>hexo deploy</code>失败的问题。</p>
+<p>原因是系统自带的<code>git</code>无法使用<code>钥匙串</code>内<code>github.com</code>的密钥。</p>
+<p><code>git</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install git</span><br></pre></td></tr></table></figure>
+
+<p><code>tldr</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install tldr</span><br></pre></td></tr></table></figure>
+
+<p><code>tree</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install tree</span><br></pre></td></tr></table></figure>
+
+<p><code>fontforge</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install fontforge</span><br></pre></td></tr></table></figure>
+
+<p><code>batt</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">brew install batt</span><br><span class="line">sudo brew services start batt</span><br><span class="line">batt magsafe-led enable</span><br></pre></td></tr></table></figure>
+
+<p><code>appcleaner</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install --cask appcleaner</span><br></pre></td></tr></table></figure>
+
+<p><code>neovide</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install --cask neovide</span><br></pre></td></tr></table></figure>
+
+<p><code>visual-studio-code</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install --cask visual-studio-code</span><br></pre></td></tr></table></figure>
+
+<p><code>typora</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install --cask typora</span><br></pre></td></tr></table></figure>
+
+<p><code>chatgpt</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install --cask chatgpt</span><br></pre></td></tr></table></figure>
+
+<p>为<code>Terminal.app</code>, <code>AppCleaner</code>, <code>Visual Studio Code</code>, <code>Typora</code>赋予<code>完全磁盘访问权限</code>。</p>
+<p>最后整理一下程序坞和启动台（新版系统可能没有启动台了）。</p>
+<h4 id="编辑器与博客"><a href="#编辑器与博客" class="headerlink" title="编辑器与博客"></a>编辑器与博客</h4><p>纸上得来终觉浅，绝知此事要躬行。</p>
+<p>打包并安装<code>Monaco Nerd Font</code>字体：</p>
+<p><a target="_blank" rel="noopener" href="https://arinsong2001.github.io/2024/02/18/Monaco-nerd-font/"><code>Monaco-nerd-font</code></a></p>
+<p>安装完成后，修改终端字体：<code>Monaco Nerd Font</code>.</p>
+<p>完成<code>neovim</code>的配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">md ~/.config/nvim &amp;&amp; d ~/.config/nvim</span><br><span class="line">git clone https://github.com/LazyVim/starter .</span><br><span class="line">rm -rf .git</span><br></pre></td></tr></table></figure>
+
+<p><code>Lazyvim</code>配置：</p>
+<p><a target="_blank" rel="noopener" href="https://arinsong2001.github.io/2024/08/20/Lazyvim-configs/"><code>Lazyvim-configs</code></a></p>
+<p>最后配置一下<code>hexo</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">md ~/Documents/Hexo &amp;&amp; d ~/Documents/Hexo</span><br><span class="line">hexo init</span><br></pre></td></tr></table></figure>
+
+<p>下载主题：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">g clone https://github.com/nameoverflow/hexo-theme-icalm.git themes/hexo-theme-icalm</span><br><span class="line">d themes/hexo-theme-icalm/</span><br><span class="line">g submodule update --init --recursive</span><br></pre></td></tr></table></figure>
+
+<p>备份保存在<code>Utilities</code>仓库中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">d ~/Documents</span><br><span class="line">g clone https://github.com/arinsong2001/Utilities.git</span><br></pre></td></tr></table></figure>
+
+<p>按需输入用户名<code>arinsong2001</code>和<code>token</code>, <code>token</code>需要事先生成。</p>
+<p>复制粘贴配置和<code>posts</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -R ~/Documents/Utilities/Hexo ~/Documents</span><br></pre></td></tr></table></figure>
+
+<p>删除额外生成的<code>hello-world.md</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm ~/Documents/Hexo/source/_posts/hello-world.md</span><br></pre></td></tr></table></figure>
+
+<p>安装 <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo-deployer-git">hexo-deployer-git</a>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">d ~/Documents/Hexo</span><br><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<p>配置<code>.gitconfig</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">g config --global user.name &#x27;arinsong2001&#x27;</span><br><span class="line">g config --global user.email &#x27;arinsong2001@qq.com&#x27;</span><br><span class="line"></span><br><span class="line">e &#x27;.DS_Store&#x27; &gt; ~/.gitignore</span><br><span class="line">g config --global core.excludesfile &#x27;~/.gitignore&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>生成页面：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
+
+<p>预览页面：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<p>部署：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<p>等待片刻，查看是否部署成功：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">o https://arinsong2001.github.io</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2023/01/28/First-post-test/">First post &amp; test</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-01-28T07:10:13.000Z" itemprop="datePublished">
+    2023-01-28
+  </time>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h3 id="First-post-test"><a href="#First-post-test" class="headerlink" title="First post &amp; test"></a>First post &amp; test</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;stack&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">#include &lt;algorithm&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">struct TreeNode &#123;</span><br><span class="line">    int val;</span><br><span class="line">    TreeNode *left;</span><br><span class="line">    TreeNode *right;</span><br><span class="line">    TreeNode(int val = 0, TreeNode *left = nullptr, TreeNode *right = nullptr) : val(val), left(left), right(right) &#123;&#125;</span><br><span class="line">    ~TreeNode() &#123;</span><br><span class="line">        val = 0;</span><br><span class="line">        if (left) &#123;</span><br><span class="line">            delete left;</span><br><span class="line">            left = nullptr;</span><br><span class="line">        &#125;</span><br><span class="line">        if (right) &#123;</span><br><span class="line">            delete right;</span><br><span class="line">            right = nullptr;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">void preorderTraverse(TreeNode *root);</span><br><span class="line">void inorderTraverse(TreeNode *root);</span><br><span class="line">void postorderTraverse(TreeNode *root);</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">    TreeNode *root = new TreeNode(1, new TreeNode(2), new TreeNode(3, new TreeNode(4), new TreeNode(5)));</span><br><span class="line">    preorderTraverse(root);</span><br><span class="line">    inorderTraverse(root);</span><br><span class="line">    postorderTraverse(root);</span><br><span class="line">    delete root;</span><br><span class="line">    root = nullptr;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void preorderTraverse(TreeNode *root) &#123;</span><br><span class="line">    stack&lt;TreeNode *&gt; stk;</span><br><span class="line">    vector&lt;int&gt; ans;</span><br><span class="line">    TreeNode *tmp;</span><br><span class="line">    stk.push(root);</span><br><span class="line">    while (!stk.empty()) &#123;</span><br><span class="line">        tmp = stk.top();</span><br><span class="line">        stk.pop();</span><br><span class="line">        ans.push_back(tmp-&gt;val);</span><br><span class="line">        if (tmp-&gt;right) &#123;</span><br><span class="line">            stk.push(tmp-&gt;right);</span><br><span class="line">        &#125;</span><br><span class="line">        if (tmp-&gt;left) &#123;</span><br><span class="line">            stk.push(tmp-&gt;left);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    for (int i = 0; i &lt; ans.size(); i++) &#123;</span><br><span class="line">        cout &lt;&lt; ans[i] &lt;&lt; &quot; &quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void inorderTraverse(TreeNode *root) &#123;</span><br><span class="line">    stack&lt;TreeNode *&gt; stk;</span><br><span class="line">    vector&lt;int&gt; ans;</span><br><span class="line">    TreeNode *tmp = root;</span><br><span class="line">    while (tmp || !stk.empty()) &#123;</span><br><span class="line">        if (tmp) &#123;</span><br><span class="line">            stk.push(tmp);</span><br><span class="line">            tmp = tmp-&gt;left;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            tmp = stk.top();</span><br><span class="line">            stk.pop();</span><br><span class="line">            ans.push_back(tmp-&gt;val);</span><br><span class="line">            tmp = tmp-&gt;right;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    for (int i = 0; i &lt; ans.size(); i++) &#123;</span><br><span class="line">        cout &lt;&lt; ans[i] &lt;&lt; &quot; &quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void postorderTraverse(TreeNode *root) &#123;</span><br><span class="line">    stack&lt;TreeNode *&gt; stk;</span><br><span class="line">    vector&lt;int&gt; ans;</span><br><span class="line">    TreeNode *tmp;</span><br><span class="line">    stk.push(root);</span><br><span class="line">    while (!stk.empty()) &#123;</span><br><span class="line">        tmp = stk.top();</span><br><span class="line">        stk.pop();</span><br><span class="line">        ans.push_back(tmp-&gt;val);</span><br><span class="line">        if (tmp-&gt;left) &#123;</span><br><span class="line">            stk.push(tmp-&gt;left);</span><br><span class="line">        &#125;</span><br><span class="line">        if (tmp-&gt;right) &#123;</span><br><span class="line">            stk.push(tmp-&gt;right);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    reverse(ans.begin(), ans.end());</span><br><span class="line">    for (int i = 0; i &lt; ans.size(); i++) &#123;</span><br><span class="line">        cout &lt;&lt; ans[i] &lt;&lt; &quot; &quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+</ul>
+
+  <section id="nav-wrapper">
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/page/2/">« prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    </nav>
+  </section>
+
+
+            <footer>
+    <div>© 2025 - 恋のあめ🍬 </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

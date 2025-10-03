@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>How to charge up to a limit with the lib closed? | 恋のあめ🍬</title>
+  
+    <link rel="icon" href="/assets/tools.ico">
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 8.0.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url(/assets/twilight.jpg)">
+        <div class='av-pic' style="background-image: url(/assets/kanae.jpeg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>恋のあめ🍬</div>
+        
+            <div>次の年も、また見れるかな？</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a target="_blank" rel="noopener" href="https://github.com/arinsong2001">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+            
+                <a target="_blank" rel="noopener" href="https://twitter.com/arinsong2001">
+                    <img src="/assets/twitter.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>How to charge up to a limit with the lib closed?</h1>
+    </header>
+
+    <section>
+      <h3 id="遇见batt"><a href="#遇见batt" class="headerlink" title="遇见batt"></a>遇见<code>batt</code></h3><p>新买了mba, 心血来潮检查了一下手机的电池容量，一年有余，只剩88%, 自此对苹果产品的电池不抱期待。</p>
+<p>浏览B站时偶遇命令行工具<code>batt</code>, 可以手动控制充电的电量上限，遂下载尝试。</p>
+<p>操作便捷，功能强大，深得我心。</p>
+<p>查看<code>batt</code>的<code>github</code>仓库页面，发现此工具无法在mac睡眠的时候起作用，焦虑油然而生。</p>
+<p>事后来看，它已经默认开启了应对此缺陷的功能选项，但当时的我并不知情。</p>
+<h3 id="锁屏与睡眠"><a href="#锁屏与睡眠" class="headerlink" title="锁屏与睡眠"></a>锁屏与睡眠</h3><p>锁屏不等于睡眠，反过来亦是如此。</p>
+<p>mac的睡眠种类繁多，按触发方式分，有主动睡眠和被动睡眠两种。</p>
+<p>mac合盖时会立刻睡眠，这是主动睡眠的一种，也被称为合盖睡眠。</p>
+<p>另一种主动睡眠是：点击左上角的苹果图标，再点击“睡眠”。</p>
+<p>锁屏时按<code>esc</code>也可以主动进入睡眠，但这种方式不会触发<code>batt</code>的一些功能，稍后会加以分析。</p>
+<p>被动睡眠，亦称空闲睡眠<code>(idle sleep)</code>, 是系统经过一定时间的闲置（没有人为操作）自动触发的睡眠。</p>
+<p>按进入睡眠状态的软硬件范围，可分为以下三种：</p>
+<ol>
+<li><p>系统睡眠<code>(system sleep)</code>: 计算机大部分硬件进入睡眠状态，暂停执行大部分任务。</p>
+</li>
+<li><p>显示器睡眠<code>(display sleep)</code>: 仅让显示器进入睡眠，其余部分正常工作。</p>
+</li>
+<li><p>硬盘睡眠<code>(disk sleep)</code>: 机械硬盘时代的历史遗留物，当时硬盘功耗很高，需要单独设置睡眠。</p>
+</li>
+</ol>
+<p>一般地，主动睡眠和被动睡眠触发的都是系统睡眠。</p>
+<p>macos的系统设置通过以下设置来更改触发空闲睡眠所需的闲置时间：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">锁定屏幕 → 使用电池/电源适配器供电且不活跃时关闭显示器</span><br></pre></td></tr></table></figure>
+
+<p>虽然上面写着关闭显示器，但就是能用来触发系统睡眠～</p>
+<p>此页面还可以设置显示器关闭一段时间后自动锁屏：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">锁定屏幕 → 屏幕保护程序启动或显示器关闭后需要密码</span><br></pre></td></tr></table></figure>
+
+<p>如果屏幕保护程序启动先于显示器关闭，那么从屏幕保护程序启动时开始进行锁屏的倒计时。</p>
+<p>macos自带一个用来阻止睡眠的命令行工具：<code>caffeinate</code>.</p>
+<p>此工具通过不同的选项来阻止不同类型的睡眠：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">caffeinate [-i] # 阻止系统睡眠，但不阻止显示器睡眠</span><br><span class="line">caffeinate -d # 阻止显示器睡眠</span><br><span class="line">caffeinate -m # 阻止硬盘睡眠</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>caffeinate [-i]</code>阻止系统睡眠时，到达闲置时间后显示器能正常关闭。</p>
+<p>使用<code>caffeinate -d</code>阻止显示器睡眠时，预测系统会正常睡眠，可惜事与愿违。</p>
+<p>执行<code>pmset -g log | grep -i sleep</code>查看日志，一行记录映入眼帘：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pid 318(powerd): [0x0000727600018a8c] \</span><br><span class="line">00:09:21 PreventUserIdleSystemSleep named: &quot;Powerd - Prevent sleep while display is on&quot;</span><br></pre></td></tr></table></figure>
+
+<p>似乎mac在使用电源适配器供电且显示器工作时会阻止系统睡眠。</p>
+<h3 id="batt的应对策略"><a href="#batt的应对策略" class="headerlink" title="batt的应对策略"></a><code>batt</code>的应对策略</h3><p><code>batt</code>默认启用了以下两个功能选项：</p>
+<ol>
+<li><p><code>prevent-idle-sleep</code>.</p>
+</li>
+<li><p><code>disable-charging-pre-sleep</code>.</p>
+</li>
+</ol>
+<p>选项一：处于充电状态时阻止空闲睡眠。</p>
+<p>只有右上角的电池显示闪电图标时才是充电状态。</p>
+<p>选项二：睡眠前停止充电。</p>
+<p><strong>停止充电</strong>不是断开电源连接，而是进入<strong>非充电状态</strong>：</p>
+<p>使用电源适配器供电，右上角的电池显示充电头图标。</p>
+<p>此外它还提供了一个选项来更改magsafe指示灯的显示规则：</p>
+<ol start="3">
+<li><code>magsafe-led</code>.</li>
+</ol>
+<p>选项三：控制magsafe指示灯。</p>
+<p>原先的magsafe只有在充满时显示绿色，其他时间显示红色，未连接时熄灭。</p>
+<p>使用此选项后，magsafe会在充电至上限后显示绿色，处于<strong>充电会话</strong>中时显示红色，因睡眠失去对电源的管理时熄灭。</p>
+<p>这样的规则更适合<code>batt</code>, 也更适合观察计算机睡眠与否。</p>
+<p>根据macos的限制，<code>batt</code>会在计算机睡眠时被暂停。</p>
+<p>此时<code>batt</code>不再负责mac的电源管理，电池会被直接充满。</p>
+<p>使用选项一可以在一段充电会话中禁用空闲睡眠，直到电量达到设定的上限。</p>
+<p>但仍存在问题：</p>
+<ul>
+<li><p>会话结束一段时间后仍会触发空闲睡眠从而暂停<code>batt</code>, 继续充电。</p>
+</li>
+<li><p>对主动睡眠束手无策。</p>
+</li>
+</ul>
+<p>为了解决这些问题，作者引入了选项二。</p>
+<p>使用后，无论主动还是被动，睡眠前<code>batt</code>会自动<strong>停止充电</strong>，进入<strong>非充电状态</strong>（AC供电）。</p>
+<p>顺带一说，锁屏后按<code>esc</code>来触发主动睡眠无法停止充电，看来<code>batt</code>没有把这种情况考虑在内。</p>
+<p>好在此时合上盖子的话，<code>batt</code>还是会停止充电，所以影响不大。</p>
+<h3 id="如何在合盖时充电到上限"><a href="#如何在合盖时充电到上限" class="headerlink" title="如何在合盖时充电到上限"></a>如何在合盖时充电到上限</h3><p>日常使用时，电量告急的笔记本急需充电，作为<code>batt</code>用户，却遇到了两难。</p>
+<p>如果在合盖状态下连接电源，mac会直接充满；</p>
+<p>如果先连接电源再合上盖子，充电会立刻停止。</p>
+<p>只能在充电时一直保持开盖状态，别扭，不方便，不优雅。</p>
+<p>某天，灵感一现，我想起了老朋友<code>Amphetamine</code>.</p>
+<p>启用允许显示器睡眠，禁用当显示器关闭时允许系统睡眠，然后下载额外的组件，它能够阻止主动睡眠。</p>
+<p>此时我只要开启一个阻止睡眠的短时会话，锁屏并合上盖子，静候佳音。</p>
+<p>经验证，会话结束后提示音响起，再经过设置的闲置时间后，触发空闲睡眠和<code>batt</code>的停止充电。</p>
+<p>需要注意的是，此时触发的是空闲睡眠而不是合盖睡眠。</p>
+<p>以往合盖时通过操作蓝牙外设等方式会让mac进入短暂的活跃状态。</p>
+<p>短暂时间后，系统会再次触发合盖睡眠，同时触发<code>batt</code>的停止充电。</p>
+<p>因此处于充电会话时进行上述操作，会有以下过程：</p>
+<ol>
+<li><p>合盖但不触发合盖睡眠。</p>
+</li>
+<li><p>2分钟后（根据我的个人设置）显示器关闭，但是系统仍处于活跃状态，magsafe显示红色。</p>
+</li>
+<li><p>一段时间后，电量达到上限，充电会话结束，mac使用电源适配器供电，magsafe显示绿色。</p>
+</li>
+<li><p>2分钟后触发空闲睡眠，<code>batt</code>停止充电，magsafe指示灯熄灭。</p>
+</li>
+</ol>
+<p>花费如此精力，得到的只是类似iphone的手动设定充电上限的功能，这真的值得吗？</p>
+<p>更新：通过自动操作和快捷指令实现了以上操作的部分自动化，详见<code>Mac configs</code>这一章。</p>
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2025-08-12T10:36:07.000Z" itemprop="datePublished">
+              2025-08-12
+            </time>
+          </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2025 - 恋のあめ🍬 </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>
