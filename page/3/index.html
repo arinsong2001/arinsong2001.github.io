@@ -70,6 +70,129 @@
     <header class="title">
       
         <h1>
+          <a href="/2023/04/30/Clash-with-systemd-and-launchd/">Clash with systemd and launchd</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2023-04-30T03:35:09.000Z" itemprop="datePublished">
+    2023-04-30
+  </time>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h3 id="Clash的配置以及系统服务的编写"><a href="#Clash的配置以及系统服务的编写" class="headerlink" title="Clash的配置以及系统服务的编写"></a>Clash的配置以及系统服务的编写</h3><p>腾讯云的服务器不能稳定连接GitHub, 玩耍不愉快。</p>
+<p>尝试更改<code>/etc/hosts</code>, 无果。</p>
+<p>思来想去决定一步到位，开始探索服务器代理。</p>
+<p>经多次试错、反思，最后我选择了<code>clash-core + systemd</code>的方案。</p>
+<h4 id="在Linux上的部署"><a href="#在Linux上的部署" class="headerlink" title="在Linux上的部署"></a>在Linux上的部署</h4><p>首先在<code>clash</code>的<a target="_blank" rel="noopener" href="https://github.com/Dreamacro/clash/releases">releases页面</a>中下载最新且适配服务器平台的版本。</p>
+<p>注意以下几点（以腾讯云为例）：</p>
+<ul>
+<li><p>由于不能稳定连接GitHub, 可选择先下载到本机，然后上传到服务器。</p>
+</li>
+<li><p>注意文件的格式，<code>.gz</code>文件和<code>.tar.gz</code>文件解压方式不同。</p>
+</li>
+<li><p>为了方便，将解压后的文件重命名成<code>clash</code>.</p>
+</li>
+</ul>
+<p>下载完成后需要给予文件执行权限：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x clash</span><br></pre></td></tr></table></figure>
+
+<p>运行一次<code>clash</code>, 获取域名数据库<code>~/.comfig/clash/Country.mmdb</code>和默认的配置文件<code>~/.config/clash/config.yaml</code>.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./clash</span><br></pre></td></tr></table></figure>
+
+<p>如果获取域名数据库失败，就手动下载。</p>
+<p>记得用自己的<code>config.yaml</code>替换默认的文件。</p>
+<p>创建系统服务<code>clash.service</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/systemd/system/clash.service</span><br></pre></td></tr></table></figure>
+
+<p>以下是<code>clash.service</code>的内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=clash</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=simple</span><br><span class="line">ExecStart=/root/clash -f /root/.config/clash/config.yaml</span><br></pre></td></tr></table></figure>
+
+<p>上述系统服务的<code>ExecStart</code>必须写绝对路径，因为加载时不知道<code>~</code>指的是哪个用户，同时必须指定要应用的<code>.yaml</code>文件。</p>
+<p>刷新载入的服务：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br></pre></td></tr></table></figure>
+
+<p>启动服务：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start clash</span><br></pre></td></tr></table></figure>
+
+<p>打印服务状态：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status clash</span><br></pre></td></tr></table></figure>
+
+<p>如果服务状态超出终端大小，可以：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;$(systemctl status clash)&quot;</span><br></pre></td></tr></table></figure>
+
+<p>在<code>.zshrc</code>中添加如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># proxy aliases</span><br><span class="line">alias on=&#x27;export http_proxy=http://127.0.0.1:7890 &amp;&amp; export https_proxy=http://127.0.0.1:7890&#x27;</span><br><span class="line">alias off=&#x27;unset http_proxy &amp;&amp; unset https_proxy&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>刷新<code>.zshrc</code>文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source .zshrc</span><br></pre></td></tr></table></figure>
+
+<p>启动终端代理：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">on</span><br></pre></td></tr></table></figure>
+
+<p>利用<code>curl</code>命令确认<code>clash</code>是否工作正常：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -i google.com</span><br></pre></td></tr></table></figure>
+
+<p>结束终端代理：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">off</span><br></pre></td></tr></table></figure>
+
+<p>结束服务：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop clash</span><br></pre></td></tr></table></figure>
+
+<h4 id="在macOS上的部署"><a href="#在macOS上的部署" class="headerlink" title="在macOS上的部署"></a>在macOS上的部署</h4><p>作为带有图形界面的操作系统，macOS上成熟的代理工具有很多。</p>
+<p>个人使用时选择了<code>Shadowrocket</code>.</p>
+<p>但是我很好奇macOS上是否有类似于<code>systemd</code>的机制。</p>
+<p>私、気になります！</p>
+<p>macOS使用<code>launchd</code>管理用户和系统的服务，使用方法与<code>systemd</code>似而不同。</p>
+<p>有人总结了<code>launchd</code>的用法，并制作了<a target="_blank" rel="noopener" href="https://www.launchd.info/">简明教程</a>。</p>
+<p>接下来在macOS上简单实现一下上述<code>clash</code>服务。</p>
+<p>首先，获取、重命名并执行<code>clash</code>.</p>
+<p>然后，在指定文件夹下创建服务：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvim ~/Library/LaunchAgents/com.arinsong.clash.plist</span><br></pre></td></tr></table></figure>
+
+<p>以下是用户服务文件的内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;</span><br><span class="line">&lt;plist version=&quot;1.0&quot;&gt;</span><br><span class="line">    &lt;dict&gt;</span><br><span class="line">        &lt;key&gt;Label&lt;/key&gt;</span><br><span class="line">        &lt;string&gt;com.arinsong.clash&lt;/string&gt;</span><br><span class="line">        &lt;key&gt;ProgramArguments&lt;/key&gt;</span><br><span class="line">        &lt;array&gt;</span><br><span class="line">            &lt;string&gt;/Users/arinsong/clash&lt;/string&gt;</span><br><span class="line">            &lt;string&gt;-f&lt;/string&gt;</span><br><span class="line">            &lt;string&gt;/Users/arinsong/.config/clash/config.yaml&lt;/string&gt;</span><br><span class="line">        &lt;/array&gt;</span><br><span class="line">        &lt;key&gt;KeepAlive&lt;/key&gt;</span><br><span class="line">        &lt;true/&gt;</span><br><span class="line">        &lt;key&gt;StandardOutPath&lt;/key&gt;</span><br><span class="line">        &lt;string&gt;/Users/arinsong/log&lt;/string&gt;</span><br><span class="line">        &lt;key&gt;StandardErrorPath&lt;/key&gt;</span><br><span class="line">        &lt;string&gt;/Users/arinsong/error&lt;/string&gt;</span><br><span class="line">    &lt;/dict&gt;</span><br><span class="line">&lt;/plist&gt;</span><br></pre></td></tr></table></figure>
+
+<p>载入服务：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">launchctl load ~/Library/LaunchAgents/com.arinsong.clash.plist</span><br></pre></td></tr></table></figure>
+
+<p>因为服务的<code>KeepAlive</code>属性为<code>true</code>, 所以载入服务后会自动启动。</p>
+<p>查看服务状态：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail ~/log</span><br></pre></td></tr></table></figure>
+
+<p>在<code>.zshrc</code>中添加如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># proxy aliases</span><br><span class="line">alias on=&#x27;export http_proxy=http://127.0.0.1:7890 &amp;&amp; export https_proxy=http://127.0.0.1:7890&#x27;</span><br><span class="line">alias off=&#x27;unset http_proxy &amp;&amp; unset https_proxy&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>刷新<code>.zshrc</code>文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source .zshrc</span><br></pre></td></tr></table></figure>
+
+<p>启动终端代理：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">on</span><br></pre></td></tr></table></figure>
+
+<p>利用<code>curl</code>命令确认<code>clash</code>是否工作正常：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -i twitter.com</span><br></pre></td></tr></table></figure>
+
+<p>结束终端代理：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">off</span><br></pre></td></tr></table></figure>
+
+<p>卸载服务：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">launchctl unload ~/Library/LaunchAgents/com.arinsong.clash.plist</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
           <a href="/2023/04/24/Disable-session-restoration-in-Terminal-app/">Disable session restoration in Terminal.app</a>
         </h1>
       
@@ -458,38 +581,11 @@
 
     </li>
   
-    <li>
-      <article class='ListView'>
-    <header class="title">
-      
-        <h1>
-          <a href="/2023/01/28/First-post-test/">First post &amp; test</a>
-        </h1>
-      
-      <div class='ListMeta'>
-  <time datetime="2023-01-28T07:10:13.000Z" itemprop="datePublished">
-    2023-01-28
-  </time>
-  
-  
-</div>
-
-    </header>
-    <div>
-      
-        <h3 id="First-post-test"><a href="#First-post-test" class="headerlink" title="First post &amp; test"></a>First post &amp; test</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;stack&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">#include &lt;algorithm&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">struct TreeNode &#123;</span><br><span class="line">    int val;</span><br><span class="line">    TreeNode *left;</span><br><span class="line">    TreeNode *right;</span><br><span class="line">    TreeNode(int val = 0, TreeNode *left = nullptr, TreeNode *right = nullptr) : val(val), left(left), right(right) &#123;&#125;</span><br><span class="line">    ~TreeNode() &#123;</span><br><span class="line">        val = 0;</span><br><span class="line">        if (left) &#123;</span><br><span class="line">            delete left;</span><br><span class="line">            left = nullptr;</span><br><span class="line">        &#125;</span><br><span class="line">        if (right) &#123;</span><br><span class="line">            delete right;</span><br><span class="line">            right = nullptr;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">void preorderTraverse(TreeNode *root);</span><br><span class="line">void inorderTraverse(TreeNode *root);</span><br><span class="line">void postorderTraverse(TreeNode *root);</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">    TreeNode *root = new TreeNode(1, new TreeNode(2), new TreeNode(3, new TreeNode(4), new TreeNode(5)));</span><br><span class="line">    preorderTraverse(root);</span><br><span class="line">    inorderTraverse(root);</span><br><span class="line">    postorderTraverse(root);</span><br><span class="line">    delete root;</span><br><span class="line">    root = nullptr;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void preorderTraverse(TreeNode *root) &#123;</span><br><span class="line">    stack&lt;TreeNode *&gt; stk;</span><br><span class="line">    vector&lt;int&gt; ans;</span><br><span class="line">    TreeNode *tmp;</span><br><span class="line">    stk.push(root);</span><br><span class="line">    while (!stk.empty()) &#123;</span><br><span class="line">        tmp = stk.top();</span><br><span class="line">        stk.pop();</span><br><span class="line">        ans.push_back(tmp-&gt;val);</span><br><span class="line">        if (tmp-&gt;right) &#123;</span><br><span class="line">            stk.push(tmp-&gt;right);</span><br><span class="line">        &#125;</span><br><span class="line">        if (tmp-&gt;left) &#123;</span><br><span class="line">            stk.push(tmp-&gt;left);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    for (int i = 0; i &lt; ans.size(); i++) &#123;</span><br><span class="line">        cout &lt;&lt; ans[i] &lt;&lt; &quot; &quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void inorderTraverse(TreeNode *root) &#123;</span><br><span class="line">    stack&lt;TreeNode *&gt; stk;</span><br><span class="line">    vector&lt;int&gt; ans;</span><br><span class="line">    TreeNode *tmp = root;</span><br><span class="line">    while (tmp || !stk.empty()) &#123;</span><br><span class="line">        if (tmp) &#123;</span><br><span class="line">            stk.push(tmp);</span><br><span class="line">            tmp = tmp-&gt;left;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            tmp = stk.top();</span><br><span class="line">            stk.pop();</span><br><span class="line">            ans.push_back(tmp-&gt;val);</span><br><span class="line">            tmp = tmp-&gt;right;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    for (int i = 0; i &lt; ans.size(); i++) &#123;</span><br><span class="line">        cout &lt;&lt; ans[i] &lt;&lt; &quot; &quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void postorderTraverse(TreeNode *root) &#123;</span><br><span class="line">    stack&lt;TreeNode *&gt; stk;</span><br><span class="line">    vector&lt;int&gt; ans;</span><br><span class="line">    TreeNode *tmp;</span><br><span class="line">    stk.push(root);</span><br><span class="line">    while (!stk.empty()) &#123;</span><br><span class="line">        tmp = stk.top();</span><br><span class="line">        stk.pop();</span><br><span class="line">        ans.push_back(tmp-&gt;val);</span><br><span class="line">        if (tmp-&gt;left) &#123;</span><br><span class="line">            stk.push(tmp-&gt;left);</span><br><span class="line">        &#125;</span><br><span class="line">        if (tmp-&gt;right) &#123;</span><br><span class="line">            stk.push(tmp-&gt;right);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    reverse(ans.begin(), ans.end());</span><br><span class="line">    for (int i = 0; i &lt; ans.size(); i++) &#123;</span><br><span class="line">        cout &lt;&lt; ans[i] &lt;&lt; &quot; &quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-</article>
-
-    </li>
-  
 </ul>
 
   <section id="nav-wrapper">
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/2/">« prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+      <a class="extend prev" rel="prev" href="/page/2/">« prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">next »</a>
     </nav>
   </section>
 

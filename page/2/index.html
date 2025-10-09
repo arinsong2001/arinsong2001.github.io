@@ -70,6 +70,35 @@
     <header class="title">
       
         <h1>
+          <a href="/2024/08/10/Alacritty-configs/">Alacritty configs</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2024-08-10T09:11:46.000Z" itemprop="datePublished">
+    2024-08-10
+  </time>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h3 id="Alacritty极简配置"><a href="#Alacritty极简配置" class="headerlink" title="Alacritty极简配置"></a>Alacritty极简配置</h3><p>换个终端，换个心情。</p>
+<p><code>~/.config/alacritty/alacritty.toml</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">[window]</span><br><span class="line">padding = &#123; x = 10, y = 10 &#125;</span><br><span class="line">opacity = 0.85</span><br><span class="line">blur = true</span><br><span class="line"></span><br><span class="line">[font]</span><br><span class="line">normal = &#123; family = &quot;Monaco Nerd Font&quot; &#125;</span><br><span class="line">size = 14</span><br><span class="line">offset = &#123; x = 1, y = 1 &#125;</span><br><span class="line"></span><br><span class="line">[bell]</span><br><span class="line">duration = 200</span><br><span class="line">color = &quot;#777777&quot;</span><br><span class="line"></span><br><span class="line"># theme</span><br><span class="line">[colors.primary]</span><br><span class="line">background = &#x27;#32302f&#x27;</span><br><span class="line">foreground = &#x27;#d4be98&#x27;</span><br><span class="line"></span><br><span class="line">[colors.normal]</span><br><span class="line">black   = &#x27;#665c54&#x27;</span><br><span class="line">red     = &#x27;#ea6962&#x27;</span><br><span class="line">green   = &#x27;#a9b665&#x27;</span><br><span class="line">yellow  = &#x27;#e78a4e&#x27;</span><br><span class="line">blue    = &#x27;#7daea3&#x27;</span><br><span class="line">magenta = &#x27;#d3869b&#x27;</span><br><span class="line">cyan    = &#x27;#89b482&#x27;</span><br><span class="line">white   = &#x27;#d4be98&#x27;</span><br><span class="line"></span><br><span class="line">[colors.bright]</span><br><span class="line">black   = &#x27;#928374&#x27;</span><br><span class="line">red     = &#x27;#ea6962&#x27;</span><br><span class="line">green   = &#x27;#a9b665&#x27;</span><br><span class="line">yellow  = &#x27;#d8a657&#x27;</span><br><span class="line">blue    = &#x27;#7daea3&#x27;</span><br><span class="line">magenta = &#x27;#d3869b&#x27;</span><br><span class="line">cyan    = &#x27;#89b482&#x27;</span><br><span class="line">white   = &#x27;#d4be98&#x27;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
           <a href="/2024/07/29/Shell-parameter-expansion/">Shell parameter expansion</a>
         </h1>
       
@@ -262,134 +291,11 @@
 
     </li>
   
-    <li>
-      <article class='ListView'>
-    <header class="title">
-      
-        <h1>
-          <a href="/2023/04/30/Clash-with-systemd-and-launchd/">Clash with systemd and launchd</a>
-        </h1>
-      
-      <div class='ListMeta'>
-  <time datetime="2023-04-30T03:35:09.000Z" itemprop="datePublished">
-    2023-04-30
-  </time>
-  
-  
-</div>
-
-    </header>
-    <div>
-      
-        <h3 id="Clash的配置以及系统服务的编写"><a href="#Clash的配置以及系统服务的编写" class="headerlink" title="Clash的配置以及系统服务的编写"></a>Clash的配置以及系统服务的编写</h3><p>腾讯云的服务器不能稳定连接GitHub, 玩耍不愉快。</p>
-<p>尝试更改<code>/etc/hosts</code>, 无果。</p>
-<p>思来想去决定一步到位，开始探索服务器代理。</p>
-<p>经多次试错、反思，最后我选择了<code>clash-core + systemd</code>的方案。</p>
-<h4 id="在Linux上的部署"><a href="#在Linux上的部署" class="headerlink" title="在Linux上的部署"></a>在Linux上的部署</h4><p>首先在<code>clash</code>的<a target="_blank" rel="noopener" href="https://github.com/Dreamacro/clash/releases">releases页面</a>中下载最新且适配服务器平台的版本。</p>
-<p>注意以下几点（以腾讯云为例）：</p>
-<ul>
-<li><p>由于不能稳定连接GitHub, 可选择先下载到本机，然后上传到服务器。</p>
-</li>
-<li><p>注意文件的格式，<code>.gz</code>文件和<code>.tar.gz</code>文件解压方式不同。</p>
-</li>
-<li><p>为了方便，将解压后的文件重命名成<code>clash</code>.</p>
-</li>
-</ul>
-<p>下载完成后需要给予文件执行权限：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x clash</span><br></pre></td></tr></table></figure>
-
-<p>运行一次<code>clash</code>, 获取域名数据库<code>~/.comfig/clash/Country.mmdb</code>和默认的配置文件<code>~/.config/clash/config.yaml</code>.</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./clash</span><br></pre></td></tr></table></figure>
-
-<p>如果获取域名数据库失败，就手动下载。</p>
-<p>记得用自己的<code>config.yaml</code>替换默认的文件。</p>
-<p>创建系统服务<code>clash.service</code>:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/systemd/system/clash.service</span><br></pre></td></tr></table></figure>
-
-<p>以下是<code>clash.service</code>的内容：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=clash</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=simple</span><br><span class="line">ExecStart=/root/clash -f /root/.config/clash/config.yaml</span><br></pre></td></tr></table></figure>
-
-<p>上述系统服务的<code>ExecStart</code>必须写绝对路径，因为加载时不知道<code>~</code>指的是哪个用户，同时必须指定要应用的<code>.yaml</code>文件。</p>
-<p>刷新载入的服务：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br></pre></td></tr></table></figure>
-
-<p>启动服务：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start clash</span><br></pre></td></tr></table></figure>
-
-<p>打印服务状态：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status clash</span><br></pre></td></tr></table></figure>
-
-<p>如果服务状态超出终端大小，可以：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;$(systemctl status clash)&quot;</span><br></pre></td></tr></table></figure>
-
-<p>在<code>.zshrc</code>中添加如下代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># proxy aliases</span><br><span class="line">alias on=&#x27;export http_proxy=http://127.0.0.1:7890 &amp;&amp; export https_proxy=http://127.0.0.1:7890&#x27;</span><br><span class="line">alias off=&#x27;unset http_proxy &amp;&amp; unset https_proxy&#x27;</span><br></pre></td></tr></table></figure>
-
-<p>刷新<code>.zshrc</code>文件：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source .zshrc</span><br></pre></td></tr></table></figure>
-
-<p>启动终端代理：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">on</span><br></pre></td></tr></table></figure>
-
-<p>利用<code>curl</code>命令确认<code>clash</code>是否工作正常：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -i google.com</span><br></pre></td></tr></table></figure>
-
-<p>结束终端代理：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">off</span><br></pre></td></tr></table></figure>
-
-<p>结束服务：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop clash</span><br></pre></td></tr></table></figure>
-
-<h4 id="在macOS上的部署"><a href="#在macOS上的部署" class="headerlink" title="在macOS上的部署"></a>在macOS上的部署</h4><p>作为带有图形界面的操作系统，macOS上成熟的代理工具有很多。</p>
-<p>个人使用时选择了<code>Shadowrocket</code>.</p>
-<p>但是我很好奇macOS上是否有类似于<code>systemd</code>的机制。</p>
-<p>私、気になります！</p>
-<p>macOS使用<code>launchd</code>管理用户和系统的服务，使用方法与<code>systemd</code>似而不同。</p>
-<p>有人总结了<code>launchd</code>的用法，并制作了<a target="_blank" rel="noopener" href="https://www.launchd.info/">简明教程</a>。</p>
-<p>接下来在macOS上简单实现一下上述<code>clash</code>服务。</p>
-<p>首先，获取、重命名并执行<code>clash</code>.</p>
-<p>然后，在指定文件夹下创建服务：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvim ~/Library/LaunchAgents/com.arinsong.clash.plist</span><br></pre></td></tr></table></figure>
-
-<p>以下是用户服务文件的内容：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;</span><br><span class="line">&lt;plist version=&quot;1.0&quot;&gt;</span><br><span class="line">    &lt;dict&gt;</span><br><span class="line">        &lt;key&gt;Label&lt;/key&gt;</span><br><span class="line">        &lt;string&gt;com.arinsong.clash&lt;/string&gt;</span><br><span class="line">        &lt;key&gt;ProgramArguments&lt;/key&gt;</span><br><span class="line">        &lt;array&gt;</span><br><span class="line">            &lt;string&gt;/Users/arinsong/clash&lt;/string&gt;</span><br><span class="line">            &lt;string&gt;-f&lt;/string&gt;</span><br><span class="line">            &lt;string&gt;/Users/arinsong/.config/clash/config.yaml&lt;/string&gt;</span><br><span class="line">        &lt;/array&gt;</span><br><span class="line">        &lt;key&gt;KeepAlive&lt;/key&gt;</span><br><span class="line">        &lt;true/&gt;</span><br><span class="line">        &lt;key&gt;StandardOutPath&lt;/key&gt;</span><br><span class="line">        &lt;string&gt;/Users/arinsong/log&lt;/string&gt;</span><br><span class="line">        &lt;key&gt;StandardErrorPath&lt;/key&gt;</span><br><span class="line">        &lt;string&gt;/Users/arinsong/error&lt;/string&gt;</span><br><span class="line">    &lt;/dict&gt;</span><br><span class="line">&lt;/plist&gt;</span><br></pre></td></tr></table></figure>
-
-<p>载入服务：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">launchctl load ~/Library/LaunchAgents/com.arinsong.clash.plist</span><br></pre></td></tr></table></figure>
-
-<p>因为服务的<code>KeepAlive</code>属性为<code>true</code>, 所以载入服务后会自动启动。</p>
-<p>查看服务状态：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail ~/log</span><br></pre></td></tr></table></figure>
-
-<p>在<code>.zshrc</code>中添加如下代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># proxy aliases</span><br><span class="line">alias on=&#x27;export http_proxy=http://127.0.0.1:7890 &amp;&amp; export https_proxy=http://127.0.0.1:7890&#x27;</span><br><span class="line">alias off=&#x27;unset http_proxy &amp;&amp; unset https_proxy&#x27;</span><br></pre></td></tr></table></figure>
-
-<p>刷新<code>.zshrc</code>文件：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source .zshrc</span><br></pre></td></tr></table></figure>
-
-<p>启动终端代理：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">on</span><br></pre></td></tr></table></figure>
-
-<p>利用<code>curl</code>命令确认<code>clash</code>是否工作正常：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -i twitter.com</span><br></pre></td></tr></table></figure>
-
-<p>结束终端代理：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">off</span><br></pre></td></tr></table></figure>
-
-<p>卸载服务：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">launchctl unload ~/Library/LaunchAgents/com.arinsong.clash.plist</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-</article>
-
-    </li>
-  
 </ul>
 
   <section id="nav-wrapper">
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">« prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">next »</a>
+      <a class="extend prev" rel="prev" href="/">« prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">next »</a>
     </nav>
   </section>
 

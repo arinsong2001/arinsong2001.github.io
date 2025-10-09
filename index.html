@@ -70,6 +70,92 @@
     <header class="title">
       
         <h1>
+          <a href="/2025/10/08/Copilot-lua-configs/">Copilot.lua configs</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2025-10-08T11:59:04.000Z" itemprop="datePublished">
+    2025-10-08
+  </time>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h3 id="配置Copilot补全的经验书"><a href="#配置Copilot补全的经验书" class="headerlink" title="配置Copilot补全的经验书"></a>配置Copilot补全的经验书</h3><p>吝啬微软把<code>copilot</code>的free套餐弄得小小，穷苦人家只得勒紧裤腰带过日子。</p>
+<p><code>copilot.lua</code>总是默认启用，明明只是随便用用，上<code>github</code>一查，额度竟不剩多少。</p>
+<p>遂采用多种方法企图让它默认禁用，并且可以随手启用，途中所见所闻不少，值得记录。</p>
+<h4 id="初次尝试"><a href="#初次尝试" class="headerlink" title="初次尝试"></a>初次尝试</h4><p>最初的尝试有点想当然，只是在<code>plugins.lua</code>里添加了一条<code>enabled = false</code>.</p>
+<p>然而这会让<code>copilot.lua</code>整体被禁用，不能通过<code>:Copilot enable</code>手动启用。</p>
+<p>无疾而终。</p>
+<p>求助<code>gpt</code>老师，人没访到，只有个人工智障前来接待，给出的答案牛头不对马嘴。</p>
+<p>最终与自己和解，想在<code>nvim</code>启动后用<code>autocmd</code>禁用一下看行不行。</p>
+<p>以下是最初的<code>autocmd</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim.api.nvim_create_autocmd(&quot;VimEnter&quot;, &#123;</span><br><span class="line">  callback = function()</span><br><span class="line">    vim.cmd(&quot;Copilot disable&quot;)</span><br><span class="line">  end,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>实际上这样写确实能起作用，只是每次启动<code>nvim</code>都会在右上角弹出意义不明的通知和警告：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Notify [Copilot.lua] copilot is offline</span><br><span class="line">Warning [Copilot.lua] copilot is disabled</span><br></pre></td></tr></table></figure>
+
+<p>奇怪的是不使用<code>autocmd</code>转而手动<code>disable</code>就不会触发以上通知和警告。</p>
+<p>经研究，在<code>copilot</code>处于<code>disabled</code>状态时执行<code>:Copilot attach</code>会触发“警告”。</p>
+<p>初步怀疑其他插件加载时会依赖该插件，此时会触发<code>offline</code>的通知。</p>
+<p>后尝试添加延时：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vim.api.nvim_create_autocmd(&quot;VimEnter&quot;, &#123;</span><br><span class="line">  callback = function()</span><br><span class="line">    vim.defer_fn(function()</span><br><span class="line">      vim.cmd(&quot;Copilot disable&quot;)</span><br><span class="line">    end, 100)</span><br><span class="line">  end,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>更换触发事件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">vim.api.nvim_create_autocmd(&quot;LspAttach&quot;, &#123;</span><br><span class="line">  callback = function(args)</span><br><span class="line">    local client = vim.lsp.get_client_by_id(args.data.client_id)</span><br><span class="line">    if client and client.name == &quot;copilot&quot; then</span><br><span class="line">      vim.defer_fn(function()</span><br><span class="line">        vim.cmd(&quot;Copilot disable&quot;)</span><br><span class="line">      end, 100)</span><br><span class="line">    end</span><br><span class="line">  end,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>均失败，前者仍会触发通知和警告，后者在手动<code>enable</code>后也会执行<code>disable</code>, 导致<code>copilot</code>永远处于<code>disabled</code>状态。</p>
+<p>途中还学习了<code>nvim</code>启动时触发事件的顺序：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BufAdd(初始Buffer) → BufEnter(初始Buffer) → VimEnter → BufAdd → BufEnter → FileType/Syntax → LspAttach</span><br></pre></td></tr></table></figure>
+
+<h4 id="成功却非优雅"><a href="#成功却非优雅" class="headerlink" title="成功却非优雅"></a>成功却非优雅</h4><p>在最后一版<code>autocmd</code>的基础上添加只会执行一次的逻辑，可以勉强满足需求：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">vim.api.nvim_create_autocmd(&quot;LspAttach&quot;, &#123;</span><br><span class="line">  callback = function(args)</span><br><span class="line">    local client = vim.lsp.get_client_by_id(args.data.client_id)</span><br><span class="line">    if not vim.g.copilot_once_disabled and client and client.name == &quot;copilot&quot; then</span><br><span class="line">      vim.defer_fn(function()</span><br><span class="line">        vim.cmd(&quot;Copilot disable&quot;)</span><br><span class="line">        vim.g.copilot_once_disabled = true</span><br><span class="line">      end, 100)</span><br><span class="line">    end</span><br><span class="line">  end,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>后序优化包括改为使用<code>local</code>变量，用<code>vim.schedule()</code>替代<code>vim.defer_fn()</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">local copilot_once_disabled = false</span><br><span class="line"></span><br><span class="line">vim.api.nvim_create_autocmd(&quot;LspAttach&quot;, &#123;</span><br><span class="line">  callback = function(args)</span><br><span class="line">    local client = vim.lsp.get_client_by_id(args.data.client_id)</span><br><span class="line">    if not copilot_once_disabled and client and client.name == &quot;copilot&quot; then</span><br><span class="line">      vim.schedule(function() -- 在当前nvim活动完成后执行，比固定延时执行更稳定</span><br><span class="line">        vim.cmd(&quot;Copilot disable&quot;)</span><br><span class="line">        copilot_once_disabled = true</span><br><span class="line">      end)</span><br><span class="line">    end</span><br><span class="line">  end,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h4 id="灵感一现"><a href="#灵感一现" class="headerlink" title="灵感一现"></a>灵感一现</h4><p>某次<code>nv test.txt</code>时，想手动<code>enable</code>一下<code>copilot</code>，观察到以下现象：</p>
+<p>右下角<code>copilot</code>图标出现了一小会儿，随即消失，后续<code>enable</code>正常生效。</p>
+<p>退出，尝试<code>nv test.py</code>发现加载完成后就会出现<code>copilot</code>图标出现又消失的现象。</p>
+<p>这说明<code>nv test.txt</code>时<code>copilot</code>根本没有被<code>enable</code>.</p>
+<p>也就是说<code>copilot.lua</code>能够根据文件类型决定是否<code>enable</code>.</p>
+<p>带着这个关键信息寻访<code>copilot.lua</code>的<code>github</code>主页，果然发现<code>filetypes</code>项能够控制这一行为。</p>
+<p>虽然主页没有给出默认配置，但声称通过添加<code>[&quot;*&quot;]</code>可以禁用默认配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">If you add &quot;*&quot; as a filetype, the default configuration for filetypes won&#x27;t be used anymore.</span><br></pre></td></tr></table></figure>
+
+<p>最终配置如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;zbirenbaum/copilot.lua&quot;,</span><br><span class="line">  keys = &#123; &#123; &quot;&lt;leader&gt;ac&quot;, &quot;&lt;cmd&gt;Copilot! toggle&lt;cr&gt;&quot;, desc = &quot;Copilot! toggle&quot; &#125; &#125;,</span><br><span class="line">  opts = &#123; filetypes = &#123; [&quot;*&quot;] = false &#125; &#125;,</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p><code>Copilot! toggle</code>中的<code>!</code>符号表示强制执行，看起来<code>filetypes</code>项的优先级相当高。</p>
+<p><code>autocmds.lua</code>里的相关配置也没用了，酌情删去。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>微软的吝啬之举倒逼我：</p>
+<ul>
+<li><p>回顾<code>nvim</code>的<code>autocmd</code>写法；</p>
+</li>
+<li><p>分析<code>nvim</code>启动时触发事件的顺序；</p>
+</li>
+<li><p>明辨<code>vim.defer_fn()</code>和<code>vim.schedule()</code>的区别；</p>
+</li>
+<li><p>了解针对单一插件的快捷键的添加方式；</p>
+</li>
+<li><p>收获时刻关注细微之处的宝贵经验。</p>
+</li>
+</ul>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
           <a href="/2025/08/12/How-to-charge-up-to-a-limit-with-the-lib-closed/">How to charge up to a limit with the lib closed?</a>
         </h1>
       
@@ -384,40 +470,11 @@
 
     </li>
   
-    <li>
-      <article class='ListView'>
-    <header class="title">
-      
-        <h1>
-          <a href="/2024/08/10/Alacritty-configs/">Alacritty configs</a>
-        </h1>
-      
-      <div class='ListMeta'>
-  <time datetime="2024-08-10T09:11:46.000Z" itemprop="datePublished">
-    2024-08-10
-  </time>
-  
-  
-</div>
-
-    </header>
-    <div>
-      
-        <h3 id="Alacritty极简配置"><a href="#Alacritty极简配置" class="headerlink" title="Alacritty极简配置"></a>Alacritty极简配置</h3><p>换个终端，换个心情。</p>
-<p><code>~/.config/alacritty/alacritty.toml</code>:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">[window]</span><br><span class="line">padding = &#123; x = 10, y = 10 &#125;</span><br><span class="line">opacity = 0.85</span><br><span class="line">blur = true</span><br><span class="line"></span><br><span class="line">[font]</span><br><span class="line">normal = &#123; family = &quot;Monaco Nerd Font&quot; &#125;</span><br><span class="line">size = 14</span><br><span class="line">offset = &#123; x = 1, y = 1 &#125;</span><br><span class="line"></span><br><span class="line">[bell]</span><br><span class="line">duration = 200</span><br><span class="line">color = &quot;#777777&quot;</span><br><span class="line"></span><br><span class="line"># theme</span><br><span class="line">[colors.primary]</span><br><span class="line">background = &#x27;#32302f&#x27;</span><br><span class="line">foreground = &#x27;#d4be98&#x27;</span><br><span class="line"></span><br><span class="line">[colors.normal]</span><br><span class="line">black   = &#x27;#665c54&#x27;</span><br><span class="line">red     = &#x27;#ea6962&#x27;</span><br><span class="line">green   = &#x27;#a9b665&#x27;</span><br><span class="line">yellow  = &#x27;#e78a4e&#x27;</span><br><span class="line">blue    = &#x27;#7daea3&#x27;</span><br><span class="line">magenta = &#x27;#d3869b&#x27;</span><br><span class="line">cyan    = &#x27;#89b482&#x27;</span><br><span class="line">white   = &#x27;#d4be98&#x27;</span><br><span class="line"></span><br><span class="line">[colors.bright]</span><br><span class="line">black   = &#x27;#928374&#x27;</span><br><span class="line">red     = &#x27;#ea6962&#x27;</span><br><span class="line">green   = &#x27;#a9b665&#x27;</span><br><span class="line">yellow  = &#x27;#d8a657&#x27;</span><br><span class="line">blue    = &#x27;#7daea3&#x27;</span><br><span class="line">magenta = &#x27;#d3869b&#x27;</span><br><span class="line">cyan    = &#x27;#89b482&#x27;</span><br><span class="line">white   = &#x27;#d4be98&#x27;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-</article>
-
-    </li>
-  
 </ul>
 
   <section id="nav-wrapper">
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">next »</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">next »</a>
     </nav>
   </section>
 
