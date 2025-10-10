@@ -112,9 +112,11 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">If you add &quot;*&quot; as a filetype, the default configuration for filetypes won&#x27;t be used anymore.</span><br></pre></td></tr></table></figure>
 
 <p>最终配置如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;zbirenbaum/copilot.lua&quot;,</span><br><span class="line">  keys = &#123; &#123; &quot;&lt;leader&gt;ac&quot;, &quot;&lt;cmd&gt;Copilot! toggle&lt;cr&gt;&quot;, desc = &quot;Copilot! toggle&quot; &#125; &#125;,</span><br><span class="line">  opts = &#123; filetypes = &#123; [&quot;*&quot;] = false &#125; &#125;,</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;zbirenbaum/copilot.lua&quot;,</span><br><span class="line">  keys = &#123; &#123; &quot;&lt;leader&gt;ac&quot;, &quot;&lt;cmd&gt;Copilot! toggle&lt;cr&gt;&quot;, desc = &quot;Copilot! toggle&quot; &#125; &#125;,</span><br><span class="line">  opts = &#123; filetypes = &#123; [&quot;*&quot;] = false, markdown = false, help = false &#125; &#125;,</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
 
 <p><code>Copilot! toggle</code>中的<code>!</code>符号表示强制执行，看起来<code>filetypes</code>项的优先级相当高。</p>
+<p>为何添加<code>markdown = false</code>和<code>help = false</code>这两项?</p>
+<p>因为添加<code>[&quot;*&quot;]</code>所禁用的“默认配置”指的是插件自己的默认配置，而不是<code>lazyvim</code>给它添加的初始配置。</p>
 <p><code>autocmds.lua</code>里的相关配置也没用了，酌情删去。</p>
 <h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>微软的吝啬之举倒逼我：</p>
 <ul>
