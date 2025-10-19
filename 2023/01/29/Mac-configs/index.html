@@ -84,46 +84,36 @@
 <ul>
 <li><p>调度中心：</p>
 <ul>
-<li><p>修改<code>调度中心 on Control + Command + Tab</code></p>
+<li><p>修改<code>调度中心 on Control + Command + Tab</code>.</p>
 </li>
-<li><p>修改<code>显示桌面 on Control + Command + W</code></p>
+<li><p>修改<code>显示桌面 on Control + Command + W</code>.</p>
 </li>
 </ul>
 </li>
 <li><p>聚焦：</p>
 <ul>
-<li>修改<code>显示App on Control + Command + E</code></li>
-</ul>
-</li>
-<li><p>App快捷键：</p>
-<ul>
-<li><p>为<code>所有应用程序</code>添加<code>启动终端 on Control + Command + T</code></p>
-</li>
-<li><p>为<code>所有应用程序</code>添加<code>启动浏览器 on Control + Command + S</code></p>
-</li>
-<li><p>为<code>所有应用程序</code>添加<code>一时活跃 on Control + Command + A</code></p>
-</li>
+<li>修改<code>显示App on Control + Command + E</code>.</li>
 </ul>
 </li>
 <li><p>功能键：<code>将F1、F2等键用作标准功能键：启用</code></p>
 </li>
+</ul>
+</li>
 <li><p>修饰键：<code>Capslock to Control &amp;&amp; Control to Capslock</code></p>
 </li>
-</ul>
-</li>
-<li><p>App快捷键：</p>
-</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">defaults write -g NSUserKeyEquivalents -dict \</span><br><span class="line">&quot;\U4e00\U65f6\U6d3b\U8dc3&quot; &quot;@^a&quot; \</span><br><span class="line">&quot;\U542f\U52a8\U6d4f\U89c8\U5668&quot; &quot;@^s&quot; \</span><br><span class="line">&quot;\U542f\U52a8\U7ec8\U7aef&quot; &quot;@^t&quot; \</span><br><span class="line">&quot;\U586b\U5145&quot; &quot;@^f&quot; \</span><br><span class="line">&quot;\U5c45\U4e2d&quot; &quot;@^c&quot; \</span><br><span class="line">&quot;\U6062\U590d\U4e0a\U4e00\U4e2a\U5927\U5c0f&quot; &quot;@^r&quot;</span><br></pre></td></tr></table></figure>
-
-<ul>
 <li><p><code>文字输入 → 输入法 → 编辑... → 所有输入法</code></p>
-</li>
+<ul>
 <li><p>自动纠正拼写：<code>禁用</code></p>
 </li>
 <li><p>自动大写字词的首字母：<code>禁用</code></p>
 </li>
 </ul>
+</li>
+</ul>
+<p>App快捷键：</p>
+<p>保存并执行<code>KeyEquivalents-setup.py</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env python3</span><br><span class="line"></span><br><span class="line">import subprocess</span><br><span class="line"></span><br><span class="line"># Key Modifiers</span><br><span class="line"># @ : Command</span><br><span class="line"># ~ : Option</span><br><span class="line"># ^ : Ctrl</span><br><span class="line"># $ : Shift</span><br><span class="line"></span><br><span class="line">key_equivalents = &#123;</span><br><span class="line">    &quot;启动终端&quot;: &quot;@^t&quot;,</span><br><span class="line">    &quot;启动浏览器&quot;: &quot;@^s&quot;,</span><br><span class="line">    &quot;一时活跃&quot;: &quot;@^a&quot;,</span><br><span class="line">    &quot;填充&quot;: &quot;@^f&quot;,</span><br><span class="line">    &quot;居中&quot;: &quot;@^c&quot;,</span><br><span class="line">    &quot;恢复上一个大小&quot;: &quot;@^r&quot;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">for tag, keymap in key_equivalents.items():</span><br><span class="line">    cmd = f&#x27;defaults write -g NSUserKeyEquivalents -dict-add &quot;&#123;tag&#125;&quot; &quot;&#123;keymap&#125;&quot;&#x27;</span><br><span class="line">    subprocess.run(cmd, shell=True, check=True)</span><br></pre></td></tr></table></figure>
+
 <p>鼠标：</p>
 <ul>
 <li><p>跟踪速度：<code>5格</code></p>
