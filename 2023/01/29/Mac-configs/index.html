@@ -80,11 +80,6 @@
 </li>
 <li><p><code>键盘快捷键...</code></p>
 <ul>
-<li><p>启动台与程序坞：</p>
-<ul>
-<li>启用<code>显示启动台 on Control + Command + E</code></li>
-</ul>
-</li>
 <li><p>调度中心：</p>
 <ul>
 <li><p>修改<code>调度中心 on Control + Command + Tab</code></p>
@@ -115,12 +110,10 @@
 </ul>
 </li>
 <li><p><code>文字输入 → 输入法 → 编辑... → 所有输入法</code></p>
-<ul>
+</li>
 <li><p>自动纠正拼写：<code>禁用</code></p>
 </li>
 <li><p>自动大写字词的首字母：<code>禁用</code></p>
-</li>
-</ul>
 </li>
 </ul>
 <p>鼠标：</p>
@@ -155,7 +148,7 @@
 <ul>
 <li><p>本机名称：<code>Cynthia</code></p>
 </li>
-<li><p>iMessage转发：<code>iPhone Settings → Messages → Text Message Forwarding </code></p>
+<li><p>iMessage转发：<code>iPhone Settings → Messages → Text Message Forwarding</code></p>
 <ul>
 <li>可能需要手动登陆：<code>设置 → 信息 → 发送与接收 → 使用AppleID登陆iMessage信息</code></li>
 </ul>
@@ -207,110 +200,26 @@
 </ul>
 <h4 id="终端"><a href="#终端" class="headerlink" title="终端"></a>终端</h4><p>老骥伏枥，志在千里。</p>
 <p>打开<code>App Store</code>, 下载<code>Amphetamine</code>, 更换美区账号，下载<code>Shadowrocket</code>并配置。</p>
+<ul>
+<li>可以用移动端<code>Shadowrocket</code>同步。</li>
+</ul>
 <p>按<code>Control + Command + T</code>, 启动<code>终端</code>。</p>
 <p>下载<code>command line tools</code>:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcode-select --install</span><br></pre></td></tr></table></figure>
 
 <p>配置<code>dotfiles</code>:</p>
-<p>另：<code>iCloud</code>存有备份，可仅在<code>Finder</code>中配置。</p>
-<p><a target="_blank" rel="noopener" href="https://arinsong2001.github.io/2024/08/14/Gruvbox-for-Terminal-app/"><code>Gruvbox.terminal</code></a></p>
-<p><code>.zshenv</code>:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHELL_SESSIONS_DISABLE=1</span><br></pre></td></tr></table></figure>
-
-<p><code>.zprofile</code>:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eval &quot;$(/opt/homebrew/bin/brew shellenv)&quot;</span><br></pre></td></tr></table></figure>
-
-<p><a target="_blank" rel="noopener" href="https://arinsong2001.github.io/2023/04/22/Zsh-configs/"><code>.zshrc</code></a></p>
-<p><code>.vimrc</code>:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&quot;text settings</span><br><span class="line">se et ts=2 sw=2 ai si nu rnu</span><br><span class="line"></span><br><span class="line">&quot;indent settings</span><br><span class="line">filetype indent on</span><br><span class="line"></span><br><span class="line">&quot;syntax settings</span><br><span class="line">syntax on</span><br><span class="line"></span><br><span class="line">&quot;interaction settings</span><br><span class="line">se mouse=a</span><br><span class="line">se clipboard=unnamed</span><br><span class="line"></span><br><span class="line">&quot;searching settings</span><br><span class="line">se ignorecase</span><br><span class="line">se smartcase</span><br></pre></td></tr></table></figure>
-
-<p>等候<code>command line tools</code>安装完成。</p>
-<p>安装<a target="_blank" rel="noopener" href="https://brew.sh/"><code>Homebrew</code></a>:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># icloud 或需要手动登录一次，等待文件同步需要时间。</span><br><span class="line"># 可以先等待 command line tools 下载完成。</span><br><span class="line">cd ~/&#x27;Library/Mobile Documents/com~apple~CloudDocs&#x27; &amp;&amp; cp -R . ~ &amp;&amp; cd</span><br></pre></td></tr></table></figure>
 
 <p>安装软件包：</p>
-<p><code>neovim</code>:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install neovim</span><br></pre></td></tr></table></figure>
-
-<p><code>hexo</code>:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install hexo</span><br></pre></td></tr></table></figure>
-
-<p>抹掉所有内容和设置后重新部署<code>hexo</code>时，遇到<code>hexo deploy</code>失败的问题。</p>
-<p>原因是系统自带的<code>git</code>无法使用<code>钥匙串</code>内<code>github.com</code>的密钥。</p>
-<p><code>git</code>:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install git</span><br></pre></td></tr></table></figure>
-
-<p><code>tlrc</code>:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install tlrc</span><br></pre></td></tr></table></figure>
-
-<p><code>tree</code>:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install tree</span><br></pre></td></tr></table></figure>
-
-<p><code>fontforge</code>:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install fontforge</span><br></pre></td></tr></table></figure>
-
-<p><code>batt</code>:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">brew install batt</span><br><span class="line">sudo brew services start batt</span><br><span class="line">batt magsafe-led enable</span><br></pre></td></tr></table></figure>
-
-<p><code>appcleaner</code>:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install --cask appcleaner</span><br></pre></td></tr></table></figure>
-
-<p><code>neovide</code>:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install --cask neovide</span><br></pre></td></tr></table></figure>
-
-<p><code>visual-studio-code</code>:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install --cask visual-studio-code</span><br></pre></td></tr></table></figure>
-
-<p><code>typora</code>:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install --cask typora</span><br></pre></td></tr></table></figure>
-
-<p><code>chatgpt</code>:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install --cask chatgpt</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"># Basics</span><br><span class="line"></span><br><span class="line"># homebrew</span><br><span class="line">/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;</span><br><span class="line"></span><br><span class="line"># neovim</span><br><span class="line">brew install neovim</span><br><span class="line"></span><br><span class="line"># hexo</span><br><span class="line">brew install hexo</span><br><span class="line"></span><br><span class="line"># 抹掉所有内容和设置后重新部署 hexo 时，遇到 hexo deploy 失败的问题。</span><br><span class="line"># 原因是系统自带的 git 无法使用钥匙串内 github.com 的密钥。</span><br><span class="line"></span><br><span class="line"># git</span><br><span class="line">brew install git</span><br><span class="line"></span><br><span class="line"># tree</span><br><span class="line">brew install tree</span><br><span class="line"></span><br><span class="line"># tlrc</span><br><span class="line">brew install tlrc</span><br><span class="line"></span><br><span class="line"># fontforge</span><br><span class="line">brew install fontforge</span><br><span class="line"></span><br><span class="line"># batt</span><br><span class="line">brew install batt</span><br><span class="line">sudo brew services start batt</span><br><span class="line">batt magsafe-led enable</span><br><span class="line"></span><br><span class="line"># Lazyvim deps</span><br><span class="line"></span><br><span class="line"># fzf</span><br><span class="line">brew install fzf</span><br><span class="line"></span><br><span class="line"># fd</span><br><span class="line">brew install fd</span><br><span class="line"></span><br><span class="line"># ripgrep</span><br><span class="line">brew install ripgrep</span><br><span class="line"></span><br><span class="line"># lazygit</span><br><span class="line">brew install lazygit</span><br><span class="line"></span><br><span class="line"># Casks</span><br><span class="line"></span><br><span class="line"># appcleaner</span><br><span class="line">brew install --cask appcleaner</span><br><span class="line"></span><br><span class="line"># neovide</span><br><span class="line">brew install --cask neovide</span><br><span class="line"></span><br><span class="line"># visual-studio-code</span><br><span class="line">brew install --cask visual-studio-code</span><br><span class="line"></span><br><span class="line"># typora</span><br><span class="line">brew install --cask typora</span><br><span class="line"></span><br><span class="line"># chatgpt</span><br><span class="line">brew install --cask chatgpt</span><br></pre></td></tr></table></figure>
 
 <p>为<code>Terminal.app</code>, <code>AppCleaner</code>, <code>Visual Studio Code</code>, <code>Typora</code>赋予<code>完全磁盘访问权限</code>。</p>
-<p>最后整理一下程序坞和启动台（新版系统可能没有启动台了）。</p>
 <h4 id="编辑器与博客"><a href="#编辑器与博客" class="headerlink" title="编辑器与博客"></a>编辑器与博客</h4><p>纸上得来终觉浅，绝知此事要躬行。</p>
 <p>打包并安装<code>Monaco Nerd Font</code>字体：</p>
 <p><a target="_blank" rel="noopener" href="https://arinsong2001.github.io/2024/02/18/Monaco-nerd-font/"><code>Monaco-nerd-font</code></a></p>
 <p>安装完成后，修改终端字体：<code>Monaco Nerd Font</code>.</p>
-<p>完成<code>neovim</code>的配置：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">md ~/.config/nvim &amp;&amp; d ~/.config/nvim</span><br><span class="line">git clone https://github.com/LazyVim/starter .</span><br><span class="line">rm -rf .git</span><br></pre></td></tr></table></figure>
-
-<p><code>Lazyvim</code>配置：</p>
-<p><a target="_blank" rel="noopener" href="https://arinsong2001.github.io/2024/08/20/Lazyvim-configs/"><code>Lazyvim-configs</code></a></p>
 <p>最后配置一下<code>hexo</code>:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">md ~/Documents/Hexo &amp;&amp; d ~/Documents/Hexo</span><br><span class="line">hexo init</span><br></pre></td></tr></table></figure>
-
-<p>下载主题：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">g clone https://github.com/nameoverflow/hexo-theme-icalm.git themes/hexo-theme-icalm</span><br><span class="line">d themes/hexo-theme-icalm/</span><br><span class="line">g submodule update --init --recursive</span><br></pre></td></tr></table></figure>
-
-<p>备份保存在<code>Utilities</code>仓库中：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">d ~/Documents</span><br><span class="line">g clone https://github.com/arinsong2001/Utilities.git</span><br></pre></td></tr></table></figure>
-
-<p>按需输入用户名<code>arinsong2001</code>和<code>token</code>, <code>token</code>需要事先生成。</p>
-<p>复制粘贴配置和<code>posts</code>:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -R ~/Documents/Utilities/Hexo ~/Documents</span><br></pre></td></tr></table></figure>
-
-<p>删除额外生成的<code>hello-world.md</code>:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm ~/Documents/Hexo/source/_posts/hello-world.md</span><br></pre></td></tr></table></figure>
-
-<p>安装 <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo-deployer-git">hexo-deployer-git</a>:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">d ~/Documents/Hexo</span><br><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
-
-<p>配置<code>.gitconfig</code>:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">g config --global user.name &#x27;arinsong2001&#x27;</span><br><span class="line">g config --global user.email &#x27;arinsong2001@qq.com&#x27;</span><br><span class="line"></span><br><span class="line">e &#x27;.DS_Store&#x27; &gt; ~/.gitignore</span><br><span class="line">g config --global core.excludesfile &#x27;~/.gitignore&#x27;</span><br></pre></td></tr></table></figure>
-
-<p>生成页面：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hxg # hexo g</span><br></pre></td></tr></table></figure>
-
-<p>预览页面：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hxs # hexo s</span><br></pre></td></tr></table></figure>
-
-<p>部署：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hxd # hexo d</span><br></pre></td></tr></table></figure>
-
-<p>备份：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hxb</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"># 初始化</span><br><span class="line">md ~/Documents/Hexo &amp;&amp; d ~/Documents/Hexo &amp;&amp; hexo init</span><br><span class="line">rm ~/Documents/Hexo/source/_posts/hello-world.md</span><br><span class="line"></span><br><span class="line"># 下载主题</span><br><span class="line">g clone https://github.com/nameoverflow/hexo-theme-icalm.git themes/hexo-theme-icalm</span><br><span class="line">d themes/hexo-theme-icalm/</span><br><span class="line">g submodule update --init --recursive</span><br><span class="line"></span><br><span class="line"># 获取备份</span><br><span class="line">d ~/Documents</span><br><span class="line">g clone https://github.com/arinsong2001/Utilities.git</span><br><span class="line"></span><br><span class="line"># 按需输入用户名 arinsong2001 和 token, 其中 token 需要事先生成。</span><br><span class="line"></span><br><span class="line"># 备份恢复</span><br><span class="line">cp -R ~/Documents/Utilities/Hexo ~/Documents</span><br><span class="line"></span><br><span class="line"># 安装 hexo-deployer-git</span><br><span class="line"># https://github.com/hexojs/hexo-deployer-git</span><br><span class="line">d ~/Documents/Hexo</span><br><span class="line">npm install hexo-deployer-git --save</span><br><span class="line"></span><br><span class="line"># 生成并预览页面</span><br><span class="line">hxg # hexo g</span><br><span class="line">hxs # hexo s</span><br><span class="line"></span><br><span class="line"># 部署和备份</span><br><span class="line">hxd # hexo d</span><br><span class="line">hxb</span><br></pre></td></tr></table></figure>
 
 <p>等待片刻，查看是否部署成功：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">o https://arinsong2001.github.io</span><br></pre></td></tr></table></figure>
