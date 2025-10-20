@@ -331,7 +331,8 @@
 </li>
 <li><p>按下地球仪键时：<code>不执行任何操作</code></p>
 </li>
-<li><p><code>键盘快捷键...</code></p>
+</ul>
+<p><code>键盘快捷键…</code>：</p>
 <ul>
 <li><p>调度中心：</p>
 <ul>
@@ -346,30 +347,37 @@
 <li>修改<code>显示App on Control + Command + E</code>.</li>
 </ul>
 </li>
-<li><p>功能键：<code>将F1、F2等键用作标准功能键：启用</code></p>
-</li>
+<li><p>App快捷键：</p>
+<ul>
+<li>保存并执行<code>KeyEquivalents-setup.py</code>, 后附。</li>
 </ul>
 </li>
-<li><p>修饰键：<code>Capslock to Control &amp;&amp; Control to Capslock</code></p>
+<li><p>功能键：</p>
+<ul>
+<li><code>将F1、F2等键用作标准功能键：启用</code></li>
+</ul>
 </li>
-<li><p><code>文字输入 → 输入法 → 编辑... → 所有输入法</code></p>
+<li><p>修饰键：</p>
+<ul>
+<li><code>Capslock to Control &amp;&amp; Control to Capslock</code></li>
+</ul>
+</li>
+</ul>
+<p><code>KeyEquivalents-setup.py</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env python3</span><br><span class="line"></span><br><span class="line">import subprocess</span><br><span class="line"></span><br><span class="line"># Key Modifiers</span><br><span class="line"># @ : Command</span><br><span class="line"># ~ : Option</span><br><span class="line"># ^ : Ctrl</span><br><span class="line"># $ : Shift</span><br><span class="line"></span><br><span class="line">key_equivalents = &#123;</span><br><span class="line">    &quot;启动终端&quot;: &quot;@^t&quot;,</span><br><span class="line">    &quot;启动浏览器&quot;: &quot;@^s&quot;,</span><br><span class="line">    &quot;一时活跃&quot;: &quot;@^a&quot;,</span><br><span class="line">    &quot;填充&quot;: &quot;@^f&quot;,</span><br><span class="line">    &quot;居中&quot;: &quot;@^c&quot;,</span><br><span class="line">    &quot;恢复上一个大小&quot;: &quot;@^r&quot;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">for tag, keymap in key_equivalents.items():</span><br><span class="line">    cmd = f&#x27;defaults write -g NSUserKeyEquivalents -dict-add &quot;&#123;tag&#125;&quot; &quot;&#123;keymap&#125;&quot;&#x27;</span><br><span class="line">    subprocess.run(cmd, shell=True, check=True)</span><br></pre></td></tr></table></figure>
+
+<p><code>文字输入 → 输入法 → 编辑… → 所有输入法</code>：</p>
 <ul>
 <li><p>自动纠正拼写：<code>禁用</code></p>
 </li>
 <li><p>自动大写字词的首字母：<code>禁用</code></p>
 </li>
 </ul>
-</li>
-</ul>
-<p>App快捷键：</p>
-<p>保存并执行<code>KeyEquivalents-setup.py</code>:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env python3</span><br><span class="line"></span><br><span class="line">import subprocess</span><br><span class="line"></span><br><span class="line"># Key Modifiers</span><br><span class="line"># @ : Command</span><br><span class="line"># ~ : Option</span><br><span class="line"># ^ : Ctrl</span><br><span class="line"># $ : Shift</span><br><span class="line"></span><br><span class="line">key_equivalents = &#123;</span><br><span class="line">    &quot;启动终端&quot;: &quot;@^t&quot;,</span><br><span class="line">    &quot;启动浏览器&quot;: &quot;@^s&quot;,</span><br><span class="line">    &quot;一时活跃&quot;: &quot;@^a&quot;,</span><br><span class="line">    &quot;填充&quot;: &quot;@^f&quot;,</span><br><span class="line">    &quot;居中&quot;: &quot;@^c&quot;,</span><br><span class="line">    &quot;恢复上一个大小&quot;: &quot;@^r&quot;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">for tag, keymap in key_equivalents.items():</span><br><span class="line">    cmd = f&#x27;defaults write -g NSUserKeyEquivalents -dict-add &quot;&#123;tag&#125;&quot; &quot;&#123;keymap&#125;&quot;&#x27;</span><br><span class="line">    subprocess.run(cmd, shell=True, check=True)</span><br></pre></td></tr></table></figure>
-
 <p>鼠标：</p>
 <ul>
 <li><p>跟踪速度：<code>5格</code></p>
 </li>
-<li><p><code>高级...</code></p>
+<li><p><code>高级…</code>：</p>
 <ul>
 <li>指针加速：<code>禁用</code></li>
 </ul>
@@ -383,7 +391,7 @@
 </li>
 <li><p>轻点来点按：<code>启用</code></p>
 </li>
-<li><p>系统设置 → 辅助功能：<code>动作 → 指针控制 → 触控板选项...</code></p>
+<li><p>系统设置 → 辅助功能：<code>动作 → 指针控制 → 触控板选项…</code>：</p>
 <ul>
 <li><p>使用触控板进行拖移：<code>启用</code></p>
 </li>
@@ -423,7 +431,7 @@
 </ul>
 <p>系统设置 → 菜单栏：</p>
 <ul>
-<li>电池：<code>电池选项... → 显示百分比 → 启用</code></li>
+<li>电池：<code>电池选项… → 显示百分比 → 启用</code></li>
 </ul>
 <p>系统设置 → 声音：</p>
 <ul>
@@ -441,7 +449,7 @@
 </ul>
 <p>照片：</p>
 <ul>
-<li>选择的照片：<code>右键 → 共享... → 设定墙纸</code></li>
+<li>选择的照片：<code>右键 → 共享… → 设定墙纸</code></li>
 </ul>
 <p>词典：</p>
 <ul>
